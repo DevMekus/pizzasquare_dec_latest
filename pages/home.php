@@ -302,7 +302,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <img class="header-image" src="<?php echo BASE_URL; ?>assets/images/handcrop.jpg"
                 alt="Pizza App Icon" />
             <p class="heading">Introducing <span>Pizza Square Mobile App!</span></p>
-            <p>Enjoy Smoother and Faster Orders!. Our mobile app is coming soon to Google Play and App Store!</p>
+            <p>Enjoy Smoother and Faster Orders!. Our mobile app is coming soon to Google Play and iOS App Stores!</p>
             <div class="store-buttons">
                 <a href="#" class="store-btn google">
                     <img src="<?php echo BASE_URL; ?>assets/images/google-play-and-apple-app-store-logos-22.png" alt="Google Play">
