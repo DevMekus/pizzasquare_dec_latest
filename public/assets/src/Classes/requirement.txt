@@ -1,0 +1,35 @@
+OVERVIEW:
+
+I am designing a Food ordering website and here are some technical informations
+1. There are categories of products: Pizza, Sharwama, Dessert and Drinks
+2. We have different types of pizzas but they all have the same sizes(M,L,XL) and we have types of Sharwama but they all have same wrap. Other Categories like Dessert comes in their own different size(Eg: iccream:small plate and medium) and same with drinks(Eg: 500ml, 1L)
+3. There are modes of Payment: Card, Cash, Transfer, and Split(customer can pay part in Cash and Transfer the rest)
+
+REQUIREMENTS:
+1.Client wants a central place to manage product stocks so that when a product is sold, the count is subtracted from the database. Eg: When a Pizza is sold, that particular size is reduced by the quantity sold in the database.
+
+Give me the necesary Database Schemas for this application, considering user, cart, order, payments, products and every other table or data relevant to this project
+
+category_variants
+id, category_id, category_name, is_active
+
+Example:
+1 1(for pizza) M yes
+2 1(for pizza) L yes
+3 1(for pizza) XL yes
+4 2(for Sharwama) M yes (Sharwama comes in just one variant)
+some Drinks have their own variants and some dont
+some Deserts have their own variants and some dont
+
+
+So Example for products now:
+Chicken Pizza will have all the Pizza category_variants
+Italian Pizza will have all the Pizza category_variants
+Sedi Pizza will have all the Pizza category_variants
+Chicken Sharwama will have all the Sharwama category_variants
+Beef Sharwama will have all the Sharwama category_variants
+
+Give me an updated SQL Create that reflect these 
+
+
+

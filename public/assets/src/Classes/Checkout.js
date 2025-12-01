@@ -1,0 +1,378 @@
+import Cart from "./Cart.js";
+import Utility from "./Utility.js";
+import { HttpRequest } from "../Utils/httpRequest.js";
+import { CONFIG } from "../Utils/config.js";
+import Pagination from "./Pagination.js";
+
+/**
+ * Reusable functions for the checkouty and POS
+ */
+export default class Checkout {
+  static isPos = false;
+  static cartBody = document.getElementById("cartBody");
+  static COUPONS = [];
+
+  static async fetchVAT() {
+    const response = await HttpRequest(`${CONFIG.API}/vat`);
+    return response.success ? response.data[0] : [];
+  }
+
+  static async getAndSetVAT() {
+    const vat = await Checkout.fetchVAT();
+
+    Cart.TAX_RATE = parseFloat(vat.vat);
+  }
+
+  static async deleteCoupon(id) {
+    const result = await Utility.confirm("Delete Coupon?");
+    if (result.isConfirmed) {
+      //---Send to Server
+
+      Utility.alertLoader()
+      const response = await HttpRequest(
+        `${CONFIG.API}/admin/coupon/${id}`,
+        {},
+        "DELETE"
+      );
+
+      Utility.clearAlertLoader()
+      Utility.toast(
+        `${response.message}`,
+        `${response.success ? "success" : "error"}`
+      );
+      Utility.SweetAlertResponse(response);
+
+      return response.success;
+    } else {
+      Utility.toast("Action cancelled");
+    }
+  }
+
+  static async createCoupon(data) {
+    $("#couponModal").modal("hide");
+    const result = await Utility.confirm("Create new Coupon?");
+    if (result.isConfirmed) {
+      //---Send to Server
+      Utility.alertLoader()
+      const response = await HttpRequest(
+        `${CONFIG.API}/admin/coupon`,
+        data,
+        "POST"
+      );
+
+      Utility.clearAlertLoader()
+
+      Utility.toast(
+        `${response.message}`,
+        `${response.success ? "success" : "error"}`
+      );
+
+      Utility.SweetAlertResponse(response);
+
+      return response.success;
+    } else {
+      Utility.toast("Action cancelled");
+    }
+  }
+
+  static updateCart() {
+    localStorage.setItem("cart", JSON.stringify(Cart.cart));
+  }
+
+  static renderCart() {
+    Checkout.isPos ? Checkout.renderCartPos() : Checkout.renderCartWeb();
+    Checkout.countCartItem();
+    Checkout.bindCartControls();
+    Checkout.renderSummary();
+    Checkout.clearCartItems();
+  }
+  static renderSummary() {
+    const t = Checkout.calcTotals();
+
+    Cart.sumItemsEl.textContent = t.items;
+    Cart.subtotalEl.textContent = Utility.fmtNGN(t.subtotal);
+    Cart.taxEl.textContent = Utility.fmtNGN(t.tax);
+    Cart.deliveryFeeEl.textContent = Utility.fmtNGN(Cart.DELIVERY_BASE || 0);
+    Cart.discountEl.textContent = Utility.fmtNGN(t.discount);
+    Cart.grandTotalEl.textContent = Utility.fmtNGN(t.total);
+    Cart.GRANDTOTAL = t.total;
+  }
+
+  static renderCartPos() {
+    if (Cart.cart.length === 0) {
+      Checkout.cartBody.innerHTML =
+        '<div class="text-center text-muted py-4">Your cart is empty</div>';
+    } else {
+      Checkout.cartBody.innerHTML = Cart.cart
+        .map((it) => {
+          return `         
+              <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+                <div>
+                  <div>
+                    <span class="fw-semibold text">${it.title}</span>
+                    <span class="muted">
+                      ${it.size && it.size !== "null" ? `(${it.size})` : ""}
+                    </span>
+
+                  </div>
+                  <div class="small muted text">
+                  ${Utility.fmtNGN(it.price)} × 
+                  ${it.qty}</div>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <button class="qty-btn" 
+                      data-id="${it.id}" data-op="dec">-</button>
+                      <span class="px-2">${it.qty}</span>
+                    <button class="qty-btn" 
+                      data-id="${
+                        it.id
+                      }" data-op="inc">+</button>                  
+                  <button class="btn btn-sm btn-outline-error" 
+                  data-id="${it.id}" data-op="remove"><i class="bi bi-x"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+        })
+        .join("");
+    }
+  }
+  static renderCartWeb() {
+    if (!Cart.cart || Cart.cart.length === 0) {
+      Cart.cartBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Your cart is empty</td></tr>`;
+      return;
+    }
+
+    Checkout.cartBody.innerHTML = Cart.cart
+      .map((item) => {
+        const lineTotal = item.price * item.qty;
+        const extras =
+          item.extras && item.extras.length
+            ? `<div class='small text-muted'>${item.extras.join(", ")}</div>`
+            : "";
+        return `
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img class="cart-thumb" 
+                      src="${item.image}" alt="${item.title}">
+                      <div>
+                        <div class="fw-semibold">${item.title}</div>
+                        <p class="muted"> ${
+                          item.size && item.size !== "null" ? `(${item.size})` : ""
+                        }</p>
+                      </div>
+                    </div>
+                  </td>             
+                  <td class="text-center">
+                    <div class="d-inline-flex align-items-center gap-1">
+                      <button class="qty-btn" 
+                      data-id="${item.id}" data-op="dec">-</button>
+                      <span class="px-2">${item.qty}</span>
+                      <button class="qty-btn" 
+                      data-id="${item.id}" data-op="inc">+</button>
+                    </div>
+                  </td>
+                  <td class="text-end">${Utility.fmtNGN(item.price)}</td>
+                  <td class="text-end">${Utility.fmtNGN(lineTotal)}</td>
+                  <td class="text-end">
+                  <button class="btn btn-sm btn-outline-error" 
+                  data-id="${
+                    item.id
+                  }" data-op="remove"><i class="bi bi-x"></i></button></td>
+                </tr>
+              `;
+      })
+      .join("");
+  }
+  static countCartItem() {
+    const cartCount = Utility.el("cartCount");
+    if (!cartCount) return;
+
+    let count = Cart.cart.reduce((sum, p) => sum + p.qty, 0);
+
+    count > 0 && cartCount.classList.add("badge");
+    cartCount.textContent = count != 0 ? count : "";
+  }
+
+  static bindCartControls() {
+    Checkout.cartBody.querySelectorAll("[data-op]")?.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = btn.dataset.id;
+        const op = btn.dataset.op;
+
+        const idx = Cart.cart.findIndex((x) => String(x.id) == String(id));
+
+        if (idx === -1) return;
+        if (op === "inc") Cart.cart[idx].qty++;
+        if (op === "dec") {
+          Cart.cart[idx].qty--;
+          if (Cart.cart[idx].qty <= 0) {
+            Cart.cart.splice(idx, 1);
+          }
+        }
+        if (op === "remove") Cart.cart.splice(idx, 1);
+        Checkout.updateCart();
+        Checkout.renderCart();
+      });
+    });
+  }
+
+  static calcTotals() {
+    const items = Cart.cart.reduce((s, x) => s + x.qty, 0);
+    const subtotal = Cart.cart.reduce((s, x) => s + x.price * x.qty, 0);
+    const tax = Math.round(subtotal * Cart.TAX_RATE);
+
+    const delivery =
+      Cart.method === "Delivery" && subtotal > 0 ? Cart.DELIVERY_BASE : 0;
+
+    const discount = Math.round(subtotal * Cart.discountRate);
+    const total = Math.max(0, subtotal + tax + delivery - discount);
+    return {
+      items,
+      subtotal,
+      tax,
+      delivery,
+      discount,
+      total,
+    };
+  }
+
+  static async fetchCOUPONS() {
+    const response = await HttpRequest(`${CONFIG.API}/coupon`);
+    return response.success ? response.data : [];
+  }
+
+  static applyCoupon() {
+    document
+      .getElementById("applyCoupon")
+      .addEventListener("click", async () => {
+        const code = Cart.couponEl.value.trim().toUpperCase();
+        if (!code) return;
+
+        //fetch coupons
+        Utility.toast("Searching...");
+        Utility.alertLoader();    
+        const coupons = await Checkout.fetchCOUPONS();
+        Utility.clearAlertLoader();
+
+        //Coupons not available
+        if (coupons.length === 0) {
+          Cart.discountRate = 0;
+          Utility.toast("Invalid coupon");
+          Checkout.renderCart();
+          return;
+        }
+
+        const couponExist = coupons.find((coupon) => coupon["coupon"] == code);
+
+        //Coupon not found
+        if (!couponExist || couponExist.length === 0) {
+          Cart.discountRate = 0;
+          Utility.toast("Invalid coupon");
+          Checkout.renderCart();
+          return;
+        }
+
+        Cart.discountRate = parseFloat(couponExist.discount);
+
+        Utility.toast(
+          `Coupon applied: ${Math.round(Cart.discountRate * 100)}% off`
+        );
+        //!TODO: Save to DB
+        Checkout.renderCart();
+      });
+  }
+
+  static clearCartItems() {
+    document.getElementById("clearCart").addEventListener("click", () => {
+      Cart.cart = [];
+      Checkout.updateCart();
+      Checkout.renderCart();
+      Utility.toast("Cart cleared");
+    });
+  }
+
+  static async packageOrder() {
+    let proceed = true;
+
+    if (Cart.cart.length === 0 || parseFloat(Cart.GRANDTOTAL) <= 0) {
+      Utility.toast("Your cart is empty");
+
+      Utility.SweetAlertResponse({
+        success: false,
+        message: "Your cart is empty",
+      });
+      proceed = false;
+    }
+
+    const t = Checkout.calcTotals();
+    const customer = {
+      name: document.getElementById("name").value.trim(),
+      phone: document.getElementById("phone")?.value.trim() || "",
+      email: document.getElementById("email")?.value.trim() || "",
+      location: "",
+      locationArea: "",
+    };
+
+    if (!customer.name) {
+      Utility.SweetAlertResponse({
+        success: false,
+        message: "Enter customer information",
+      });
+      proceed = false;
+    }
+
+    return {
+      order_id: Utility.generateId(),
+      amount: Cart.GRANDTOTAL,
+      cart: Cart.cart,
+      name: customer.name,
+      email_address: customer.email,
+      order_from: Checkout.isPos ? "walk-in" : "online",
+      location: Cart.deliveryAddress.value || "",
+      city: Cart.deliveryArea || "",
+      delivery_type: !Checkout.isPos ? Cart.method : "pickup",
+      phone: Utility.el("phone")?.value || "",
+      order_note: Utility.el("instructions")?.value || "",
+      proceed,
+    };
+  }
+
+  static CouponTable(data, page = 1) {
+    const tbody = document.querySelector("#couponTable tbody");
+    if (!tbody) return;
+
+    const notDATA = Utility.el("no-data");
+    tbody.innerHTML = "";
+    notDATA.innerHTML = "";
+
+    if (!data || data.length == 0) {
+      Utility.renderEmptyState(notDATA);
+      return;
+    }
+
+    const start = (page - 1) * Utility.PAGESIZE;
+    const end = start + Utility.PAGESIZE;
+    const paginatedData = data.slice(start, end);
+
+    paginatedData.forEach((o, idx) => {
+      const tr = document.createElement("tr");
+      tr.classList.add("bounce-card");
+      tr.innerHTML = `
+          <td>${idx + 1}</td>         
+           <td>${o.coupon ? o.coupon : "-"}</td>       
+          <td>${o.discount ? o.discount : 0}</td>
+          <td class="actions">
+           <button class="btn-error btn btn-sm" 
+              data-delete="${o.id}"
+              data-action='delete'
+            >Delete</button> 
+          </td>
+        `;
+      tbody.appendChild(tr);
+    });
+    if (paginatedData.length > Utility.PAGESIZE)
+      Pagination.render(data.length, page, data, Checkout.CouponTable);
+  }
+}
