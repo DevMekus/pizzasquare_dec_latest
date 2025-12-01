@@ -6,3 +6,5 @@ public/UPLOADS/
 *.log
 .idea/
 .vscode/
+node_modules/
+dist/
