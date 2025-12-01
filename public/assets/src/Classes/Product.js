@@ -313,7 +313,7 @@ export default class Product {
                             ${
                                 defaultAvailable
                                     ? `Add to Cart • ₦<span id="cartPriceValue">${defaultPrice.toLocaleString()}</span>`
-                                    : "Out of Stock"
+                                    : "Unavailable"
                             }
                         </button>
                     </div>
