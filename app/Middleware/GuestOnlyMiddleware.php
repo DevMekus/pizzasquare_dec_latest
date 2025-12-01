@@ -10,8 +10,8 @@ class GuestOnlyMiddleware
     {
         // Only check the origin / referer
         $allowedDomains = [
-            'http://localhost/pizzasquare_latest/',
-            'http://localhost/pizzasquare_latest/pos/',
+            'http://localhost/pizzasq/',
+            'http://localhost/pizzasq/pos/',
             ''       // Production
         ];
 

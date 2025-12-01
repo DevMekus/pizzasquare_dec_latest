@@ -26,8 +26,8 @@ $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
     (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
     (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
 
-define('BASE_URL', ($https ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/pizzasquare_latest/');
-define('BASE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/pizzasquare_latest/');
+define('BASE_URL', ($https ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/pizzasq/');
+define('BASE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/pizzasq/');
 
 
 

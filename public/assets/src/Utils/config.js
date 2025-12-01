@@ -10,10 +10,10 @@ export const CONFIG = {
   ENCRYPT_DATA_NAME: "x-data",
 
   /** Base URL for the application (frontend/backend root) */
-  BASE_URL: "http://localhost/pizzasquare_latest",
+  BASE_URL: "http://localhost/pizzasq",
 
   /** API base endpoint */
-  API: "http://localhost/pizzasquare_latest/api/v1",
+  API: "http://localhost/pizzasq/api/v1",
 
   /** Default timeout (ms) for requests or operations */
   TIMEOUT: 1000,

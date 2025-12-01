@@ -5,7 +5,7 @@ namespace App\Utils;
 
 class Utility
 {
-    public static  $API_ROUTE = "/pizzasquare_latest/api";
+    public static  $API_ROUTE = "/pizzasq/api";
     public static $siteName = '';
 
     public static $accounts = 'accounts_tbl';

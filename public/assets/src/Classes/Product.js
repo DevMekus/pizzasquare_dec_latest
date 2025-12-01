@@ -243,13 +243,13 @@ export default class Product {
         const sizeSectionHtml = hasSizes
             ? `
             <div class="size-toggle">
-                <label class="section-title">Choose Size</label>
-                <div class="toggle-group slide-in">
+                <label class="section-title">Make your choice</label>
+                <div class="toggle-group slide-in mt-2">
                 ${sizesObj
                     .map((sz, i) => {
                         const available = Number(sz.real_stock) > 0;
                         return `
-                        <label class="toggle-item ${!available ? "disabled" : ""}">
+                        <label class="toggle-item mb-3 ${!available ? "disabled" : ""}">
                             <input type="radio" 
                                 name="size" 
                                 value="${i}" 
@@ -284,7 +284,7 @@ export default class Product {
         domBody.innerHTML = `
             <div class="product-layout">
                 <div class="product-left">
-                    <img src="${imageUrl}" alt="${product.name}" class="product-image zoom">
+                    <img src="${imageUrl}" alt="${product.name}" class="product-image ${product.category.toLowerCase() === 'pizza' ? 'spin' : 'zoom'}">
                     <p class="text-center muted mt-4">${product.description || ""}</p>
                 </div>
 
