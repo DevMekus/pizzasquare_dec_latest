@@ -1,0 +1,5 @@
+Database Information
+
+Database name: pizzasqu_pizzasqure_v2_db
+Database Username: pizzasqu_v2_user
+Database Password: AEzGi?%^rE?up5@t
