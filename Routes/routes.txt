@@ -1,0 +1,20 @@
+1. AUTH / USERS
+
+| Method | Route                  | Description              | Auth   |
+| ------ | ---------------------- | ------------------------ | ------ |
+| POST   | /api/auth/register     | Register new user        | Public |
+| POST   | /api/auth/login        | Login and get token      | Public |
+| GET    | /api/users/me          | Get current user profile | Auth   |
+| PUT    | /api/users/me          | Update profile           | Auth   |
+| PUT    | /api/users/me/password | Change password          | Auth   |
+
+2. CATEGORIES / CATEGORY_VARIANTS
+| Method | Route               | Description         | Auth   |
+| ------ | ------------------- | ------------------- | ------ |
+| GET    | /api/categories     | Get all categories  | Public |
+| GET    | /api/categories/:id | Get category by ID  | Public |
+| POST   | /api/categories     | Create new category | Admin  |
+| PUT    | /api/categories/:id | Update category     | Admin  |
+| DELETE | /api/categories/:id | Delete category     | Admin  |
+
+
