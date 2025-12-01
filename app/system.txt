@@ -1,0 +1,45 @@
+HOW THE ENTIRE SYSTEM FLOWS TOGETHER
+1. Admin creates categories
+
+Pizza, Shawarma, Drinks, Dessert
+
+2. Admin creates sizes under each category
+
+Pizza → M, L, XL
+Shawarma → Regular
+Drinks → 35cl, 50cl
+Dessert → S, M, L, XL
+
+3. Admin sets category-level stock
+
+Pizza M → 120 boxes
+Pizza L → 80 boxes
+Shawarma Wrap → 200 wraps
+
+This stock is shared across products.
+
+4. Admin creates products
+
+Chicken Pizza
+Beef Shawarma
+Exotic Drink
+Icecream Plate
+
+5. Admin assigns sizes to products (product_sizes)
+
+Chicken Pizza → M, L, XL
+Exotic Drink → S, L
+Mirinda → 1 size only
+Icecream Plate → S, M, L
+
+Also define price + whether it uses shared stock.
+
+6. System determines which stock table to deduct from
+
+If product_sizes.uses_shared_stock == 1
+→ Reduce category_size_stock
+
+Else
+→ Reduce product_stock
+
+7. Every deduction is logged in stock_movements
