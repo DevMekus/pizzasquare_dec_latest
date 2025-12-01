@@ -1,0 +1,37 @@
+.admin-nav {
+  background: var(--nav-bg);
+}
+
+/* Sidebar Toggle Icon */
+.sidebar-toggle i {
+  font-size: 1.4rem;
+}
+
+/* Align icon badge */
+.order-badge {
+  top: -6px;
+  right: -10px;
+  font-size: 0.65rem;
+}
+
+/* Center title on mobile */
+.admin-brand {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  flex: 1;
+  text-align: center;
+}
+
+/* Better layout on smaller screens */
+@media (max-width: 576px) {
+  .admin-nav-actions {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .cashier-badge {
+    font-size: 0.75rem;
+  }
+}

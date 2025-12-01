@@ -1,0 +1,282 @@
+#adminLayout {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 900; /* below the sidebar (1000) */
+}
+
+#sidebar {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: var(--sidebar-max);
+  height: 100vh;
+  padding: 20px 16px;
+  background-color: var(--bg);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow-y: auto; /* enables internal scroll if content is long */
+}
+
+.link-wrap {
+  padding: 5px 10px;
+  margin: 5px 0px;
+  transition: background 0.3s;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: $neutral-200;
+  }
+}
+
+.link-wrap .icon {
+  margin-right: 10px;
+}
+
+.sidebar a.active {
+  background-color: var(--primary);
+  color: var(--text-light);
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.sidebar a {
+  color: var(--text);
+  font-family: "HelveticaFont", sans-serif;
+  font-weight: 500;
+}
+
+#rightContent {
+  flex: 1;
+  margin-left: var(--sidebar-max);
+  position: relative;
+  min-height: 100vh;
+}
+
+#menuBtn {
+  display: none;
+}
+
+.admin-nav {
+  width: 100%;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+}
+
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--glass);
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  outline: none;
+  padding-left: 8px;
+  border: 1px solid $neutral-300;
+  padding: 1rem;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.chip {
+  background: var(--bg);
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+/* Medium screens */
+@media (max-width: 900px) {
+  #rightContent {
+    flex: 1;
+    margin-left: 0;
+    position: relative;
+    min-height: 100vh;
+  }
+  .sidebar {
+    transform: translateX(-110%);
+    position: fixed;
+  }
+
+  #menuBtn {
+    display: flex;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    top: 0px;
+  }
+
+  .inner-container {
+    margin-left: 0px;
+    width: 100%;
+    position: relative;
+  }
+
+  .content-centered {
+    width: 100%;
+    max-width: 100%;
+    padding: 2px;
+  }
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.orders-header h4 {
+  margin: 0;
+}
+
+.orders-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Mobile responsive behavior */
+@media (max-width: 576px) {
+  .orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .orders-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  select,
+  .orders-actions .btn {
+    flex: 1;
+  }
+
+  .welcome {
+    text-align: center;
+  }
+}
+
+.reports-page {
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  /* Filter buttons wrap nicely */
+  .filter-buttons {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Date inputs and button grouped */
+  .date-controls {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: flex-end;
+    min-width: 260px;
+  }
+
+  /* ✅ Mobile responsiveness */
+  @media (max-width: 768px) {
+    .controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-buttons {
+      justify-content: center;
+    }
+
+    .date-controls {
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .date-controls input,
+    .date-controls button {
+      width: 100%;
+    }
+  }
+
+  .overview-header {
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .overview-title {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* Chart radio control group */
+  .chart-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .chart-controls input[type="radio"] {
+    margin-right: 4px;
+  }
+
+  /* ✅ On mobile */
+  @media (max-width: 768px) {
+    .overview-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .chart-controls {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

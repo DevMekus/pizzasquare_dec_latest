@@ -1,0 +1,359 @@
+/* ==========================================================================
+   AUTHENTICATION CONTAINER STYLES
+   This stylesheet handles the layout, branding, and responsiveness
+   of the authentication (login/register) page.
+   ========================================================================== */
+
+#AUTHContainer {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 32px; (Optional, uncomment if needed) */
+}
+
+#AUTHContainer .hero-visual {
+  aspect-ratio: 16/11;
+  border-radius: 24px;
+  background: radial-gradient(
+      120% 120% at 10% 10%,
+      rgba(14, 165, 233, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(22, 163, 74, 0.08));
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+#AUTHContainer .hero-visual .product {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  border-radius: 18px;
+  border: 1px dashed var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+#AUTHContainer .hero-visual .product img {
+  width: 100%;
+  height: 220px;
+  border-radius: 18px;
+}
+
+/* ==========================================================================
+   AUTH CARD (Main container for form + branding)
+   ========================================================================== */
+#AUTHContainer .card-auth {
+  width: 100%;
+  max-width: 980px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Responsive layout: stack form & branding on small screens */
+@media (max-width: 880px) {
+  #AUTHContainer .card-auth {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   LEFT COLUMN: Branding / Visual Area
+   ========================================================================== */
+#AUTHContainer .side-brand {
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 78, 7, 0.09),
+    rgba(38, 223, 106, 0.06)
+  );
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#AUTHContainer #loginTitle {
+  font-weight: bold;
+}
+
+#AUTHContainer .logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+#AUTHContainer .logo .mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+
+  display: grid;
+  place-items: center;
+
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  font-weight: 800;
+}
+
+#AUTHContainer #themeToggle i {
+  color: var(--text);
+}
+
+#AUTHContainer .side-ill {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(2, 132, 199, 0.12),
+    rgba(22, 163, 74, 0.08)
+  );
+
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+#AUTHContainer .side-copy {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: Form Area
+   ========================================================================== */
+#AUTHContainer .side-form {
+  padding: 36px 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Header */
+#AUTHContainer .h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#AUTHContainer .h h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+#AUTHContainer .desc {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   FORM FIELDS
+   ========================================================================== */
+#AUTHContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#AUTHContainer .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#AUTHContainer label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#AUTHContainer input[type="text"],
+#AUTHContainer input[type="email"],
+#AUTHContainer input[type="password"] {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 36, 0.06);
+  background: transparent;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#AUTHContainer input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.06);
+}
+
+/* Row layout */
+#AUTHContainer .row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#AUTHContainer .checkbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#AUTHContainer .muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Password wrapper */
+#AUTHContainer .pw-wrap {
+  position: relative;
+  display: flex;
+}
+
+#AUTHContainer .pw-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+#AUTHContainer .btn {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+
+#AUTHContainer .btn-primary {
+  background: var(--primary);
+  color: var(--text-light);
+}
+
+// #AUTHContainer .btn-primary:hover {
+//   background: var(--primary-600);
+// }
+
+#AUTHContainer .btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(15, 23, 36, 0.06);
+}
+
+/* Social login buttons */
+#AUTHContainer .socials {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#AUTHContainer .social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 36, 0.06);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#AUTHContainer .social-btn:hover {
+  background: rgba(15, 23, 36, 0.04);
+}
+
+/* ==========================================================================
+   SPINNER (loading indicator)
+   ========================================================================== */
+#AUTHContainer .spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.9);
+
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+#AUTHContainer .foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS IMPROVEMENTS
+   ========================================================================== */
+@media (max-width: 480px) {
+  #AUTHContainer .side-brand,
+  #AUTHContainer .side-form {
+    padding: 20px;
+  }
+
+  #AUTHContainer .side-brand {
+    display: none;
+  }
+
+  #AUTHContainer .h h2 {
+    font-size: 18px;
+  }
+
+  #AUTHContainer .logo .mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  #AUTHContainer .side-ill {
+    height: 160px;
+  }
+
+  #AUTHContainer .foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}

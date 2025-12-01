@@ -1,0 +1,31 @@
+#pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+#pagination button {
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  background: #f0f0f0;
+  transition: all 0.2s;
+}
+
+#pagination button.active {
+  background: var(--primary);
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+#pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#pagination .ellipsis {
+  padding: 6px 8px;
+  color: #999;
+}

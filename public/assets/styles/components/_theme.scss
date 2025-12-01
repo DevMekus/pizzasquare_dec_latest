@@ -1,0 +1,89 @@
+// Base brand colors
+$primary: #d51d28;
+$secondary: #00b034;
+$accent: #ffb400;
+$error: #e53935;
+$warning: #f9a825;
+$info: #1976d2;
+
+// Precompute darkened variants
+$secondary-dark-8: darken($secondary, 8%);
+$secondary-dark-12: darken($secondary, 12%);
+$accent-dark-8: darken($accent, 8%);
+$accent-dark-12: darken($accent, 12%);
+$error-dark-8: darken($error, 8%);
+$error-dark-12: darken($error, 12%);
+
+// Light neutrals
+$neutral-100: #f7f7f7;
+$neutral-200: #e0e0e0;
+$neutral-300: #cccccc;
+$neutral-400: #999999;
+$neutral-500: #666666;
+
+//Dark colors
+$dark-100: hsl(0, 0%, 0%);
+$dark-200: hsl(0, 0%, 10%);
+$dark-300: hsl(0, 0%, 20%);
+
+:root {
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --accent: #{$accent};
+  --error: #{$error};
+  --text-light: #{$neutral-100};
+  --text-dark: #{$dark-100};
+  --bg-dark: #{$dark-200};
+  --muted: #6b7280;
+
+  --secondary-dark-8: #{$secondary-dark-8};
+  --secondary-dark-12: #{$secondary-dark-12};
+  --accent-dark-8: #{$accent-dark-8};
+  --accent-dark-12: #{$accent-dark-12};
+  --error-dark-8: #{$error-dark-8};
+  --error-dark-12: #{$error-dark-12};
+  --primary-dark-8: #{darken($primary, 8%)};
+  --primary-dark-12: #{darken($primary, 12%)};
+}
+
+.theme-light {
+  --bg: #ffffff;
+  --text: #000000;
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --accent: #{$accent};
+  --error: #{$error};
+  --warning: #{$warning};
+  --info: #{$info};
+
+  --neutral-100: #{$neutral-100};
+  --neutral-200: #{$neutral-200};
+  --neutral-300: #{$neutral-300};
+  --neutral-400: #{$neutral-400};
+  --neutral-500: #{$neutral-500};
+}
+
+.dark-theme {
+  --bg: #121212;
+  --text: #ffffff;
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --accent: #{$accent};
+  --error: #{$error};
+  --warning: #{$warning};
+  --info: #{$info};
+
+  --neutral-100: #222222;
+  --neutral-200: #333333;
+  --neutral-300: #444444;
+  --neutral-400: #777777;
+  --neutral-500: #999999;
+}
+
+.color-success {
+  color: var(--secondary);
+}
+
+.color-danger {
+  color: var(--error);
+}

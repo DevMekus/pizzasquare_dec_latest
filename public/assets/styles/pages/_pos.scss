@@ -1,0 +1,225 @@
+#POS_SYSTEM {
+  color: var(--text);
+  background: var(--bg);
+  width: 100%;
+  position: relative;
+
+  /* Header */
+  .pos-header {
+    background: var(--bg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+  }
+
+  .nav-link {
+    color: var(--text);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .brand img {
+    height: 38px;
+  }
+
+  .brand-title {
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    color: var(--text);
+  }
+
+  .motto {
+    color: var(--text);
+  }
+
+  .cashier-badge {
+    border: 2px solid var(--primary);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .pos_footer {
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Layout */
+  .pos-wrap {
+    display: grid;
+    grid-template-columns: 2.1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+    width: 90%;
+    min-height: 100vh;
+    position: relative;
+    margin: auto;
+    max-width: 100%;
+  }
+
+  @media (max-width: 992px) {
+    .pos-wrap {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .titleTop {
+      display: none;
+    }
+  }
+
+  .pos-card {
+    background: var(--bg);
+    // border: 1px solid var(--neutral-300);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  #cartSummarySection {
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+  }
+
+  @media (max-width: 992px) {
+    #cartSummarySection {
+      width: 100%;
+    }
+  }
+
+  #topFilter {
+    position: sticky;
+    top: 50px;
+    z-index: 2;
+    padding: 5px 10px;
+    border-radius: 16px;
+  }
+
+  #topFilter #searchInput {
+    background-color: var(--bg);
+  }
+
+  .filter-chip {
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+  }
+
+  .filter-chip:hover {
+    background: var(--secondary);
+    color: var(--text-light);
+  }
+
+  .filter-chip.active {
+    background: var(--secondary);
+    color: var(--text-light);
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--neutral-300);
+    border-radius: 6px;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  .qty-btn .icon {
+    color: var(--text);
+  }
+
+  .qty-btn:hover {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  .totals .row {
+    font-size: 0.95rem;
+  }
+
+  .totals .row strong {
+    font-size: 1.05rem;
+  }
+
+  /* ✅ Mobile First Responsive Enhancements */
+
+  /* Make POS wrap fully fluid on mobile */
+  @media (max-width: 768px) {
+    .pos-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 10px;
+    }
+
+    #cartSummarySection {
+      position: relative !important;
+      top: unset !important;
+      max-height: unset !important;
+      overflow: visible !important;
+      margin-top: 10px;
+    }
+  }
+
+  /* Search input + filter chips width fix */
+  @media (max-width: 576px) {
+    #topFilter {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    #topFilter .input-group {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #categoryChips {
+      width: 100% !important;
+      justify-content: space-evenly !important;
+    }
+  }
+
+  /* Catalog grid responsive spacing */
+  #catalogGrid .col,
+  #catalogGrid > div {
+    min-width: 150px;
+  }
+
+  /* Improve layout of payment group on mobile */
+  @media (max-width: 480px) {
+    .btn-group label {
+      font-size: 0.75rem;
+      padding: 6px;
+    }
+  }
+
+  /* Prevent sticky filter from covering content */
+  @media (max-width: 768px) {
+    #topFilter {
+      top: 65px !important;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+  }
+
+  /* Make modal full width on small screens */
+  @media (max-width: 576px) {
+    .modal-dialog {
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}

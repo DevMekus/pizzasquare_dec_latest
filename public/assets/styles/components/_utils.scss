@@ -1,0 +1,292 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+// ==============================
+// Spacing Scale
+// ==============================
+:root {
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.5rem; /* 24px */
+  --space-6: 2rem; /* 32px */
+  --space-8: 2.5rem; /* 40px */
+  --space-10: 3rem; /* 48px */
+  --container-max: 1200px;
+  --sidebar-max: 250px;
+  --glass: rgba(255, 255, 255, 0.03);
+  --card-radius: 14px;
+  --gap: 18px;
+  --pad: 18px;
+}
+
+// ==============================
+// Breakpoints
+// ==============================
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+
+@mixin respond($break) {
+  @if $break == sm {
+    @media (min-width: #{$break-sm}) {
+      @content;
+    }
+  } @else if $break == md {
+    @media (min-width: #{$break-md}) {
+      @content;
+    }
+  } @else if $break == lg {
+    @media (min-width: #{$break-lg}) {
+      @content;
+    }
+  } @else if $break == xl {
+    @media (min-width: #{$break-xl}) {
+      @content;
+    }
+  }
+}
+
+// ==============================
+// Utility classes
+// ==============================
+// Margins & paddings
+@mixin space-utils($prop) {
+  @each $i,
+    $space
+      in (
+        1: var(--space-1),
+        2: var(--space-2),
+        3: var(--space-3),
+        4: var(--space-4),
+        5: var(--space-5),
+        6: var(--space-6)
+      )
+  {
+    .#{$prop}-#{$i} {
+      #{$prop}: #{$space};
+    }
+    .#{$prop}x-#{$i} {
+      #{$prop}-left: #{$space};
+      #{$prop}-right: #{$space};
+    }
+    .#{$prop}y-#{$i} {
+      #{$prop}-top: #{$space};
+      #{$prop}-bottom: #{$space};
+    }
+  }
+}
+
+@include space-utils(m);
+@include space-utils(p);
+
+// Text color utilities
+.text-primary {
+  color: var(--primary) !important;
+}
+.text-secondary {
+  color: var(--secondary) !important;
+}
+.text-accent {
+  color: var(--accent) !important;
+}
+.text-error {
+  color: var(--error) !important;
+}
+.text-info {
+  color: var(--info) !important;
+}
+
+// Background color utilities
+.bg-light {
+  background-color: $neutral-100 !important;
+}
+
+.bg-light p,
+.bg-light h5,
+.bg-light span {
+  color: var(--text);
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+.bg-secondary {
+  background-color: var(--secondary) !important;
+}
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+.bg-error {
+  background-color: var(--error) !important;
+}
+.bg-info {
+  background-color: var(--info) !important;
+}
+
+.bg-default {
+  background-color: $neutral-200 !important;
+  color: var(--text) !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// .active {
+//   background-color: $neutral-100 !important;
+// }
+
+.bg-light {
+  background-color: $neutral-100 !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+.section-pad {
+  padding: 50px 0;
+}
+
+.section-title {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.section-sub {
+  color: var(--muted);
+}
+
+.color-red {
+  color: red;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #374151; /* slate-700 */
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.empty-state svg {
+  width: 120px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827; /* slate-900 */
+}
+
+.empty-state p {
+  font-size: 0.95rem;
+  color: #6b7280; /* slate-500 */
+  margin-bottom: 1rem;
+}
+
+.empty-state .btn {
+  background: #dc2626; /* red-600 for pizza brand */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.empty-state .btn:hover {
+  background: #b91c1c; /* darker red */
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--bg);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 10px;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  margin: 0;
+}
+.toast {
+  background-color: var(--bg);
+}
+
+.glass-container {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fixed-top-end {
+  position: static;
+  padding: 0;
+}
+/* Desktop: Top-right corner — Already handled by Bootstrap classes */
+
+/* Mobile: 100% width & centered */
+@media (max-width: 576px) {
+  #toastWrapper {
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 10px;
+    transform: none;
+  }
+
+  #liveToast {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+.fa-facebook {
+  color: var(--text-white);
+}
+.fa-instagram {
+  color: var(--text-white);
+}
+.fa-tiktok {
+  color: var(--text-white);
+}
+.fa-x-twitter {
+  color: var(--text-white);
+}
+.fa-google {
+  color: var(--text-white);
+}
+.fa-youtube {
+  color: var(--text-white);
+}
+
+.border-secondary-2x{
+  border: 2px solid var(--secondary) !important;
+}
+
+.border-secondary-1x{
+  border: 1px solid var(--secondary) !important;
+}

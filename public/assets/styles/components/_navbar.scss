@@ -1,0 +1,92 @@
+/* ---------- Topbar + Navbar (compact demo) ---------- */
+.topbar {
+  background: var(--neutral-100);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+}
+
+.topbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+
+.topbar .left,
+.topbar .right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.topbar i {
+  color: var(--primary);
+}
+
+.bg-nav-primary {
+  background-color: var(--primary);
+}
+
+.navbar-brand img {
+  height: 48px;
+}
+
+#navbars {
+  margin-left: 50px;
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-light);
+  font-size: 17px;
+  font-weight: bold;
+  font-family: "HelveticaRoundedNormal";
+}
+
+.navbar-nav .nav-link.active {
+  border: 2px solid var(--bg);
+  border-radius: 10px 2px;
+  background: var(--bg);
+  max-width: 100px; 
+  color: var(--text);
+  padding: 3px;
+}
+
+.btn-primary-brand {
+  background: var(--bg);
+  border: none;
+  color: var(--text);
+  font-weight: 700;
+  border-radius: 5px 2px 3px;
+  transition: all 0.3s ease-out;
+}
+
+.btn-primary-brand:hover {
+  transform: translateY(-2px);
+  background-color: $neutral-100;
+}
+
+.btn-outline-white {
+  border: 2px solid var(--neutral-100);
+  transition: all 0.3s ease-out;
+}
+
+.btn-outline-white:hover {
+  color: var(--text-light);
+  border: 2px solid var(--neutral-100);
+  transform: translateY(-2px);
+}
+
+#mobileNavbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #navbars {
+    margin-left: 0px;
+  }
+
+  .bi-cart {
+    font-size: 25px;
+  }
+}

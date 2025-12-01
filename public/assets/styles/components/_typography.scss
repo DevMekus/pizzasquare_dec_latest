@@ -1,0 +1,60 @@
+// Responsive typography scale
+:root {
+  /* Base size is 1rem = 16px by default */
+  --font-size-xs: clamp(0.75rem, 0.7vw, 0.875rem); /* 12px - 14px */
+  --font-size-sm: clamp(0.875rem, 0.8vw, 1rem); /* 14px - 16px */
+  --font-size-base: clamp(1rem, 1vw, 1.125rem); /* 16px - 18px */
+  --font-size-md: clamp(1.125rem, 1.2vw, 1.25rem); /* 18px - 20px */
+  --font-size-lg: clamp(1.25rem, 1.5vw, 1.5rem); /* 20px - 24px */
+  --font-size-xl: clamp(1.5rem, 2vw, 2rem); /* 24px - 32px */
+  --font-size-2xl: clamp(2rem, 3vw, 2.5rem); /* 32px - 40px */
+  --font-size-3xl: clamp(2.5rem, 4vw, 3rem); /* 40px - 48px */
+}
+
+body {
+  font-family: "HelveticaFont", sans-serif;
+  transition: background 0.3s, color 0.3s;
+  font-size: var(--font-size-base); // default body text
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: var(--font-size-3xl); // biggest heading
+  font-weight: 700;
+  font-family: "HelveticaBoldRounded";
+}
+h2 {
+  font-size: var(--font-size-2xl);
+  font-family: "HelveticaBoldRounded";
+}
+h3 {
+  font-size: var(--font-size-xl);
+  font-family: "HelveticaBoldRounded";
+}
+h4 {
+  font-size: var(--font-size-lg);
+  font-family: "HelveticaBoldRounded";
+}
+
+h5 {
+  font-family: "HelveticaBoldRounded";
+}
+
+h6 {
+  font-family: "HelveticaBoldRounded";
+}
+
+p {
+  font-size: var(--font-size-base);
+  font-family: "HelveticaRoundedNormal", sans-serif;
+}
+
+small {
+  font-size: var(--font-size-xs);
+  font-family: "HelveticaRoundedNormal", sans-serif;
+}
+
+a {
+  cursor: pointer;
+  font-family: "HelveticaRoundedNormal", sans-serif;
+}
