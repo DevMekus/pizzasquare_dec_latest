@@ -1,0 +1,112 @@
+<?php
+require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
+require_once ROOT_PATH . '/includes/header.php';
+
+if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
+?>
+
+<body id="POS_SYSTEM" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
+    <?php require "navbar.php" ?>
+    <main class="container-fluid pos-wrap">
+        <!-- Catalog -->
+        <section class="catalog" aria-label="Product catalog">
+            <div id="topFilter" class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="input-group" style="max-width:420px">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i>
+                    </span>
+                    <input id="searchInput" type="search" class="form-control" placeholder="Search items (BBQ Chicken Xtra, Chicken Shawarma, Hollandia)…" />
+                </div>
+                <div class="d-flex flex-wrap gap-2" id="categoryChips">
+                </div>
+            </div>
+
+            <div class="row g-3" id="catalogGrid">
+            </div>
+
+        </section>
+
+        <!-- Cart + Checkout -->
+        <aside>
+            <section class="pos-card mb-3 p-4" id="cartSummarySection" aria-label="Current order">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Current Order <sup>
+                            <span id="cartCount"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                                0
+                            </span></sup></h5>
+
+                    <button class="btn btn-sm btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
+                </div>
+                <div id="cartItems">
+                    <div class="text-center text-muted py-4" id="cartBody">Your cart is empty</div>
+                </div>
+                <hr />
+                <div class="totals">
+                    <div class="row mb-1">
+                        <div class="col">Items</div>
+                        <div class="col text-end"><span id="sumItems">0</span></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col">Subtotal</div>
+                        <div class="col text-end"><span id="subtotal">0</span></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col">Tax <span id="tax_val"></span></div>
+                        <div class="col text-end"><span id="tax">0</span></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">Delivery</div>
+                        <div class="col text-end"><span id="deliveryFee">0</span></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">Discount</div>
+                        <div class="col text-end"><span id="discount">0</span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col"><strong>Total</strong></div>
+                        <div class="col text-end"><strong><span id="grandTotal">0</span></strong></div>
+                    </div>
+                </div>
+                <div class="mt-3 d-grid gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-person-fill"></i></span>
+                        <input id="name" type="text" class="form-control" placeholder="Customer name" />
+                    </div>
+
+                    <input id="address" type="hidden" class="form-control" placeholder="Address" />
+
+                    <input id="attendant" type="hidden" class="form-control" value="<?= $user['fullname']; ?>" />
+
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" name="pay" id="payCash" autocomplete="off" checked>
+                        <label class="btn btn-outline-secondary" for="payCash"><i class="bi bi-cash"></i> Cash</label>
+
+                        <input type="radio" class="btn-check" name="pay" id="payCard" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="payCard"><i class="bi bi-credit-card"></i> Card</label>
+
+                        <input type="radio" class="btn-check" name="pay" id="payTransfer" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="payTransfer"><i class="bi bi-bank"></i> Transfer</label>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-tags-fill"></i></span>
+                        <input id="coupon" type="text" class="form-control" placeholder="Promo code (e.g. PIZZA10)" />
+                        <button id="applyCoupon" class="btn btn-outline-primary">Apply</button>
+                    </div>
+                    <button id="confirmOrder" class="btn btn-primary btn-lg"><i class="fa-solid fa-receipt me-1"></i> Confirm Order</button>
+                </div>
+            </section>
+
+
+        </aside>
+    </main>
+    <?php require "footer.php" ?>
+    <?php require_once ROOT_PATH . '/includes/receipt-modal.php'; ?>
+
+
+    <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/PosPage.js"></script>
+
+</body>
+
+</html>

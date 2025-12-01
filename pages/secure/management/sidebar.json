@@ -1,0 +1,28 @@
+[
+  {
+    "label": "Overview",
+    "icon": "layout-dashboard",
+    "route": "secure/admin/overview"
+  },
+  {
+    "label": "Orders",
+    "icon": "order",
+    "route": "secure/admin/orders"
+  },
+  {
+    "label": "Menu",
+    "icon": "inventory",
+    "route": "secure/admin/menu"
+  },
+  {
+    "label": "Reports",
+    "icon": "report",
+    "route": "secure/admin/reports"
+  },
+
+  {
+    "label": "Account",
+    "icon": "user",
+    "route": "secure/admin/account"
+  }
+]
