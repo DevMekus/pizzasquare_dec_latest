@@ -1,11 +1,12 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 require_once ROOT_PATH . '/includes/navbar.php';
 
 ?>
 
-<body class="theme-light" id="checkout">
+<body class="theme-light" id="checkout" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
     <main class="py-4">
         <div class="container checkoutContainer">
             <div class="row g-4">
@@ -72,18 +73,14 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         </div>
                         <div id="deliveryFields" class="mt-3">
                             <div class="row g-3">
+                                <div class="col-md-4" id="manual-delivery">
+                                 
+                                </div>
                                 <div class="col-md-8">
                                     <label class="form-label small">Address</label>
                                     <input type="text" id="address" class="form-control" placeholder="Enter delivery address">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small">Apartment / Suite</label>
-                                    <input type="text" id="apt" class="form-control" placeholder="Optional">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div id="manual-delivery"></div>
-                                </div>
+                                </div>                              
+                             
 
                                 <div class="col-12">
                                     <label class="form-label small">Delivery Instructions</label>
@@ -116,15 +113,15 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small">Full Name</label>
-                                <input type="text" id="name" placeholder="John Doe">
+                                <input type="text" id="name" value="<?= $user['fullname'] ??''  ?>" placeholder="John Doe">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small">Phone</label>
-                                <input type="tel" id="phone" placeholder="<?= BRAND_PHONE ?>">
+                                <input type="tel" id="phone" value="<?= $user['phone'] ??''  ?>" placeholder="<?= BRAND_PHONE ?>" >
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small">Email</label>
-                                <input type="email" id="email" placeholder="you@example.com">
+                                <input type="email" id="email" value="<?= $user['email_address'] ?? '' ?>" placeholder="you@example.com" readonly>
                             </div>
                         </div>
                     </div>

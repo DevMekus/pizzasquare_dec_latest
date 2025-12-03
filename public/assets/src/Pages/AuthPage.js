@@ -219,27 +219,23 @@ class AuthPage {
         const result = await Utility.confirm("Create account?");
         if (result.isConfirmed) {
             AuthHelper.setLoading(true);
-            const formData = Utility.toObject(new FormData(e.target));
-
-          console.log(`${CONFIG.API}/auth/register`)
+            const formData = new FormData(e.target);
+       
             const response = await HttpRequest(
             `${CONFIG.API}/auth/register`,
                 formData,
                 "POST"
             );
 
-            console.log(response)
-
-          AuthHelper.setLoading(false);
+           AuthHelper.setLoading(false);
 
           if (!response.success) {
             Utility.toast("An error has occurred", "error");
             return;
-          }
-
+          } 
           Utility.toast("Registration successful. Please sign in.", "success");
           setTimeout(() => {
-            window.location.href = `${CONFIG.BASE_URL}/auth/login`;
+            window.location.href = `${CONFIG.BASE_URL}/auth/login?f-bk=new`;
           }, CONFIG.TIMEOUT);
         }
       });
@@ -367,14 +363,29 @@ class AuthPage {
   pageFeedback() {
     try {
       const params = new URLSearchParams(document.location.search);
+      const dom = Utility.el("a-info")
       const urlParam = params.get("f-bk");
       if (!urlParam) return;
 
-      if (urlParam === "UNAUTHORIZED")
+      if (urlParam === "UNAUTHORIZED"){
         Utility.toast("UNAUTHORIZED! Please sign in", "error");
-      if (urlParam === "logout") Utility.toast("Logout successful", "success");
-      if (urlParam === "new")
+        dom.innerHTML = `<span class="bold color-red">Sign in to continue</span>`;
+      }
+       
+      if (urlParam === "logout"){
+        Utility.toast("Logout successful", "success");
+        dom.innerHTML = `<span class="bold color-red">Logout successful</span>`;
+      }
+
+      if (urlParam === "new"){
         Utility.toast("Registration Successful", "success");
+        dom.innerHTML = `<span class="bold color-success">Registration Successful. Login to continue</span>`;
+      }
+       if (urlParam === "ctrue"){
+        Utility.toast("Login to continue", "success");
+        dom.innerHTML = `<span class="bold color-red">Login to continue</span>`;
+      }
+        
     } catch (error) {
       console.error("Error showing page feedback:", error);
     }

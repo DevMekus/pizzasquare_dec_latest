@@ -4,8 +4,8 @@ use App\Utils\Utility;
 
 Utility::verifySession();
 
-$role   = $_SESSION['role'];
-$userid = $_SESSION['userid'];
+$role   = $_SESSION['role'] ?? null;
+$userid = $_SESSION['userid'] ?? null;
 $user = null;
 
 // Refresh user profile if not cached or expired

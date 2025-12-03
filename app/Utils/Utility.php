@@ -24,6 +24,7 @@ class Utility
     public static $deals = 'deals';
     public static $city = 'city';
     public static $coupons = 'coupons';
+    public static $vat_tbl = 'vat';
      
 
     public static function debugger()

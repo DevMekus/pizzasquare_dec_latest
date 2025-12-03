@@ -1,5 +1,10 @@
 <?php
 namespace App\Controllers;  
+use App\Services\OrderService;
+use App\Utils\RequestValidator;
+use App\Utils\Response;
+use App\Utils\Utility;
+
 
 class OrderController{
 
@@ -24,5 +29,19 @@ class OrderController{
 
     public function cancelOrder($order_id){
         // Code to cancel an order by order ID and handle stock rollback
+    }
+
+    public function listVat()
+    {
+        try {
+            $vat = OrderService::fetchVAT();
+
+            if (empty($vat))
+                Response::error(404, "vat not found");
+            Response::success($vat, "vat found");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::listVat', [], $e);
+            Response::error(500, "Error fetching vat");
+        }
     }
 }

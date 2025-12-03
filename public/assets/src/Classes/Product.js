@@ -2,6 +2,7 @@ import {getItem} from '../Utils/CrudRequest.js'
 import Pagination from './Pagination.js';
 import Utility from './Utility.js';
 import Category from './Category.js';
+import Cart from './Cart.js';   
 
 
 export default class Product {

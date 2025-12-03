@@ -13,6 +13,7 @@ use App\Controllers\ProductStockController;
 use App\Controllers\DealController;
 use App\Controllers\CityController;
 use App\Controllers\CouponController;
+use App\Controllers\Geocode;
 
 $user = new UserController();
 $category = new CategoryController();
@@ -25,6 +26,8 @@ $productStock = new ProductStockController();
 $deal = new DealController();
 $city = new CityController();
 $coupon = new CouponController();
+$geolocation = new Geocode();
+
 
 Router::group('v1', function () use (
    $user,
@@ -37,7 +40,8 @@ Router::group('v1', function () use (
     $productStock,
     $deal,
     $city,
-    $coupon
+    $coupon,
+    $geolocation
 ) {
     #User Routes
     Router::add('POST', '/auth/login', [$user, 'login']); 
@@ -79,6 +83,15 @@ Router::group('v1', function () use (
      #CouponRoutes
     Router::add('GET', '/coupon', [$coupon, 'listCoupons']);
     Router::add('GET', '/coupon/{id}', [$coupon, 'getCouponById']);
+
+    #Order Routes
+    Router::add('POST', '/orders/create', [$order, 'createOrder']);
+    Router::add('GET', '/vat', [$order, 'listVat']);
+    // Router::add('GET', '/order/{id}', [$order, 'listVat']);
+
+    #Geocode Routes
+    Router::add('POST', '/geocode', [$geolocation, 'reverseGeocode']);
+
    
 
    

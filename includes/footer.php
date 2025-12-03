@@ -31,7 +31,7 @@
   <!-- Loader -->
   <div id="pageLoader">
       <img loading="lazy" id="hero-image" class="spinner"
-          src="<?= BASE_URL; ?>assets/images/hero/pizza.png" />
+          src="<?= BASE_URL; ?>assets/images/hero/pizza2.png" />
       <!-- <div class="loading-text zoom-out">Loading, please wait...</div> -->
   </div>
 

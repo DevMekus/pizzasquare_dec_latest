@@ -10,7 +10,7 @@ class UserController{
 
     public function register(){
         try {
-            $data = RequestValidator::validate([],$_POST);
+            $data = RequestValidator::validate([], $_POST);
 
             $data = RequestValidator::sanitize($data);
             $exist = UserService::fetchUserById($data['email_address']);

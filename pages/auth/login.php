@@ -46,8 +46,9 @@ require_once ROOT_PATH . '/includes/header.php';
                 </div>
                 <div class="h">
                     <div>
-                        <h2 id="loginTitle">Welcome back</h2>
-                        <div class="desc">Sign in to continue to your dashboard</div>
+                        <h2 id="loginTitle">Sign In</h2>
+                        <div class="desc" id="a-info">Sign in to continue</div>
+                      
                     </div>
                     <div style="display:flex;gap:8px;align-items:center">
                         <button id="themeToggle" class="btn btn-sm" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
