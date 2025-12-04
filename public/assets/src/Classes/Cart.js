@@ -99,7 +99,16 @@ export default class Cart {
   static transactionSummary(data) {
     const itemsHtml = data.items
       .map(
-        (i) => `<li>${i.title} (x${i.qty}) - ${Utility.fmtNGN(i.price)}</li>`
+        (i) => {
+            let toppingsHtml = "";
+            if (Array.isArray(i.toppings) && i.toppings.length > 0) {
+              const extrasList = i.toppings.map((t) => t.extras).join(", ");
+              toppingsHtml = ` - Toppings: ${extrasList}`;
+            }
+          return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} - ${Utility.fmtNGN(
+            i.price * i.qty
+          )}</li>`;
+        }
       )
       .join("");
 

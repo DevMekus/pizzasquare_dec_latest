@@ -59,8 +59,121 @@ class EmailServices{
     }
 
     public static function sendOrderConfirmationEmail($data){
-        
+         $templateData = [
+            '{{logo_url}}'       => BASE_URL . 'assets/images/logo_white.png',
+            '{{site_name}}'      => BRAND_NAME,
+            '{{user_name}}'      => $data['customer_name'] ?? 'Customer',
+            '{{order_number}}'   => $data['order_id'],
+            '{{tracking_link}}'  => BASE_URL . 'track-order?search=' . $data['order_id'],
+            '{{support_email}}'  => $_ENV['DB_HOST'],
+            '{{year}}'           => date('Y'),
+            '{{company_address}}' => COMPANY_ADDRESS,
+        ];
 
+        return MailClient::sendMail(
+            $data['customer_email'],
+            'Order Confirmation - ' . BRAND_NAME,
+            ROOT_PATH . '/app/Services/templates/new_order.html',
+            $templateData,
+            $data['customer_name'] ?? 'Customer'
+        );
+    }  
+    
+
+
+    static function sendOrderNotificationToAdmin($data){
+        $items = json_decode($data['order_details'], true);
+
+        $html = '
+        <table style="width:100%; border-collapse: collapse; font-family: Arial, sans-serif;">
+            <thead>
+                <tr>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Item</th>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Size</th>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Qty</th>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Price</th>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Toppings</th>
+                    <th style="border-bottom:1px solid #ddd; padding:8px; text-align:left;">Total</th>
+                </tr>
+            </thead>
+            <tbody">
+        ';
+
+        foreach ($items as $item) {
+
+            // Build toppings
+            $toppingsHtml = '';
+            if (!empty($item['toppings'])) {
+                foreach ($item['toppings'] as $tp) {
+                    $toppingsHtml .= "- {$tp['extras']} (₦" . number_format($tp['price']) . ")<br>";
+                }
+            } else {
+                $toppingsHtml = '<span style="color:#999;">None</span>';
+            }
+
+            $gTotal = intval($item['price']) * intval($item['qty']);
+
+            $html .= '
+                <tr>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">' . $item['title'] . '</td>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">' . $item['size'] . '</td>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">' . $item['qty'] . '</td>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">₦' . number_format($item['price']) . '</td>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">' . $toppingsHtml . '</td>
+                    <td style="padding:8px; border-bottom:1px solid #eee;">₦' . number_format($gTotal) . '</td>
+                </tr>
+            ';
+        }
+
+        $html .= '</tbody></table>';
+
+        $data['order_details'] = $html;
+
+         $templateData = [
+            '{{logo_url}}'       => BASE_URL . 'assets/images/logo_white.png',
+            '{{site_name}}'      => BRAND_NAME,
+            '{{order_number}}'   => $data['order_id'],
+            '{{customer_name}}'  => $data['customer_name'] ?? 'Customer',
+            '{{customer_email}}' => $data['customer_email'] ?? 'N/A',
+            '{{customer_phone}}' => $data['customer_phone'] ?? 'N/A',
+            '{{total_amount}}'   => number_format($data['total_amount'], 2),
+            '{{order_details}}'  => $data['order_details'] ?? '',
+            '{{support_email}}'  => BRAND_EMAIL,
+            '{{year}}'           => date('Y'),
+            '{{company_address}}' => COMPANY_ADDRESS,
+        ];
+
+        return MailClient::sendMail(
+            ADMIN_EMAIL,
+            'New Order Placed - ' . BRAND_NAME,
+            ROOT_PATH . '/app/Services/templates/admin_new_order.html',
+            $templateData,
+            'Admin'
+        );
+    }
+
+
+    static function sendOrderUpdateNotification($data){
+        $templateData = [
+                    '{{logo_url}}'        => BASE_URL . 'assets/images/logo_white.png',
+                    '{{site_name}}'       => BRAND_NAME,
+                    '{{user_name}}'       => $data['customer_name'] ?? 'Customer',
+                    '{{order_number}}'    => $data['order_id'],
+                    '{{order_status}}'    => ucfirst($data['status']),
+                    '{{tracking_link}}'   => BASE_URL . 'track-order?search=' . $data['order_id'],
+                    '{{support_email}}'   => $_ENV['SUPPORT_EMAIL'],
+                    '{{year}}'            => date('Y'),
+                    '{{company_address}}' => COMPANY_ADDRESS,
+                ];
+
+
+                return MailClient::sendMail(
+                    $data['customer_email'],
+                    'PizzaSquare Order Update',
+                    ROOT_PATH . '/app/Services/templates/order_update.html',
+                    $templateData,
+                    $data['customer_name'] ?? "Customer"
+                );
     }
     
 }

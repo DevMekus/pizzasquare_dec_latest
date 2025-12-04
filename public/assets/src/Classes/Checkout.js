@@ -148,10 +148,15 @@ export default class Checkout {
     Checkout.cartBody.innerHTML = Cart.cart
       .map((item) => {
         const lineTotal = item.price * item.qty;
-        const extras =
-          item.extras && item.extras.length
-            ? `<div class='small text-muted'>${item.extras.join(", ")}</div>`
-            : "";
+        let toppingsHtml = "";
+         if (Array.isArray(item.toppings) && item.toppings.length > 0) {
+          const extrasList = item.toppings.map((t) => t.extras).join(", ");
+          toppingsHtml = `
+          <br/>
+          <small>
+            <strong>Toppings:</strong> ${extrasList}
+          </small>`;
+          }       
         return `
                 <tr>
                   <td>
@@ -163,6 +168,7 @@ export default class Checkout {
                         <p class="muted"> ${
                           item.size && item.size !== "null" ? `(${item.size})` : ""
                         }</p>
+                        ${toppingsHtml}
                       </div>
                     </div>
                   </td>             

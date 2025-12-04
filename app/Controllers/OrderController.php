@@ -9,8 +9,19 @@ use App\Utils\Utility;
 class OrderController{
 
     public function getOrders(){
-        // Code to list all orders
+       try {
+            $orders = OrderService::fetchAllOrders();
+
+            if (empty($orders))
+                Response::error(404, "No orders found");
+            Response::success($orders, "Orders retrieved successfully");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::getOrders', [], $e);
+            Response::error(500, "Error fetching orders");
+        }
+        
     }
+
     public function createOrder(){
         $data = RequestValidator::validate([
             'order_id' => 'required|address',
@@ -33,7 +44,16 @@ class OrderController{
     }
 
     public function getOrder($order_id){
-        // Code to retrieve order details by order ID
+        try {
+            $order = OrderService::fetchOrderById($order_id);
+            if (empty($order))
+                Response::error(404, "Order not found");
+            Response::success($order, "Order found");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::getOrder', ['OrderID' => $order_id], $e);
+            Response::error(500, "Error fetching order");
+        }
+       
     }
 
     public function getOrdersByUser($user_id){

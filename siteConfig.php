@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 define("BRAND_NAME", "Pizza Square Nigeria");
 define("BRAND_PHONE", "080 555 44014");
 define("BRAND_EMAIL", "info@pizzasquare.ng");
+define("ADMIN_EMAIL", "info@pizzasquare.ng");
 define("COMPANY_ADDRESS", "99 Chime Avenue, New Haven, Enugu.");
 define("AUTH_INTRO", "Pizza Square Nigeria offers a wide range of Pizza and Shawarma menu crafted with authentic Italian recipes while maintaining original quality and classic taste.");
 define("TAG", "Made with Love From Italy");
