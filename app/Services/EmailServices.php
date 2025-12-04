@@ -5,7 +5,7 @@ use App\Utils\MailClient;
 
 class EmailServices{
 
-     public static function registrationEmail($data)
+    public static function registrationEmail($data)
     {
 
         $templateData = [
@@ -52,4 +52,15 @@ class EmailServices{
                 $data['fullname']
         );
     }
+
+    public static function sendInsufficientStockNotification($product_id, $size_id, $required_qty)
+    {   
+           
+    }
+
+    public static function sendOrderConfirmationEmail($data){
+        
+
+    }
+    
 }

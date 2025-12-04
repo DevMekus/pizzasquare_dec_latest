@@ -1,5 +1,9 @@
 <?php
 namespace App\Controllers;
+use App\Services\Paystack;
+use App\Utils\RequestValidator;
+use App\Utils\Response;
+use App\Utils\Utility;
 
 class PaymentController{
 
@@ -8,9 +12,23 @@ class PaymentController{
         //create payment record
     }
 
-    public function confirmPayment($payment_id, $status, $reference){
-        // Logic to confirm payment webhook/callback
-        //update payment record
+    public function confirmPayment(){
+       try {
+            $data = RequestValidator::validate([
+                    'reference' => 'required|address',
+            ]);
+            
+            $verify = Paystack::verifyPaystackPayment($data['reference']);
+            if (!$verify['status']) {
+                    Response::error(401, "Verification failed. " . $verify['message']);
+            }
+        
+            Response::success([], 'Payment verified successfully');
+       } catch (\Throwable $th) {
+        //throw $th;
+       }
+
+          
     }
 
     public function splitPayment($order_id, $payments){

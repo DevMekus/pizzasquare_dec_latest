@@ -19,6 +19,8 @@ export default class Checkout {
 
   static async getAndSetVAT() {
     const vat = await Checkout.fetchVAT();
+    const vatPercentEl = document.getElementById("vatPercent");
+    if (vatPercentEl) vatPercentEl.textContent = parseFloat(vat.vat) * 100;
 
     Cart.TAX_RATE = parseFloat(vat.vat);
   }
@@ -227,7 +229,7 @@ export default class Checkout {
       Cart.method === "Delivery" && subtotal > 0 ? Cart.DELIVERY_BASE : 0;
 
     const discount = Math.round(subtotal * Cart.discountRate);
-    const total = Math.max(0, subtotal + tax + delivery - discount);
+    const total = Math.max(0, subtotal + tax + delivery - discount);  
     return {
       items,
       subtotal,
@@ -325,16 +327,30 @@ export default class Checkout {
 
     return {
       order_id: Utility.generateId(),
-      amount: Cart.GRANDTOTAL,
+      total_amount: Cart.GRANDTOTAL,
       cart: Cart.cart,
-      name: customer.name,
+      customer_name: customer.name,
       email_address: customer.email,
-      order_from: Checkout.isPos ? "walk-in" : "online",
-      location: Cart.deliveryAddress.value || "",
-      city: Cart.deliveryArea || "",
+      customer_type: Checkout.isPos ? "walk_in" : "website",
+      delivery_address: Cart.deliveryAddress.value || "",
+      city: Cart.deliveryArea || '',
       delivery_type: !Checkout.isPos ? Cart.method : "pickup",
-      phone: Utility.el("phone")?.value || "",
-      order_note: Utility.el("instructions")?.value || "",
+      customer_phone: Utility.el("phone")?.value  || null,
+      order_note: Utility.el("instructions")?.value || null,
+      userid: !Checkout.isPos ? Utility.el("userid")?.value  : null,
+      attendant: Utility.el("attendant")?.value || null,
+
+      payment: {
+        payment_type: Utility.el("paymentMethod")?.value || "single",
+        item_amount: parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0),
+        total_paid: parseFloat(Cart.GRANDTOTAL),
+        cash: Utility.el("cashAmount") ? parseFloat(Utility.el("cashAmount").value) : 0,
+        card: Utility.el("cardAmount") ? parseFloat(Utility.el("cardAmount").value) : 0,
+        online: !Checkout.isPos ? Cart.GRANDTOTAL : 0,
+        transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value) : 0,
+        delivery_fee:
+          Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0,
+      },
       proceed,
     };
   }
@@ -375,4 +391,85 @@ export default class Checkout {
     if (paginatedData.length > Utility.PAGESIZE)
       Pagination.render(data.length, page, data, Checkout.CouponTable);
   }
+
+  static checkOrderingStatus(orderType) {
+      const statusEl = Utility.el("orderingStatus");
+      const statusTextEl = Utility.el("orderingStatusText");
+   
+      const now  = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      //Convert to HHMM format (e.g, 19:30 -> 1930)
+      const time = parseInt(hour.toString().padStart(2, "0") + minute.toString().padStart(2, "0"));
+          
+      // ---- RULE 1: Delivery closes 7pm every day ----
+      const deliveryClose = 1900;
+
+      // ---- RULE 2: Ordering hours ----
+      const weekdayOpen  = 1000;  // 10 AM
+      const weekdayClose = 2200;  // 10 PM
+
+      const sundayOpen  = 1200;   // 12 PM
+      const sundayClose = 2200;   // 10 PM
+
+      function orderingMessage(message) {
+        statusEl.style.display = "flex"; 
+        statusEl.classList.remove("d-none");
+        statusTextEl.textContent = `${message}`;
+     
+      }
+
+        // -------- A. DELIVERY RULES ----------
+      if (orderType === "delivery") {
+          // No delivery on Sundays
+          if (day === "Sunday") {
+            orderingMessage("Delivery not available today");
+            return false;
+          }
+
+          // Delivery after 7PM every day
+          if (time >= deliveryClose) {
+            orderingMessage("Delivery Orders Closed, Please Select 'Pickup Option'");
+            return false;
+          }
+      }
+
+       // -------- B. ORDERING HOURS RULES ----------
+      if (day === "Sunday") {
+
+        // Before Sunday opening hours (12PM)
+        if (time < sundayOpen) {
+          orderingMessage("We're closed at the moment, please check back during our opening hours");
+            return false;
+        }
+
+        // After 10PM
+        if (time > sundayClose) {
+          orderingMessage("We're closed at the moment, please check back during our opening hours");
+            return false;
+        }
+
+      } else {
+          // Weekdays (Mon–Sat)
+          if (time < weekdayOpen) {
+              orderingMessage("We're closed at the moment, please check back during our opening hours");
+              return false;
+          }
+
+          if (time > weekdayClose) {
+              orderingMessage("We're closed at the moment, please check back during our opening hours");
+              return false;
+          }
+      }
+
+      // If all rules pass → Allow ordering
+      return true;
+  }
+  
+
+     
+
+      
 }

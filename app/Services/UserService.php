@@ -87,8 +87,8 @@ class UserService{
     }
 
     public static function authenticate($email, $password){
-          $profile = Utility::$profile_tbl;
-        $accounts = Utility::$accounts;
+            $profile = Utility::$profile_tbl;
+            $accounts = Utility::$accounts;
         try {
             $user = Database::joinTables(
                 $profile,

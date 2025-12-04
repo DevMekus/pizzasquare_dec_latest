@@ -236,20 +236,53 @@ class ProductStockService
         }
     }
 
+    public static function reduceAuto($product_id, $size_id, $qty)
+    {
+        // Fetch full product with sizes
+        $product = ProductService::fetchFullProduct($product_id);
+
+        if (!$product || empty($product['sizes'])) {
+            return "stock_not_found";
+        }
+
+        // Get the size row
+        $sizeRow = null;
+        foreach ($product['sizes'] as $s) {
+            if ((int)$s['size_id'] === (int)$size_id) {
+                $sizeRow = $s;
+                break;
+            }
+        }
+
+        if (!$sizeRow) return "invalid_size";
+
+        // CASE 1: Shared stock (category stock)
+        if ((int)$sizeRow['shared_stock'] === 1) {
+            return self::reduceCategoryStock($product['product'][0]['category_id'], $size_id, $qty);
+        }
+
+        // CASE 2: Product-specific stock
+        return self::reduceStock($product_id, $size_id, $qty);
+    }
+
     /**
      * DECREASE stock after order
      */
     public static function reduceStock($product_id, $size_id, $qty)
     {
         try {
+            //check current stock in product_stock table
             $row = Database::findWhere(self::$table, [
                 "product_id" => $product_id,
                 "size_id"    => $size_id
             ]);
 
-            if (!$row) return false;
+            //if no stock record found, check category_size_stock table
+
+            if (!$row) return;
 
             if ($row["qty"] < $qty) {
+                // send an email notification about insufficient stock              
                 return "insufficient_stock";
             }
 
@@ -258,6 +291,30 @@ class ProductStockService
             return Database::update(self::$table, ["qty" => $newQty], ["id" => $row["id"]]);
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'ProductStockService::reduceStock', compact('product_id','size_id','qty'), $th);
+            return false;
+        }
+    }
+
+    public static function reduceCategoryStock($category_id, $size_id, $qty)
+    {
+        try {
+            //check current stock in category_size_stock table
+            $row = Database::findWhere(self::$category_stock_table, [
+                "category_id" => $category_id,
+                "size_id"    => $size_id
+            ]);
+
+            if ($row["qty"] < $qty) {
+                // send an email notification about insufficient stock
+                //MailClient::sendInsufficientStockNotification($product_id, $size_id, $qty);
+                return "insufficient_stock";
+            }
+
+            $newQty = $row["qty"] - $qty;
+
+            return Database::update(self::$category_stock_table, ["qty" => $newQty], ["id" => $row["id"]]);
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductStockService::reduceCategoryStock', compact('category_id','size_id','qty'), $th);
             return false;
         }
     }

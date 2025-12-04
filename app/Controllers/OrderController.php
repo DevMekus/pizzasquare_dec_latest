@@ -11,8 +11,25 @@ class OrderController{
     public function getOrders(){
         // Code to list all orders
     }
-    public function createOrder($user_id){
-        // Code to create an order for the given user by convert cart to order
+    public function createOrder(){
+        $data = RequestValidator::validate([
+            'order_id' => 'required|address',
+            'total_amount' => 'required|address',
+            'cart' => 'required|address',
+        ]);
+        $data = RequestValidator::sanitize($data);
+        try {
+            $exists = OrderService::fetchOrderById($data['order_id']);
+            if ($exists) {
+                Response::error(409, "Order with this ID already exists");
+            }
+            
+            $newOrderId = OrderService::createNewOrder($data);
+            Response::success(['order_id' => $newOrderId], "Order created successfully");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::createOrder', ['OrderData' => json_encode($data)], $e);
+            Response::error(500, "Error creating order");
+        }
     }
 
     public function getOrder($order_id){

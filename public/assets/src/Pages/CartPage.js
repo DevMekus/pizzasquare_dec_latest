@@ -8,7 +8,7 @@ class CartPage {
 
   async initialize() {
     await Cart.getAndSetDeliveryAreas();
-    await Checkout.getAndSetVAT();
+    await Checkout.getAndSetVAT();    
     Utility.runClassMethods(this, ["initialize"]);
   }
 
@@ -38,6 +38,11 @@ class CartPage {
     const toggle = document.getElementById("deliveryToggle");
     const radioDelivery = document.getElementById("methodDelivery");
     const radioPickup = document.getElementById("methodPickup");
+    const orderBtn = Utility.el("placeOrder");
+   
+    const orderingStatus = Checkout.checkOrderingStatus( radioDelivery.checked ? "delivery" : "pickup" );
+    if (!orderingStatus) orderBtn.style.display = "none"; 
+
 
     if (radioDelivery.checked) Cart.handleHomeDelivery();
 
@@ -54,6 +59,9 @@ class CartPage {
         radioPickup.checked = false;
         Cart.handleHomeDelivery();
       }
+      const orderingStatus = Checkout.checkOrderingStatus( radioDelivery.checked ? "delivery" : "pickup" );
+     if (!orderingStatus) orderBtn.style.display = "none"; 
+       
     });
   }
 

@@ -14,6 +14,7 @@ use App\Controllers\DealController;
 use App\Controllers\CityController;
 use App\Controllers\CouponController;
 use App\Controllers\Geocode;
+use App\Controllers\PaymentController;
 
 $user = new UserController();
 $category = new CategoryController();
@@ -27,6 +28,7 @@ $deal = new DealController();
 $city = new CityController();
 $coupon = new CouponController();
 $geolocation = new Geocode();
+$payment = new PaymentController();
 
 
 Router::group('v1', function () use (
@@ -41,7 +43,8 @@ Router::group('v1', function () use (
     $deal,
     $city,
     $coupon,
-    $geolocation
+    $geolocation,
+    $payment
 ) {
     #User Routes
     Router::add('POST', '/auth/login', [$user, 'login']); 
@@ -90,9 +93,10 @@ Router::group('v1', function () use (
     // Router::add('GET', '/order/{id}', [$order, 'listVat']);
 
     #Geocode Routes
-    Router::add('POST', '/geocode', [$geolocation, 'reverseGeocode']);
-
-   
+    Router::add('POST', '/geocode', [$geolocation, 'reverseGeocode']); 
+    
+    #Payment Routes
+    Router::add('POST', '/payment/confirm', [$payment, 'confirmPayment']);
 
    
 

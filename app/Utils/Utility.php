@@ -25,6 +25,10 @@ class Utility
     public static $city = 'city';
     public static $coupons = 'coupons';
     public static $vat_tbl = 'vat';
+    public static $payments = 'payments';
+    public static $order_items = 'order_items';
+    public static $orders = 'orders';
+    public static $order_toppings = 'order_toppings';
      
 
     public static function debugger()
@@ -324,4 +328,6 @@ class Utility
     {
         return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
     }
+
+   
 }

@@ -10,15 +10,17 @@ class ProductService
 {
     /** =========================
      *  FETCH ALL PRODUCTS
-     *  =========================*/    
-    
-    public static function fetchAll() {
-        
-        $categories = Utility::$categories;        
+     *  =========================*/ 
+
+    public static function fetchAll()
+    {
+        $categories = Utility::$categories;
         $products_tbl = Utility::$products;
 
         try {
-            return Database::joinTables(
+
+            // Fetch products with category
+            $products = Database::joinTables(
                 "$products_tbl p",
                 [
                     [
@@ -26,7 +28,6 @@ class ProductService
                         "table" => "$categories c",
                         "on"   => "p.category_id = c.id"
                     ],
-                   
                 ],
                 [
                     "p.*",
@@ -34,10 +35,50 @@ class ProductService
                     "c.name AS category",
                 ],
                 [],
-                [                   
+                [
                     "order" => "p.name ASC"
                 ]
             );
+
+            // CUSTOM PIZZA ORDER (same as fetchProducts)
+            $customPizzaOrder = [
+                'Mega Beef',
+                'BBQ Chicken',
+                'Hotdog',
+                'Margherita',
+                'Italian Xtra'
+            ];
+
+            // Split pizzas & non-pizzas
+            $pizzas = [];
+            $others = [];
+
+            foreach ($products as $product) {
+                if (strtolower($product['category']) === 'pizza') {
+                    $pizzas[] = $product;
+                } else {
+                    $others[] = $product;
+                }
+            }
+
+            // SORT PIZZAS BY CUSTOM ORDER
+            usort($pizzas, function ($a, $b) use ($customPizzaOrder) {
+                $posA = false;
+                $posB = false;
+
+                foreach ($customPizzaOrder as $index => $name) {
+                    if (stripos($a['name'], $name) !== false) $posA = $index;
+                    if (stripos($b['name'], $name) !== false) $posB = $index;
+                }
+
+                $posA = $posA === false ? PHP_INT_MAX : $posA;
+                $posB = $posB === false ? PHP_INT_MAX : $posB;
+
+                return $posA <=> $posB;
+            });
+
+            // MERGE BACK TOGETHER
+            return array_merge($pizzas, $others);
 
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'ProductService::fetchAll', [], $th);
@@ -45,16 +86,20 @@ class ProductService
         }
     }
 
+
     /** =========================
      *  FETCH PRODUCT BY ID
-     *  =========================*/
-     public static function fetchById($id) {
-        
-        $categories = Utility::$categories;        
+     *  =========================*/   
+
+    public static function fetchById($id)
+    {
+        $categories = Utility::$categories;
         $products_tbl = Utility::$products;
 
         try {
-            return Database::joinTables(
+
+            // Fetch the matching products
+            $products = Database::joinTables(
                 "$products_tbl p",
                 [
                     [
@@ -62,7 +107,6 @@ class ProductService
                         "table" => "$categories c",
                         "on"   => "p.category_id = c.id"
                     ],
-                   
                 ],
                 [
                     "p.*",
@@ -71,16 +115,60 @@ class ProductService
                 ],
                 [
                     "OR" => [
-                        "p.id" => $id,                       
-                        "p.name" => $id,                       
-                        "p.sku" => $id,                       
-                       
+                        "p.id"   => $id,
+                        "p.name" => $id,
+                        "p.sku"  => $id,
                     ]
                 ],
-                [                   
+                [
                     "order" => "p.name ASC"
                 ]
             );
+
+            // If nothing found
+            if (!$products || count($products) === 0) {
+                return [];
+            }
+
+            // CUSTOM PIZZA ORDER (same as other methods)
+            $customPizzaOrder = [
+                'Mega Beef',
+                'BBQ Chicken',
+                'Hotdog',
+                'Margherita',
+                'Italian Xtra'
+            ];
+
+            // Split pizzas & non-pizzas
+            $pizzas = [];
+            $others = [];
+
+            foreach ($products as $product) {
+                if (strtolower($product['category']) === 'pizza') {
+                    $pizzas[] = $product;
+                } else {
+                    $others[] = $product;
+                }
+            }
+
+            // SORT PIZZAS BY CUSTOM ORDER
+            usort($pizzas, function ($a, $b) use ($customPizzaOrder) {
+                $posA = false;
+                $posB = false;
+
+                foreach ($customPizzaOrder as $index => $name) {
+                    if (stripos($a['name'], $name) !== false) $posA = $index;
+                    if (stripos($b['name'], $name) !== false) $posB = $index;
+                }
+
+                $posA = ($posA === false ? PHP_INT_MAX : $posA);
+                $posB = ($posB === false ? PHP_INT_MAX : $posB);
+
+                return $posA <=> $posB;
+            });
+
+            // Merge pizzas (sorted) + others
+            return array_merge($pizzas, $others);
 
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'ProductService::fetchById', [], $th);
@@ -88,9 +176,6 @@ class ProductService
         }
     }
 
-    
-
-    
 
     /** =========================
      *  FETCH Full Product DETAILS BY ID

@@ -30,7 +30,7 @@ $parts = explode("/", trim($current, "/"));
                     <a class="nav-link <?= $current == 'home' || $current == '' ? 'active' : '' ?>" href="<?= BASE_URL ?>">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $current == '#featured' ? 'active' : '' ?>" href="<?= BASE_URL ?>#featured">Menu</a>
+                    <a class="nav-link <?= $current == '#menu' ? 'active' : '' ?>" href="<?= BASE_URL ?>#menu">Menu</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= $current == 'hot-deals' ? 'active' : '' ?>" href="<?= BASE_URL ?>hot-deals">Deals</a>

@@ -33,9 +33,9 @@ export default class PaymentChannel {
     return new Promise(async (resolve, reject) => {
       try {
         if (
-          !paymentData?.name ||
+          !paymentData?.customer_name ||
           !paymentData?.email_address ||
-          !paymentData?.amount
+          !paymentData?.total_amount
         ) {
           Utility.toast("Invalid payment data. Please try again.", "error");
           return resolve(false);
@@ -43,7 +43,7 @@ export default class PaymentChannel {
 
         const result = await Utility.confirm(
           "Make payment",
-          `You are about to pay ${Utility.fmtNGN(paymentData.amount)}`
+          `You are about to pay ${Utility.fmtNGN(paymentData.total_amount)}`
         );
 
         if (!result?.isConfirmed) {
@@ -69,9 +69,9 @@ export default class PaymentChannel {
 
         paystack.pay({
           email: paymentData.email_address,
-          amount: Number(paymentData.amount),
+          amount: Number(paymentData.total_amount),
           metadata: {
-            custom_fields: [{ display_name: "Name", value: paymentData.name }],
+            custom_fields: [{ display_name: "Name", value: paymentData.customer_name }],
           },
 
           onSuccess: async function (response) {
@@ -83,7 +83,7 @@ export default class PaymentChannel {
               Utility.alertLoader()
 
               const httpRes = await HttpRequest(
-                `${CONFIG.API}/payment/paystack`,
+                `${CONFIG.API}/payment/confirm`,
                 {
                   reference: response.reference,
                   order_id: paymentData.order_id,
@@ -93,7 +93,6 @@ export default class PaymentChannel {
 
 
               Utility.clearAlertLoader()
-
               Utility.SweetAlertResponse(response);
 
               resolve(httpRes);

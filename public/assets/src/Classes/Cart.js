@@ -55,34 +55,41 @@ export default class Cart {
   static async placeOrder() {
     try {
       const transaction = await Checkout.packageOrder();
-      if (transaction.proceed) {
-        
+
+      console.log(transaction);    
+     
+      if (transaction.proceed) {        
         const makePayment = await PaymentChannel.payWithPaystack(transaction);
 
         if (!makePayment.success) {
           Utility.toast("payment verification failed");
+          Utility.SweetAlertResponse({success:false, message:"Payment verification failed"});
           return;
         }
 
         Utility.alertLoader()
 
         const sendOrder = await HttpRequest(
-          `${CONFIG.API}/order`,
+          `${CONFIG.API}/orders/create`,
           transaction,
           "POST"
         );
 
-        Utility.clearAlertLoader()
+         console.log(sendOrder);   
 
-        if (sendOrder) {
-          Cart.transactionSummary({
-            total: Cart.GRANDTOTAL,
-            items: Cart.cart,
-            name: transaction.name,
-            email: transaction.email_address,
-            id: transaction.order_id,
-          });
+        Utility.clearAlertLoader()
+        if (!sendOrder.success) {         
+          Utility.SweetAlertResponse({success:false, message:sendOrder.message});
+          return;
         }
+
+       Cart.transactionSummary({
+          total: Cart.GRANDTOTAL,
+          items: Cart.cart,
+          name: transaction.name,
+          email: transaction.email_address,
+          id: transaction.order_id,
+        });
       }
     } catch (error) {
       Utility.toast("An error has occurred");
@@ -130,6 +137,7 @@ export default class Cart {
     product_id,
     title,
     size,
+    size_id,
     barbecueSauce = "beneath",
     price,
     qty,
@@ -148,6 +156,7 @@ export default class Cart {
         id: product_id,
         title,
         size: size ?? null,
+        size_id: size_id ?? null,
         barbecueSauce,
         price,
         qty,
@@ -252,7 +261,7 @@ export default class Cart {
     });
 
     Utility.el("manual-delivery").innerHTML = `
-      <label>Select your area</label>
+      <label class="form-label small">Select Delivery Area</label>
       <select class="select-tags" id="manual-locations-select">     
         ${areas}
       </select>

@@ -4,11 +4,20 @@ require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 require_once ROOT_PATH . '/includes/navbar.php';
 
+
+
 ?>
 
 <body class="theme-light" id="checkout" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
     <main class="py-4">
         <div class="container checkoutContainer">
+            <div id="orderingStatus" class="p-3 bg-warning mb-4 rounded d-flex justify-content-center align-items-center d-none">
+                <div class="text-dark fw-semibold">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span id="orderingStatusText"></span> 
+                </div>
+
+            </div>
             <div class="row g-4">
                 <!-- CART -->
                 <div class="col-lg-7" id="cartSection">
@@ -18,6 +27,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                             <button class="btn btn-sm btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
                         </div>
                         <div class="table-responsive">
+                          
                             <table class="table align-middle" id="cartTable">
                                 <thead>
                                     <tr class="text-muted small">
@@ -69,12 +79,11 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         </div>
 
                         <div class="location-result mt-4">
-                            <div id="areaDeliveryFee" class="bg-light p-3"></div>
+                            <div id="areaDeliveryFee" class="bg-light p-1"></div>
                         </div>
                         <div id="deliveryFields" class="mt-3">
                             <div class="row g-3">
-                                <div class="col-md-4" id="manual-delivery">
-                                 
+                                <div class="col-md-4" id="manual-delivery">                                 
                                 </div>
                                 <div class="col-md-8">
                                     <label class="form-label small">Address</label>
@@ -96,7 +105,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                     <a href="https://share.google/U3qIHrqygnIODiNdn">
                                         <div class="list-group-item d-flex align-items-center">
                                             <i class="fa-solid fa-store me-3 text-primary"></i>
-                                            <div><strong>99 Chime Avenue, New Haven, Enugu.</strong>
+                                            <div><strong><?= COMPANY_ADDRESS ?>.</strong>
                                                 <div class="text-muted small">Open 10:00–22:00</div>
                                             </div>
                                         </div>
@@ -123,6 +132,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                 <label class="form-label small">Email</label>
                                 <input type="email" id="email" value="<?= $user['email_address'] ?? '' ?>" placeholder="you@example.com" readonly>
                             </div>
+                            <input type="hidden" name="userid" id="userid" value="<?= $userid; ?>">
                         </div>
                     </div>
 
@@ -143,7 +153,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                             <div class="col"><span id="subtotal">0</span></div>
                         </div>
                         <div class="row">
-                            <div class="col">Vat (7.5%)</div>
+                            <div class="col">Vat (<span id="vatPercent"></span>%)</div>
                             <div class="col"><span id="tax">0</span></div>
                         </div>
                         <div class="row">

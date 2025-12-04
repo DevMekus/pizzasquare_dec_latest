@@ -237,6 +237,7 @@ export default class Product {
         // If all sizes are 0 stock
         const defaultPrice = defaultAvailable ? Number(defaultAvailable.price) : 0;
         const defaultSize = defaultAvailable ? defaultAvailable.size_label : null;
+        const defaultSizeId = defaultAvailable ? defaultAvailable.size_id : null;
 
         // -------------------------------------------
         // STEP 3: Build size selector UI
@@ -308,7 +309,8 @@ export default class Product {
                         <button id="addToCartBtn" 
                             class="btn-add-cart ${defaultAvailable ? "" : "btn-disabled"}"
                             data-size="${defaultSize || ""}"
-                            data-base-price="${defaultPrice}"
+                            data-size-id="${defaultSizeId || ""}"
+                            data-base-price="${defaultPrice}"                          
                             data-final-unit-price="${defaultPrice}"
                             ${!defaultAvailable ? "disabled" : ""}>
                             ${
@@ -357,6 +359,7 @@ export default class Product {
                     const selected = sizesObj[index];
 
                     addToCartBtn.dataset.size = selected.size_label;
+                    addToCartBtn.dataset.sizeId = selected.size_id;
                     addToCartBtn.dataset.basePrice = selected.price;
 
                     updateTotalPrice();
@@ -427,6 +430,7 @@ export default class Product {
                 product_id: product.id,
                 title: product.name,
                 size: addToCartBtn.dataset.size || null,
+                size_id: addToCartBtn.dataset.sizeId || null,
                 price: finalUnitPrice,
                 qty,
                 image: imageUrl,

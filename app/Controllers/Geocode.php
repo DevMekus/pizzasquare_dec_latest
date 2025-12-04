@@ -58,11 +58,7 @@ class Geocode
             if (empty($deliveryZones))
                 Response::error(404, "cities not found");
 
-
-
             // ---Match with delivery zones ---
-
-
             $area = $data["address"]["suburb"]
                 ?? $data["address"]["city_district"]
                 ?? $data["address"]["city"]

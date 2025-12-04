@@ -31,7 +31,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </section>
 
     <!-- Featured Menu / Popular Items -->
-    <section id="featured" class="section-pad">
+    <section id="menu" class="section-pad">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
                 <div class="w-100">
