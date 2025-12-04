@@ -146,22 +146,311 @@ export default class Order {
         ).length;
     }
 
-     static searchTodaysOrders(data, query) {
-    const today = Utility.today;
-    const todaysOrders = data.filter((order) => order.created_at === today); 
-    const q = query.trim().toLowerCase();
-    
-    return todaysOrders.filter(
-      (o) =>
-         (o.fullname && o.fullname.toLowerCase().includes(q)) ||
-            (o.customer && o.customer.toLowerCase().includes(q)) ||
-            (o.city && o.city.toLowerCase().includes(q)) ||
-            (o.location && o.location.toLowerCase().includes(q)) ||
-            (o.method && o.method.toLowerCase().includes(q)) ||
-            (o.ip_address && o.ip_address.includes(q)) ||
-            (o.order_id && o.order_id.toLowerCase().includes(q))
-    );
-  }
+    static searchTodaysOrders(data, query) {
+        const today = Utility.today;
+        const todaysOrders = data.filter((order) => order.created_at.split(" ")[0] === today); 
+        const q = query.trim().toLowerCase();
+        
+        return todaysOrders.filter(
+        (o) =>
+            (o.fullname && o.fullname.toLowerCase().includes(q)) ||
+                (o.customer && o.customer.toLowerCase().includes(q)) ||
+                (o.city && o.city.toLowerCase().includes(q)) ||
+                (o.location && o.location.toLowerCase().includes(q)) ||
+                (o.method && o.method.toLowerCase().includes(q)) ||
+                (o.ip_address && o.ip_address.includes(q)) ||
+                (o.order_id && o.order_id.toLowerCase().includes(q))
+        );
+    }
+
+    static viewOrder(order) {
+        let domBody = Utility.el("detailModalBody");
+        const domFooter = Utility.el("detailModalButtons");
+        let domTitle = Utility.el("detailModalLabel");
+
+        domTitle.innerHTML = "";
+        domBody.innerHTML = "";
+        domFooter.innerHTML = "";
+
+        domTitle.textContent = `ORDER ID: ${order.order_id}`;
+
+        const items = order.items || [];
+
+        // Build items list
+        const itemsHtml = items
+            .map((i) => {
+                let html = `
+                    <li class="mb-2">
+                        <strong>${i.product_name}</strong> (x${i.qty}) - 
+                        ${Utility.fmtNGN(i.unit_price)}<br/>
+                        <small class="muted">${i.size_id ? `Size ID: ${i.size_id}` : ""}</small><br/>
+                        <img src="${i.image}" 
+                            alt="${i.product_name}" 
+                            width="80" 
+                            style="border-radius:8px; margin:4px 0;" />
+                `;
+
+                // Toppings (now an array)
+                if (Array.isArray(i.toppings) && i.toppings.length > 0) {
+                    const extras = i.toppings
+                        .map((t) => `${t.topping} (${Utility.fmtNGN(t.unit_price)})`)
+                        .join(", ");
+
+                    html += `<br/><small><strong>Toppings:</strong> ${extras}</small>`;
+                }
+
+                html += `</li>`;
+                return html;
+            })
+            .join("");
+
+        // Populate Select Options
+        const statusHtml = Order.status
+            .map((s) => {
+                const sel = s === order.status ? "selected" : "";
+                return `<option value="${s}" ${sel}>${Utility.toTitleCase(s)}</option>`;
+            })
+            .join("");
+
+        const contactName = order.customer_name || "N/A";
+        const contactPhone = order.customer_phone || "N/A";
+        const contactEmail = order.email_address || "N/A";
+
+        domBody.innerHTML = `
+            <div class="container">
+                <div class="row">
+
+                    <!-- LEFT SIDE -->
+                    <div class="col-sm-7">
+
+                        <!-- Basic Order Info -->
+                        <ul class="list-unstyled mb-2 small">
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Order ID:</strong> <span>${order.order_id}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Customer:</strong> <span>${contactName}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Phone:</strong> <span>${contactPhone}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Email:</strong> <span>${contactEmail}</span>
+                            </li>
+                        </ul>
+
+                        <!-- Items -->
+                        <div class="bg-light p-2 rounded">
+                            <strong>Items:</strong>
+                            <ul class="list-unstyled mt-2 ms-2">
+                                ${itemsHtml}
+                            </ul>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <ul class="list-unstyled mt-3 small order-summary">
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Total:</strong> <span>${Utility.fmtNGN(order.total_paid)}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Delivery Fee:</strong> <span>${Utility.fmtNGN(order.delivery_fee)}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Payment Type:</strong> <span>${Utility.toTitleCase(order.payment_type)}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Status:</strong> 
+                                <span class="fw-bold text-${
+                                    order.status === "delivered"
+                                        ? "success"
+                                        : order.status === "pending"
+                                        ? "warning"
+                                        : "danger"
+                                }">${Utility.toTitleCase(order.status)}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Note:</strong> 
+                                <span>${order.order_note || "N/A"}</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-1">
+                                <strong>Ordered At:</strong> 
+                                <span>${order.created_at}</span>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <!-- RIGHT SIDE -->
+                    <div class="col-sm-5">
+                        <div class="p-3 rounded shadow-sm bg-white">
+
+                            <h5>Update Order Status</h5>
+                            <p class="muted mb-1">Modify the order status below:</p>
+
+                            <select id="statusTool" 
+                                    data-id="${order.order_id}" 
+                                    class="form-select form-select-sm mb-3">
+                                ${statusHtml}
+                            </select>
+
+                            <button data-action="printOrder"
+                                    data-id="${order.id}"
+                                    class="btn btn-ghost btn-sms mb-2 w-100">
+                                <i class="bi bi-printer"></i> Print Order
+                            </button>
+
+                            ${
+                                Utility.role === "admin"
+                                    ? `
+                            <div class="border-top pt-3">
+                                <p class="fw-bold mb-1 text-danger">Delete Order</p>
+                                <p class="muted mb-2">
+                                    This will remove the order and all related data. <strong>This action cannot be undone.</strong>
+                                </p>
+
+                                <button id="deleteBtn"
+                                        data-id="${order.order_id}"
+                                        data-action="delete"
+                                        class="btn btn-ghost w-100">
+                                    <i class="bi bi-trash"></i> Delete Order
+                                </button>
+                            </div>`
+                                    : ""
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        `;
+
+        $("#displayDetails").modal("show");
+    }
+
+    static transactionSummaryFromApi(order) {
+        // Extract values
+        const items = order.items;
+        const subtotal = Number(order.item_amount);       // items total
+        const deliveryFee = Number(order.delivery_fee);   // delivery
+        const tax = 0;
+        const discount = 0;
+        const grandTotal = Number(order.total);           // already includes delivery
+        const paymentType = order.payment_type;
+
+        // Build items HTML
+        const itemsHtml = items
+            .map((it) => {
+            let toppingsHtml = "";
+
+            // Normalize toppings from API
+            if (Array.isArray(it.toppings) && it.toppings.length > 0) {
+                const extrasList = it.toppings
+                .map((t) => t.topping?.trim() || "")
+                .filter(Boolean)
+                .join(", ");
+
+                if (extrasList) {
+                toppingsHtml = `
+                    <br/>
+                    <small><strong>Toppings:</strong> ${extrasList}</small>
+                `;
+                }
+            }
+
+            return `
+                <tr>
+                <td>
+                    ${Utility.toTitleCase(it.product_name)}
+                    ${toppingsHtml}
+                </td>
+                <td class="text-end">${it.qty}</td>
+                <td class="text-end">${Utility.fmtNGN(Number(it.unit_price))}</td>
+                <td class="text-end">${Utility.fmtNGN(Number(it.subtotal))}</td>
+                </tr>
+            `;
+            })
+            .join("");
+
+        const receipt = `
+            <div class="text-center mb-3">
+            <h5 class="mb-0">Pizza Square Nigeria</h5>
+            <div class="small text-muted">Online Order Re-print Receipt</div>
+            </div>
+
+            <div class="d-flex justify-content-between small">
+            <div>Order: <strong>${order.order_id}</strong></div>
+            <div>${order.created_at}</div>
+            </div>
+
+            <div class="small">Customer: ${order.customer_name}</div>
+            <div class="small">Phone: ${order.customer_phone}</div>
+            <div class="small">Attendant: ${order.attendant ?? ""}</div>
+            <hr/>
+
+            <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Total</th>
+                </tr>
+                </thead>
+                <tbody>${itemsHtml}</tbody>
+            </table>
+            </div>
+
+            <div class="receipt-totals">
+
+            <div>
+                <span>Subtotal:</span>
+                <span><strong>${Utility.fmtNGN(subtotal)}</strong></span>
+            </div>
+
+            <div>
+                <span>Delivery Fee:</span>
+                <span><strong>${Utility.fmtNGN(deliveryFee)}</strong></span>
+            </div>
+
+            <div>
+                <span>Tax:</span>
+                <span><strong>${Utility.fmtNGN(tax)}</strong></span>
+            </div>
+
+            <div>
+                <span>Discount:</span>
+                <span><strong>${Utility.fmtNGN(discount)}</strong></span>
+            </div>
+
+            <div class="grand">
+                <span>Grand Total:</span>
+                <span><strong>${Utility.fmtNGN(grandTotal)}</strong></span>
+            </div>
+
+            <div class="small">
+                <span>Payment:</span>
+                <span>${Utility.toTitleCase(paymentType)}</span>
+            </div>
+
+            <div class="small">
+                <span>Status:</span>
+                <span>${Utility.toTitleCase(order.status)}</span>
+            </div>
+
+            </div>
+        `;
+
+        document.getElementById("receiptBody").innerHTML = receipt;
+
+        const modal = new bootstrap.Modal(document.getElementById("receiptModal"));
+        $("#displayDetails").modal("hide");
+        modal.show();
+}
+
+
+
 
 
 
