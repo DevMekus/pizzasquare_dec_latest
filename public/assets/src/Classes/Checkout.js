@@ -352,7 +352,7 @@ export default class Checkout {
         total_paid: parseFloat(Cart.GRANDTOTAL),
         cash: Utility.el("cashAmount") ? parseFloat(Utility.el("cashAmount").value) : 0,
         card: Utility.el("cardAmount") ? parseFloat(Utility.el("cardAmount").value) : 0,
-        online: !Checkout.isPos ? Cart.GRANDTOTAL : 0,
+        online: !Checkout.isPos ? parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0) : 0,
         transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value) : 0,
         delivery_fee:
           Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0,

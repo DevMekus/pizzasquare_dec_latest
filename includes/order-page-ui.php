@@ -49,9 +49,17 @@
                                             <li class="d-flex justify-content-between border-bottom py-1">
                                                 <strong>ONLINE:</strong> <span id="onlineOrderAmt"></span>
                                             </li>
+                                          
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong class="color-danger">TOTAL:</strong> <span id="totalAmtToday" class="color-danger fw-bold"></span>
+                                                <strong class="color-danger">Subtotal:</strong> <span id="Subtotal" class="color-danger fw-bold"></span>
                                             </li>
+                                            <li class="d-flex justify-content-between border-bottom py-1">
+                                                <strong><em>(+) Delivery fees</em>:</strong> <span id="deliveryFeeAmt"></span>
+                                            </li>
+                                             <li class="d-flex justify-content-between border-bottom py-1">
+                                                <strong class="color-success">Grand Total:</strong> <span id="totalAmtToday" class="color-success fw-bold"></span>
+                                            </li>
+                                            
                                         </ul>
                                         
                                         <div class="d-flex justify-content-end w-100">

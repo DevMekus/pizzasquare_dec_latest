@@ -12,15 +12,19 @@
             </div>
             <section class="grid">
                 <!-- KPIs -->
+             
                 <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiOrders">
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div>
-                            <div class="muted">Today's Order</div>
-                            <div class="num" id="kpiOrdersNum">0</div>
+                    <a href="<?= $user['role']=='admin'? 'reports': '#' ?>">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <div>
+                                <div class="muted">Today's Order</div>
+                                <div class="num" id="kpiOrdersNum">0</div>
+                            </div>
+                            <div style="text-align:right;color:var(--muted)"><span id="kpiOrdersTrend"></span></div>
                         </div>
-                        <div style="text-align:right;color:var(--muted)"><span id="kpiOrdersTrend"></span></div>
-                    </div>
+                    </a>
                 </div>
+              
 
                 <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiRevenue">
                     <div style="display:flex;justify-content:space-between;align-items:center">
