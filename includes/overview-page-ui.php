@@ -6,116 +6,99 @@
             </div>
             <div class="controls mt-3 mb-3" data-aos="fade-down">
                 <div class="search">
-                    <input id="globalSearch" placeholder="Search orders, customers, dishes..." />
+                    <input id="globalSearch" placeholder="Search recent orders..." />
                 </div>
 
             </div>
-            <section class="grid">
-                <!-- KPIs -->
-             
-                <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiOrders">
-                    <a href="<?= $user['role']=='admin'? 'reports': '#' ?>">
-                        <div style="display:flex;justify-content:space-between;align-items:center">
-                            <div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="<?= $user['role']=='admin'? 'reports': '#' ?>" class="" data-aos="fade-up">
+                        <div class="kpi-card-n">                           
+                            <div class="kpi-card-info">                                
+                                <h3 class="num loading" id="kpiOrdersNum"></h3>
                                 <div class="muted">Today's Order</div>
-                                <div class="num" id="kpiOrdersNum">0</div>
                             </div>
-                            <div style="text-align:right;color:var(--muted)"><span id="kpiOrdersTrend"></span></div>
                         </div>
                     </a>
                 </div>
-              
-
-                <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiRevenue">
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div>
-                            <div class="muted">Revenue Today</div>
-                            <div class="num" id="kpiRevenueNum">0</div>
-                        </div>
-                        <div style="text-align:right;color:var(--muted)"></div>
-                    </div>
-                </div>
-
-                <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiActive">
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div>
-                            <div class="muted">Active Orders</div>
-                            <div class="num" id="kpiActiveNum">0</div>
-                        </div>
-                        <div style="text-align:right;color:var(--muted)"></div>
-                    </div>
-                </div>
-
-                <div class="card kpi bounce-card" data-aos="zoom-in" id="kpiCSat">
-                    <div style="display:flex;justify-content:space-between;align-items:center">
-                        <div>
-                            <div class="muted">Avg Rating</div>
-                            <div class="num" id="kpiCSatNum">0 <div class="icon-box bg-primary">⭐</div>
+                <div class="col-sm-4">
+                    <a href="orders" class="" data-aos="fade-up">
+                        <div class="kpi-card-n">                            
+                            <div class="kpi-card-info">                                
+                                <h3 class="num loading" id="kpiRevenueNum"></h3>
+                                <div class="muted">Revenue Today</div>
                             </div>
                         </div>
-                        <div style="text-align:right;color:var(--muted)"></div>
-                    </div>
+                    </a>
                 </div>
+            </div>
 
-                <!-- Orders list -->
-                <div class="card orders bounce-card" data-aos="fade-up">
-                    <div class="orders-header">
-                        <h4>Recent Orders</h4>
-                        <div class="orders-actions">
-                            <select id="orderFilter">
-                                <option value="all">All</option>
-                                <option value="pending">Pending</option>
-                                <option value="preparing">Preparing</option>
-                                <option value="onroute">On Route</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                            <button class="btn btn-ghost" id="refreshOrders">Refresh</button>
+            <div class="row mt-4">
+                <div class="col-sm-6">
+                     <!-- Orders list -->
+                    <div class="kpi-card-n orders bounce-card" data-aos="fade-up">
+                        <div class="orders-header">
+                            <h5>Recent Orders</h5>
+                            <div class="orders-actions">
+                                <select id="orderFilter">
+                                    <option value="all">All</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="preparing">Preparing</option>
+                                    <option value="onroute">On Route</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                                <button class="btn btn-ghost" id="refreshOrders">Refresh</button>
+                            </div>
+                        </div>
+
+
+                        <div style="overflow:auto;max-height:360px">
+                            <table class="table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Customer</th>                                       
+                                        <th>Total</th>
+                                         <!-- <th>Items</th> -->
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTbody"></tbody>
+                            </table>
+                            <button id="moreOrdersBtn" class="btn btn-ghost" style="display:none;" onclick="window.location.href='orders'">
+                                See All Orders
+                            </button>
                         </div>
                     </div>
-
-
-                    <div style="overflow:auto;max-height:360px">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Customer</th>
-                                    <!-- <th>Items</th> -->
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTbody"></tbody>
-                        </table>
-                        <button id="moreOrdersBtn" class="btn btn-ghost" style="display:none;" onclick="window.location.href='orders'">
-                            See All Orders
-                        </button>
+                </div>
+                <div class="col-sm-6">
+                      <!-- Analytics -->
+                    <div class="kpi-card-n analytics bounce-card" data-aos="fade-left">
+                        <h5 style="margin-top:0">Top Dishes</h5>
+                        <div id="topDishes" class="list"></div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Analytics -->
-                <div class="card analytics bounce-card" data-aos="fade-left">
-                    <h4 style="margin-top:0">Top Dishes</h4>
-                    <div id="topDishes" class="list"></div>
+             <div class="row mt-4">
+                <div class="col-sm-6">
+                      <!-- Inventory -->
+                    <div class="kpi-card-n half bounce-card" data-aos="fade-up">
+                        <h5 style="margin-top:0">Inventory Snapshot</h5>
+                        <div id="inventoryList" class="list"></div>
+                        <div id="pagination" class="pagination p3"></div>
+                        <div id="no-data"></div>
+                    </div>
                 </div>
-
-                <!-- Inventory -->
-                <div class="card half bounce-card" data-aos="fade-up">
-                    <h4 style="margin-top:0">Inventory Snapshot</h4>
-                    <div id="inventoryList" class="list"></div>
-                    <div id="pagination" class="pagination p3"></div>
-                    <div id="no-data"></div>
+                <div class="col-sm-6">
+                    <div class="kpi-card-n half bounce-card" data-aos="fade-up">
+                        <h5 style="margin-top:0">Active Promotions</h5>
+                        <div id="promos" class="list"></div>
+                    </div>
                 </div>
-
-                <!-- Promotions -->
-                <div class="card half bounce-card" data-aos="fade-up">
-                    <h4 style="margin-top:0">Active Promotions</h4>
-                    <div id="promos" class="list"></div>
-                </div>
-
-
-            </section>
+             </div>
+          
         </div>
 
         <?php require "footer.php" ?>

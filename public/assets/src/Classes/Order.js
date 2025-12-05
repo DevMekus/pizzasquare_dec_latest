@@ -1,5 +1,6 @@
 import Utility from "./Utility.js";
 import Pagination from "./Pagination.js";
+import { getItem } from "../Utils/CrudRequest.js";
 
 export default class Order {
     static ORDERS = [];
@@ -14,7 +15,8 @@ export default class Order {
             if (!checkToday.checked){
             //display all table
             Order.renderOrders(orders);
-            Order.todaysTransactionReport([])
+            const allOrders = Utility.role === 'admin' ? orders: []
+            Order.todaysTransactionReport(allOrders)
             return;
             } else{
             const todaysOrders = orders.filter((order) => order.created_at.split(" ")[0] === today);   
@@ -447,7 +449,134 @@ export default class Order {
         const modal = new bootstrap.Modal(document.getElementById("receiptModal"));
         $("#displayDetails").modal("hide");
         modal.show();
-}
+    }
+
+    static orderNotification() {
+        async function pingNotification() {
+            const orders = await getItem("admin/orders") || [];
+            if (orders.length == 0) return;
+            //pending orders
+            const pending = orders.filter(
+                (o) => o.status === "pending" || o.status === "preparing"
+            );
+
+            Utility.el("orderAlert").textContent = pending.length;
+
+            if (pending.length > 0) {
+                Swal.fire({
+                title: "Pending Order",
+                text: "You have a pending order.",
+                icon: "info",
+                confirmButtonText: "Okay",
+                confirmButtonColor: "#d51d28",
+                });
+
+                Utility.showNotification(
+                "Pending Order",
+                `You have ${pending.length} pending order.`
+                );
+            }
+        }
+
+        setInterval(() => {
+        pingNotification();
+        }, 120000); //runs every 2 minutes
+
+        pingNotification();
+    }
+
+    static getTodayRevenue(data) {   
+        const today = Utility.today;
+        const todaysOrders = data.filter((order) => order.created_at.split(" ")[0] === today);
+        return todaysOrders.reduce((sum, order) => sum + Number(order.amount), 0);
+    }
+
+    static renderRecentOrders(filter = "all", q = "") {
+        const tbody = document.getElementById("ordersTbody");
+        const moreBtn = document.getElementById("moreOrdersBtn");
+
+        // Step 1: filter by status
+        let rows = Order.ORDERS.filter(o =>
+            filter === "all" ? true : o.status.toLowerCase() === filter.toLowerCase()
+        );
+
+        // Step 2: search filter
+        if (q) {
+            const query = q.toLowerCase();
+            rows = rows.filter(o =>
+                o.order_id.toLowerCase().includes(query) ||
+                o.customer_name.toLowerCase().includes(query) ||
+                o.customer_email.toLowerCase().includes(query)
+            );
+        }
+
+        // Step 3: sort by date (newest first)
+        rows = rows.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        // Step 4: take latest 5
+        const recentRows = rows.slice(0, 5);
+
+        // Step 5: render rows
+        tbody.innerHTML = recentRows
+        .map((o, i) => {
+            
+            // Extract items properly
+            const itemsList = o.items
+                .map(item => {
+                    const toppingStr = item.toppings?.length
+                    ? ` (+${item.toppings.map(t => t.topping).join(", ")})`
+                    : "";
+                    return `${item.qty}x ${item.product_name}${toppingStr}`;
+                })
+                .join(", ");
+
+            return `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${o.customer_name}</td>
+                <td>${Utility.fmtNGN(o.total_paid)}</td>
+                
+                <td>
+                    <span class="status ${o.status.toLowerCase()}">${Utility.toTitleCase(o.status)}</span>
+                </td>
+            </tr>`;
+        })
+        .join("");
+
+        // Step 6: toggle more button
+        moreBtn.style.display = rows.length > 5 ? "block" : "none";
+    }
+
+    static calculateTopDishes(limit = 3) {
+        const dishCount = {};
+
+        Order.ORDERS.forEach(o => {
+            (o.items || []).forEach(item => {
+                const name = item.product_name || `#${item.product_id}`;
+                if (!dishCount[name]) dishCount[name] = 0;
+
+                // Count the quantity of the main product
+                dishCount[name] += Number(item.qty || 0);
+
+                // Optionally, include toppings as separate counts
+                if (Array.isArray(item.toppings) && item.toppings.length) {
+                    item.toppings.forEach(t => {
+                        const toppingName = `${t.topping} (topping)`;
+                        if (!dishCount[toppingName]) dishCount[toppingName] = 0;
+                        dishCount[toppingName] += Number(t.qty || 0);
+                    });
+                }
+            });
+        });
+
+        return Object.entries(dishCount)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count) // highest first
+            .slice(0, limit);
+    }
+
+
+    
 
 
 

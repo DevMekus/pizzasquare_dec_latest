@@ -82,12 +82,12 @@ require_once ROOT_PATH . '/includes/navbar.php';
                             <div id="areaDeliveryFee" class="bg-light p-1"></div>
                         </div>
                         <div id="deliveryFields" class="mt-3">
-                            <div class="row g-3">
-                                <div class="col-md-4" id="manual-delivery">                                 
-                                </div>
+                            <div class="row g-3">                               
                                 <div class="col-md-8">
                                     <label class="form-label small">Address</label>
                                     <input type="text" id="address" class="form-control" placeholder="Enter delivery address">
+                                </div>
+                                <div class="col-md-4" id="manual-delivery">                                 
                                 </div>                              
                              
 

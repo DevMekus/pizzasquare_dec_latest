@@ -642,6 +642,55 @@ export default class Product {
     $("#displayDetails").modal("show");
   }
 
+  static inventorySnapShot(data, page = 1) {
+    const el = document.getElementById("inventoryList");
+    const notDATA = Utility.el("no-data");
+
+        el.innerHTML = "";
+        notDATA.innerHTML = "";
+
+        if (!data || data.length === 0) {
+            Utility.renderEmptyState(notDATA);
+            return;
+        }
+
+        const start = (page - 1) * Utility.PAGESIZE;
+        const end = start + Utility.PAGESIZE;
+        const paginatedData = data.slice(start, end);
+
+        const html = paginatedData.map(product => {
+            const statusLabel = product.is_active === "1" 
+                ? '<span class="status delivered">Active</span>' 
+                : '<span class="status inactive">Inactive</span>';
+
+            return `
+            <div class="inventory-item" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:6px 0;border-bottom:1px solid #e5e7eb">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <img src="${product.image}" alt="${product.name}" style="width:48px;height:48px;object-fit:cover;border-radius:6px">
+                    <div>
+                        <strong>${Utility.toTitleCase(product.name)}</strong>
+                        <div style="color:var(--muted);font-size:13px">
+                            Category: ${Utility.toTitleCase(product.category)}<br>
+                            SKU: ${product.sku}
+                        </div>
+                    </div>
+                </div>
+                <div>${statusLabel}</div>
+            </div>
+            `;
+        }).join("");
+
+        el.innerHTML = html;
+
+        // Pagination
+        if (data.length > Utility.PAGESIZE) {
+            Pagination.render(data.length, page, data, Product.inventorySnapShot);
+        }
+}
+
+
+
+
     
 
     

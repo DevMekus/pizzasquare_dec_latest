@@ -91,7 +91,7 @@ Router::group('v1', function () use (
     Router::add('POST', '/orders/create', [$order, 'createOrder']);
     Router::add('GET', '/vat', [$order, 'listVat']);
     Router::add('GET', '/orders/{id}', [$order, 'getOrder']);
-    Router::add('GET', '/orders', [$order, 'getOrders']);
+    
 
     #Geocode Routes
     Router::add('POST', '/geocode', [$geolocation, 'reverseGeocode']); 

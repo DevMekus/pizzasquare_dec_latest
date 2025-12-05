@@ -8,7 +8,7 @@ class OrderPage {
     }
 
     async initialize() {
-        Order.ORDERS  = await getItem("orders") || [];   
+        Order.ORDERS  = await getItem("admin/orders") || [];   
         Utility.runClassMethods(this, ["initialize"]);
     } 
 
@@ -127,18 +127,19 @@ class OrderPage {
                 Order.viewOrder(order);
             } else if (action === "delete") {
                 $("#displayDetails").modal("hide")
-                const del = await deleteItem(`orders/${id}`,"Delete this order?")
+                const del = await deleteItem(`admin/orders/${id}`,"Delete this order?")
                 if (del) {
-                     Order.ORDERS  = await getItem("orders") || [];
-                     Order.switchOrderFunction(Order.ORDERS);
-                     Utility.toast("Order deleted successfully","success");            
+                    Utility.toast("Order deleted successfully","success");         
+                    setTimeout(() => {
+                        Utility.reloadPage();
+                    }, 1000);
+                } else {
+                    Utility.toast("Failed to delete order");
                 }
             } else if (action === "printOrder"){
                 Order.transactionSummaryFromApi(order);
                 Utility.printReceipt();
-            }
-
-            
+            }            
         })
 
         document.addEventListener("change", async(e) => {
@@ -146,11 +147,13 @@ class OrderPage {
             const status = document.getElementById("statusTool").value;
             const id = document.getElementById("statusTool").dataset.id;
             $("#displayDetails").modal("hide")
-            const patch = await patchItem(`orders/${id}`, { status }, "Update order status to " + status + "?");
+            const patch = await patchItem(`admin/orders/${id}`, { status }, "Update order status to " + status + "?");
             if (patch){
-                Order.ORDERS  = await getItem("orders") || [];
-                Order.switchOrderFunction(Order.ORDERS);
                 Utility.toast("Order status updated successfully","success");
+                setTimeout(() => {
+                    Utility.reloadPage();
+                }, 1000);
+               
             } else {
                 Utility.toast("Failed to update order status");
             }

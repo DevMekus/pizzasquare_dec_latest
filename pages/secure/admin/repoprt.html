@@ -1,0 +1,93 @@
+
+I have the following filters that I would like to apply to the JSON data provided to sort out reports: <header data-aos="fade-down" class="controls">
+    <div class="filter-buttons btn-group" role="group">
+        <button class="btn btn-sm btn-primary" data-range="today">Today</button>
+        <button class="btn btn-sm btn-primary" data-range="yesterday">Yesterday</button>
+        <button class="btn btn-sm btn-primary" data-range="week">This Week</button>
+        <button class="btn btn-sm btn-primary" data-range="month">This Month</button>
+        <button class="btn btn-sm btn-primary" data-range="year">This Year</button>
+        <button class="btn btn-sm btn-secondary" data-range="all">All</button>
+    </div>
+
+    <div class="date-controls">
+        <input type="date" placeholder="Start Date" class="form-control form-control-sm datepicker" id="startDate">
+        <input type="date" class="form-control form-control-sm datepicker" placeholder="End Date" id="endDate">
+        <button id="applyDate" class="btn btn-sm btn-secondary">Apply</button>
+    </div>
+</header>
+The default data-range is "today". Please apply the filters to the JSON data accordingly.
+When a user selects a filter, the data should be filtered based on the selected range. For example, if "This Week" is selected, only the orders from the current week should be displayed.
+Datas expected  are as follows: Order overview (Order date, order amount, order count, total revenue, etc.). Payments overview (payment methods used (Transfer, Cash, Online, Card), total payments received, etc.). Platform Overview(Shows the customer types(walk_in, website, mobile_app), number of visits and total amount generated) Product performance (top-selling products, products with low sales, etc.). Customer insights (new vs. returning customers, customer demographics, etc.). Please provide the filtered data based on the selected date range (today, yesterday,etc.). Each data point should be calculated accurately according to the selected filter and its table and doughnut chart representation.
+
+
+ORDERS = [
+    {
+      "id": "19",
+      "order_id": "ps88995",
+      "userid": "ps-4527188",
+      "customer_name": "Peter Odili",
+      "customer_phone": "08068822168",
+      "customer_email": "peterodili@yahoo.com",
+      "customer_type": "website",
+      "order_note": "jhtyyyu",
+      "delivery": "delivery",
+      "delivery_address": "23 Presslane Enugu, GRA",
+      "status": "delivered",
+      "total": "21300.00",
+      "attendant": null,
+      "created_at": "2025-12-04 15:50:57",
+      "payment_type": "single",
+      "total_paid": "21300.00",
+      "cash": "0.00",
+      "card": "0.00",
+      "transfer": "0.00",
+      "online": "19300.00",
+      "delivery_fee": "2000.00",
+      "item_amount": "19300.00",
+      "items": [
+        {
+          "id": "26",
+          "order_id": "19",
+          "product_id": "10",
+          "size_id": "4",
+          "unit_price": "1500.00",
+          "qty": "1",
+          "subtotal": "1500.00",
+          "product_name": "Hollandia",
+          "sku": "ps-4337792",
+          "image": "http://localhost/pizzasquare_latest/public/UPLOADS/products/692af38b487544.86377262.jpg",
+          "description": "Hollandia",
+          "category_id": "3",
+          "product_active": "1",
+          "toppings": []
+        },
+        {
+          "id": "25",
+          "order_id": "19",
+          "product_id": "1",
+          "size_id": "8",
+          "unit_price": "17800.00",
+          "qty": "1",
+          "subtotal": "17800.00",
+          "product_name": "Mega beef Deluxe",
+          "sku": "ps-1689370",
+          "image": "http://localhost/pizzasquare_latest/public/UPLOADS/products/692af10eef02a2.84322162.png",
+          "description": "Mega beef Deluxe",
+          "category_id": "1",
+          "product_active": "1",
+          "toppings": [
+            {
+              "id": "11",
+              "order_id": "19",
+              "product_id": "1",
+              "topping": "Extra Beef",
+              "size_id": "8",
+              "unit_price": "6000.00",
+              "qty": "1",
+              "subtotal": "6000.00"
+            }
+          ]
+        }
+      ]
+    }
+  ] 

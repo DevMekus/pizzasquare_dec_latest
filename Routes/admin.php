@@ -14,6 +14,7 @@ use App\Controllers\CityController;
 use App\Controllers\CouponController;
 use App\Controllers\UserController;
 use App\Controllers\ActivityController;
+use App\Controllers\OrderController;
 
 
 $category = new CategoryController();
@@ -28,6 +29,7 @@ $city = new CityController();
 $coupon = new CouponController();
 $user = new UserController();
 $activity = new ActivityController();
+$order = new OrderController();
 
 
 
@@ -43,7 +45,8 @@ Router::group('v1/admin', function () use (
     $city,
     $coupon,
     $user,
-    $activity
+    $activity,
+    $order
 ) {
 
     #Category Routes   
@@ -110,6 +113,11 @@ Router::group('v1/admin', function () use (
     Router::add('GET',  '/log', [$activity, 'listActivities']);
     Router::add('POST',  '/log', [$activity, 'postActivity']);
     Router::add('DELETE',  '/log/{id}', [$activity, 'deleteActivity']);
+
+    #OrderRoutes
+    Router::add('GET', '/orders', [$order, 'getOrders']);    
+    Router::add('PATCH', '/orders/{id}', [$order, 'updateOrderStatus']);
+    Router::add('DELETE', '/orders/{id}', [$order, 'deleteOrder']);
     
 
 

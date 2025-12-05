@@ -81,7 +81,7 @@ export default class AuthHelper {
         );
 
          Utility.SweetAlertResponse(response);
-        response.success && destroyCurrentSession();
+        response.success && await destroyCurrentSession();
       }
     });
   }
@@ -132,7 +132,7 @@ class AuthPage {
    */
   async login() {
     try {
-      if (!AuthHelper.loginForm) return;
+      if (!AuthHelper.loginForm) return;      
 
       AuthHelper.emailInput?.addEventListener("input", () =>
         Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError)

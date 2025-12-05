@@ -1,203 +1,231 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/reuse.php';
-require_once ROOT_PATH . '/includes/header.php';
+
 
 if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
 ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Orders Report Dashboard</title>
 
-<body id="ADMIN_SYSTEM" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    :root{
+      --bg:#fff; --card:#fff; --muted:#6b7280; --accent:#d51d28;
+      --success:#16a34a; --warning:#f59e0b; --danger:#ef4444;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+    body{margin:0;background:var(--bg);color:#111;}
 
+    /* NAVBAR */
+    nav {
+      background: var(--accent);
+      padding: 10px 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    nav button {
+      background: rgba(255,255,255,0.2);
+      border: 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
-    <div id="overlay"></div>
-    <section id="adminLayout">
-        <?php require "sidebar.php" ?>
-        <div id="rightContent">
-            <?php require "navbar.php" ?>
-            <section class="inner-container">
-                <div class="content-centered p-4 reports-page">
-                    <div data-aos="fade-down" class="page-header mt-4">
-                        <div class="welcome">Analytics & Reports Manager! <span id="orderCount"></span></div>
-                        <div class="center-mobile">Here's a quick overview of your shop today.</div>
-                    </div>
-                    <header data-aos="fade-down" class="controls">
-                        <div class="filter-buttons btn-group" role="group">
-                            <button class="btn btn-sm btn-primary" data-range="today">Today</button>
-                            <button class="btn btn-sm btn-outline-primary" data-range="week">This Week</button>
-                            <button class="btn btn-sm btn-outline-primary" data-range="month">This Month</button>
-                            <button class="btn btn-sm btn-outline-primary" data-range="year">This Year</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-range="all">All</button>
-                        </div>
-
-                        <div class="date-controls">
-                            <input type="date" placeholder="Start Date" class="form-control form-control-sm datepicker" id="startDate">
-                            <input type="date" class="form-control form-control-sm datepicker" placeholder="End Date" id="endDate">
-                            <button id="applyDate" class="btn btn-sm btn-secondary">Apply</button>
-                        </div>
-                    </header>
-
-                    <!-- Orders Overview -->
-                    <div class="chart-card" data-aos="fade-down">
-                        <div class="d-flex overview-header">
-                            <h5 class="overview-title">Orders Overview </h5>
-
-                            <div class="chart-controls" id="chartTypeOrders">
-                                <!-- <label class="small-radio">Chart:</label>
-                                <input type="radio" name="ordersChartType" value="bar" checked> Bar
-                                <input type="radio" name="ordersChartType" value="line"> Line
-                                <input type="radio" name="ordersChartType" value="pie"> Pie -->
-                                <input type="radio" name="ordersChartType" value="doughnut" checked> Doughnut
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <canvas id="ordersChart" style="max-height:360px;"></canvas>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="table-wrap table-responsive">
-                                    <table class="table table-striped table-smS" id="ordersTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+    .page-header {
+      margin-bottom: 24px;
+    }
 
 
+    .page-header .title {
+      font-size: 20px;
+      font-weight: 600;     
+    }
 
-                    </div>
+    .container{max-width:1200px;margin:28px auto;padding:16px;}
+    header.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
+    .filter-buttons{display:flex;gap:6px;flex-wrap:wrap;}
+    .filter-buttons .btn{padding:6px 10px;border-radius:6px;border:0;background:#e6eef6;cursor:pointer}
+    .filter-buttons .btn.primary{background:var(--accent);color:#fff}
+    .filter-buttons .btn.secondary{background:#e2e8f0}
 
-                    <!-- Payment Methods -->
-                    <div class="chart-card" data-aos="fade-down">
-                        <div class="d-flex overview-header">
-                            <h5>Payment Methods </h5>
-                            <div class="chart-controls" id="chartTypeMethods">
-                                <!-- <label class="small-radio">Chart:</label>
-                                <input type="radio" name="methodsChartType" value="bar" checked> Bar
-                                <input type="radio" name="methodsChartType" value="line"> Line
-                                <input type="radio" name="methodsChartType" value="pie"> Pie -->
-                                <input type="radio" name="methodsChartType" value="doughnut" checked> Doughnut
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <canvas id="methodsChart" style="max-height:360px;"></canvas>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="table-wrap table-responsive">
-                                    <table class="table table-striped table-smA" id="methodsTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Method</th>
-                                                <th>Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+    .date-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+    input[type="date"]{padding:6px;border-radius:6px;border:1px solid #d1d5db}
+    button#applyDate{padding:7px 10px;border-radius:6px;border:0;background:#6b7280;color:#fff;cursor:pointer}
 
+    .card {
+        background: #cccccc;
+        padding: 1.2rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08); 
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid #00b034;
+    }
 
-                    </div>
+    /* GRID SYSTEM */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:12px;
+    }
+    .card{background:var(--card);border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+    .col-4{grid-column:span 4}
+    .col-6{grid-column:span 6}
+    .col-8{grid-column:span 8}
+    .col-12{grid-column:span 12}
 
-                    <!-- Products Breakdown -->
-                    <div class="chart-card" data-aos="fade-down">
-                        <div class="d-flex overview-header">
-                            <h5>Products Overview</h5>
-                            <div class="chart-controls" id="chartTypeProducts">
-                                <!-- <label class="small-radio">Chart:</label>
-                                <input type="radio" name="productsChartType" value="bar" checked> Bar
-                                <input type="radio" name="productsChartType" value="pie"> Pie -->
-                                <input type="radio" name="productsChartType" value="doughnut" checked> Doughnut
-                                <!-- <input type="radio" name="productsChartType" value="line"> Line -->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <canvas id="productsChart" style="max-height:360px;"></canvas>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="table-wrap table-responsive">
-                                    <table class="table table-striped table-smS" id="productsTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Qty</th>
-                                                <th>Amount</th>
-                                                <th>Last Order Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+    h3{margin:0 0 10px 0;font-size:16px}
 
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    table th, table td{padding:8px;border-bottom:1px solid #eef2f6;text-align:left}
 
-                    </div>
-                    <!-- Customer Type Breakdown -->
-                    <div class="chart-card mt-4" data-aos="fade-down">
-                        <div class="d-flex overview-header">
-                            <h5>Platform Overview</h5>
-                            <div class="chart-controls" id="chartTypeCustomers">
-                                <!-- <label class="small-radio">Chart:</label>
-                                <input type="radio" name="customersChartType" value="bar" checked> Bar
-                                <input type="radio" name="customersChartType" value="pie"> Pie -->
-                                <input type="radio" name="customersChartType" value="doughnut" checked> Doughnut
-                                <!-- <input type="radio" name="customersChartType" value="line"> Line -->
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <canvas id="customersChart" style="max-height:360px;"></canvas>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="table-wrap table-responsive">
-                                    <table class="table table-striped table-smS" id="customersTable">
-                                        <thead>
-                                            <tr>
+    .mini{font-size:13px;color:var(--muted)}
+    .muted{color:var(--muted)}
 
-                                                <th>Customer Type</th>
-                                                <th>Visits</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+    /* CHART SIZING */
+    #paymentsDoughnut {
+      max-width: 220px !important;
+      max-height: 220px !important;
+      margin: auto;
+    }
+
+    /* MOBILE VIEW */
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr;}
+      .col-4,.col-6,.col-8,.col-12{
+        grid-column:span 12;
+      }
+      nav .title {
+        font-size: 14px;
+      }
+      #paymentsDoughnut {
+        max-width: 120px !important;
+        max-height: 120px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav>
+    <div>
+        <button onclick="history.back()">← Back</button>
+        <button onclick="window.location.href='<?= BASE_URL ?>secure/admin/overview'">🏠 Home</button>
+    </div>
+    <div class="title"></div>
+</nav>
+
+<div class="container">
+    <div data-aos="fade-down" class="page-header mt-4">
+        <div class="title">Analytics & Reports Manager! <span id="orderCount"></span></div>
+        <div class="center-mobile">Here's a quick overview of your shop today.</div>
+    </div>
+<!-- Filters -->
+  <header class="controls mt-4">
+    <div class="filter-buttons">
+      <button class="btn primary" data-range="today">Today</button>
+      <button class="btn" data-range="yesterday">Yesterday</button>
+      <button class="btn" data-range="week">This Week</button>
+      <button class="btn" data-range="month">This Month</button>
+      <button class="btn" data-range="year">This Year</button>
+      <button class="btn secondary" data-range="all">All</button>
+    </div>
+
+    <div class="date-controls">
+      <input type="date" placeholder="Start Date" class="form-control form-control-sm datepicker" id="startDate">
+      <input type="date" placeholder="End Date" class="form-control form-control-sm datepicker" id="endDate">
+      <button id="applyDate">Apply</button>
+    </div>
+  </header>
 
 
-                    </div>
+  <!-- Report Area -->
+  <div id="reportArea" class="grid">
 
-                </div>
+    <!-- Order Overview -->
+    <div class="card col-4">
+      <h3>Order Overview</h3>
+      <div class="metrics" id="orderOverviewMetrics"></div>
+      <table id="orderOverviewTable">
+        <thead><tr><th>Metric</th><th class="mini">Value</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-                <?php require "footer.php" ?>
-            </section>
+    <!-- Payments Overview -->
+    <div class="card col-8">
+      <h3>Payments Overview</h3>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;display:flex;justify-content:center;">
+          <canvas id="paymentsDoughnut"></canvas>
         </div>
+        <div style="width:240px">
+          <table id="paymentsTable">
+            <thead><tr><th>Method</th><th class="mini">Amount</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="mini muted">Delivery fees counted in Orders only.</div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Product Performance -->
+    <div class="card col-8">
+      <h3>Top Products</h3>
+      <canvas id="productsBar" height="140"></canvas>
+      <table id="topProductsTable">
+        <thead><tr><th>Product</th><th class="mini">Qty</th><th class="mini">Amount</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
+    <!-- Sales Over Time -->
+    <div class="card col-4">
+      <h3>Sales Over Time</h3>
+      <canvas id="salesLine" height="180"></canvas>
+    </div>
 
-    </section>
+    <!-- Platform -->
+    <div class="card col-6">
+      <h3>Platform Overview</h3>
+      <table id="platformTable">
+        <thead><tr><th>Platform</th><th>Count</th><th>Amount</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-    <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script type="module" src="<?= BASE_URL; ?>assets/src/Pages/ReportPage.js"></script>
+    <!-- Customers -->
+    <div class="card col-6">
+      <h3>Customer Insights</h3>
+      <table id="customerTable">
+        <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-    <script>
+  </div>
+</div>
+
+ <script type="module" src="<?= BASE_URL; ?>assets/src/Classes/Report.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr(".datepicker", {
                 dateFormat: "Y-m-d"
@@ -206,5 +234,5 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
     </script>
 
 </body>
-
 </html>
+

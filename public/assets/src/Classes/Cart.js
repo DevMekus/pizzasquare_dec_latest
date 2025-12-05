@@ -86,7 +86,7 @@ export default class Cart {
        Cart.transactionSummary({
           total: Cart.GRANDTOTAL,
           items: Cart.cart,
-          name: transaction.name,
+          name: transaction.customer_name,
           email: transaction.email_address,
           id: transaction.order_id,
         });

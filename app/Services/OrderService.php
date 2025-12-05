@@ -245,6 +245,7 @@ class OrderService{
                 'userid' => $orderData['userid'] ?? null,
                 'customer_name' => $orderData['customer_name'] ?? null,
                 'customer_phone' => $orderData['customer_phone'] ?? null,
+                'customer_email' => $orderData['email_address'] ?? null,
                 'customer_type' => isset($orderData['customer_type']) ? strtolower($orderData['customer_type']) : 'walk_in',
                 'order_note' => $orderData['order_note'] ?? null,
                 'delivery' => isset($orderData['delivery_type']) ? strtolower($orderData['delivery_type']) : 'pickup',
@@ -368,13 +369,17 @@ class OrderService{
                 ]
             );
 
-            EmailServices::sendOrderUpdateNotification([
-                'order_id' => $id,
-                'customer_email' => $prev['customer_email'] ?? null,
-                'customer_name' => $prev['customer_name'] ?? null,
-                'status' => isset($data['status']) ? strtolower($data['status']) : $prev['status'],  
-            ]);
+            if ($prev['customer_email']){
+                 EmailServices::sendOrderUpdateNotification([
+                    'order_id' => $id,
+                    'customer_email' => $prev['customer_email'] ?? null,
+                    'customer_name' => $prev['customer_name'] ?? null,
+                    'status' => isset($data['status']) ? strtolower($data['status']) : $prev['status'],  
+                ]);
 
+            }
+
+           
             Database::commit();
 
             //log activity

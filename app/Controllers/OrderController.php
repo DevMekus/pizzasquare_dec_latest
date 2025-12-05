@@ -56,16 +56,43 @@ class OrderController{
        
     }
 
-    public function getOrdersByUser($user_id){
-        // Code to retrieve all orders for a given user ID
+    
+    public function updateOrderStatus($id){
+       try {
+            $id = RequestValidator::parseId($id);
+            $data = RequestValidator::validate([
+                'status'     => 'require|min:3',
+            ]);
+            $data = RequestValidator::sanitize($data);
+            $order = OrderService::fetchOrderById($id);
+            
+            if (empty($order))
+                Response::error(409, "order not found");
+
+            if (OrderService::updateOrderStatus($id, $data, $order))
+                Response::success([], "order updated");
+            
+       } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::updateOrderStatus', [], $e);
+            Response::error(500, "An error occurred while updating order");
+       }
     }
 
-    public function updateOrderStatus($order_id, $status){
-        // Code to update the status of an order
-    }
+    public function deleteOrder($id)
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+            $order = OrderService::fetchOrderById($id);
 
-    public function cancelOrder($order_id){
-        // Code to cancel an order by order ID and handle stock rollback
+            if (empty($order))
+                Response::error(409, "order not found");
+
+            if (OrderService::deleteOrder($id))
+                Response::success([], "order deleted");
+        } catch (\Exception $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::deleteOrder', [], $e);
+            Response::error(500, "An error occurred while deleting order");
+        }
     }
 
     public function listVat()
