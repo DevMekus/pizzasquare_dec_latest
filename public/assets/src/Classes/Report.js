@@ -3,6 +3,8 @@
    Requires Chart.js to be loaded before this script.
 */
 
+import { getItem } from "../Utils/CrudRequest";
+
 class Report {
   constructor(options = {}) {
     // selectors (IDs from your HTML)
@@ -28,17 +30,8 @@ class Report {
     // default range
     this.currentRange = 'today';
 
-    // Sample ORDERS array (you asked it to be embedded here)
-    this.ORDERS = await (async () => {
-      try {
-        const resp = await fetch('admin/orders');
-        if (!resp.ok) throw new Error('Failed to fetch orders');
-        return await resp.json();
-      } catch (e) {
-        console.error('Error fetching orders:', e);
-        return [];
-      }
-    })();
+    // ORDERS will be fetched in async init
+    this.ORDERS = [];
 
     // small helpers
     this.Utility = {
@@ -55,22 +48,33 @@ class Report {
   }
 
   /* -------------------------
-     Initialization & wiring
+     Async initialization
   -------------------------*/
-  init() {
+  async init() {
+    // fetch orders
+    try {
+      this.ORDERS = await getItem('admin/orders') || [];
+    } catch (e) {
+      console.error('Failed to fetch orders', e);
+      this.ORDERS = [];
+    }
+
     this.wireFilterButtons();
     this.wireApplyDate();
     // initial render using default 'today' range
     this.applyRange('today');
   }
 
+  /* -------------------------
+     DOM wiring
+  -------------------------*/
   wireFilterButtons() {
     const buttons = document.querySelectorAll(this.ids.filterButtons);
     buttons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         const range = btn.getAttribute('data-range');
-        // clear custom date inputs when using a preset range
-        const sd = this.Utility.el(this.ids.startDate); const ed = this.Utility.el(this.ids.endDate);
+        const sd = this.Utility.el(this.ids.startDate);
+        const ed = this.Utility.el(this.ids.endDate);
         if (sd) sd.value = '';
         if (ed) ed.value = '';
         this.applyRange(range);
@@ -99,8 +103,6 @@ class Report {
   endOfDay(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999); }
 
   parseOrderDate(o) {
-    // expect created_at like "YYYY-MM-DD HH:MM:SS"
-    // replace space with 'T' to parse as local
     return new Date(o.created_at.replace(' ', 'T'));
   }
 
@@ -118,8 +120,8 @@ class Report {
         }
         case 'week': {
           const cur = this.startOfDay(new Date());
-          const day = cur.getDay(); // 0 Sun ... 6 Sat
-          const diffToMon = (day + 6) % 7; // days since Monday
+          const day = cur.getDay();
+          const diffToMon = (day + 6) % 7;
           const mon = this.startOfDay(new Date()); mon.setDate(cur.getDate() - diffToMon);
           return od >= mon && od <= this.endOfDay(now);
         }
@@ -143,12 +145,10 @@ class Report {
      Reports generator
   -------------------------*/
   generateReports(filteredOrders) {
-    // Order overview
     const orderCount = filteredOrders.length;
     const totalRevenue = filteredOrders.reduce((s, o) => s + Number(o.total || 0), 0);
     const totalDeliveryFees = filteredOrders.reduce((s, o) => s + Number(o.delivery_fee || 0), 0);
 
-    // Payment overview
     const paymentSummary = {
       transfer: filteredOrders.reduce((s, o) => s + Number(o.transfer || 0), 0),
       cash:     filteredOrders.reduce((s, o) => s + Number(o.cash || 0), 0),
@@ -156,7 +156,6 @@ class Report {
       online:   filteredOrders.reduce((s, o) => s + Number(o.online || 0), 0)
     };
 
-    // Platform overview
     const platformOverview = {};
     filteredOrders.forEach(o => {
       const k = o.customer_type || 'unknown';
@@ -165,7 +164,6 @@ class Report {
       platformOverview[k].amount += Number(o.total || 0);
     });
 
-    // Product performance
     const productStats = {};
     filteredOrders.forEach(order => {
       (order.items || []).forEach(item => {
@@ -181,7 +179,6 @@ class Report {
       });
     });
 
-    // Customer insights
     const customers = {};
     filteredOrders.forEach(o => {
       const key = o.customer_phone || o.userid || o.customer_email || 'guest';
@@ -197,11 +194,10 @@ class Report {
     const newCustomers = custVals.filter(c => c.visits === 1).length;
     const returningCustomers = custVals.filter(c => c.visits > 1).length;
 
-    // Sales over time (group by day)
     const salesByDay = {};
     filteredOrders.forEach(o => {
       const d = this.parseOrderDate(o);
-      const key = d.toISOString().slice(0, 10); // YYYY-MM-DD
+      const key = d.toISOString().slice(0, 10);
       if (!salesByDay[key]) salesByDay[key] = 0;
       salesByDay[key] += Number(o.total || 0);
     });
@@ -221,18 +217,21 @@ class Report {
   -------------------------*/
   clearChart(chartRef) {
     if (chartRef && typeof chartRef.destroy === 'function') {
-      try { chartRef.destroy(); } catch (e) { /* ignore */ }
+      try { chartRef.destroy(); } catch (e) {}
     }
   }
 
   renderReports(reports) {
-    // Order Overview metrics
-    const metricsEl = this.Utility.el(this.ids.orderOverviewMetrics);
+    // Render all metrics, tables, charts
+    const { Utility } = this;
+
+    // Order overview metrics
+    const metricsEl = Utility.el(this.ids.orderOverviewMetrics);
     if (metricsEl) {
       metricsEl.innerHTML = `
         <div class="metric"><div class="mini">Orders</div><strong>${reports.orderOverview.orderCount}</strong></div>
-        <div class="metric"><div class="mini">Revenue</div><strong>${this.Utility.fmtNGN(reports.orderOverview.totalRevenue)}</strong></div>
-        <div class="metric"><div class="mini">Delivery Fees</div><strong>${this.Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</strong></div>
+        <div class="metric"><div class="mini">Revenue</div><strong>${Utility.fmtNGN(reports.orderOverview.totalRevenue)}</strong></div>
+        <div class="metric"><div class="mini">Delivery Fees</div><strong>${Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</strong></div>
       `;
     }
 
@@ -241,20 +240,20 @@ class Report {
     if (ovT) {
       ovT.innerHTML = `
         <tr><td>Total Orders</td><td>${reports.orderOverview.orderCount}</td></tr>
-        <tr><td>Total Revenue</td><td>${this.Utility.fmtNGN(reports.orderOverview.totalRevenue)}</td></tr>
-        <tr><td>Delivery Fees</td><td>${this.Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</td></tr>
+        <tr><td>Total Revenue</td><td>${Utility.fmtNGN(reports.orderOverview.totalRevenue)}</td></tr>
+        <tr><td>Delivery Fees</td><td>${Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</td></tr>
       `;
     }
 
-    // Payment data + table
+    // Payment table
     const paymentData = reports.paymentOverview;
     const paymentsTableBody = document.querySelector(`#${this.ids.paymentsTable} tbody`);
     if (paymentsTableBody) {
       paymentsTableBody.innerHTML = `
-        <tr><td>Transfer</td><td>${this.Utility.fmtNGN(paymentData.transfer)}</td></tr>
-        <tr><td>Cash</td><td>${this.Utility.fmtNGN(paymentData.cash)}</td></tr>
-        <tr><td>Card</td><td>${this.Utility.fmtNGN(paymentData.card)}</td></tr>
-        <tr><td>Online</td><td>${this.Utility.fmtNGN(paymentData.online)}</td></tr>
+        <tr><td>Transfer</td><td>${Utility.fmtNGN(paymentData.transfer)}</td></tr>
+        <tr><td>Cash</td><td>${Utility.fmtNGN(paymentData.cash)}</td></tr>
+        <tr><td>Card</td><td>${Utility.fmtNGN(paymentData.card)}</td></tr>
+        <tr><td>Online</td><td>${Utility.fmtNGN(paymentData.online)}</td></tr>
       `;
     }
 
@@ -262,21 +261,18 @@ class Report {
     const paymentLabels = ['Transfer','Cash','Card','Online'];
     const paymentValues = [paymentData.transfer, paymentData.cash, paymentData.card, paymentData.online];
 
-    const paymentsCanvas = this.Utility.el(this.ids.paymentsCanvas);
+    const paymentsCanvas = Utility.el(this.ids.paymentsCanvas);
     if (paymentsCanvas && window.Chart) {
       const ctx = paymentsCanvas.getContext('2d');
       this.clearChart(this.charts.payments);
       this.charts.payments = new Chart(ctx, {
         type: 'doughnut',
-        data: {
-          labels: paymentLabels,
-          datasets: [{ data: paymentValues, backgroundColor: ['#60a5fa','#f59e0b','#34d399','#d51d28'] }]
-        },
+        data: { labels: paymentLabels, datasets: [{ data: paymentValues, backgroundColor: ['#60a5fa','#f59e0b','#34d399','#d51d28'] }] },
         options: { plugins: { legend: { position: 'bottom' } } }
       });
     }
 
-    // Top products table & bar
+    // Top products table & chart
     const topProducts = reports.productPerformance.slice(0, 8);
     const prodLabels = topProducts.map(p => p.name);
     const prodQtys = topProducts.map(p => p.qty);
@@ -284,10 +280,10 @@ class Report {
 
     const prodTableBody = document.querySelector(`#${this.ids.topProductsTable} tbody`);
     if (prodTableBody) {
-      prodTableBody.innerHTML = topProducts.map(p => `<tr><td>${p.name}</td><td>${p.qty}</td><td>${this.Utility.fmtNGN(p.amount)}</td></tr>`).join('');
+      prodTableBody.innerHTML = topProducts.map(p => `<tr><td>${p.name}</td><td>${p.qty}</td><td>${Utility.fmtNGN(p.amount)}</td></tr>`).join('');
     }
 
-    const productsCanvas = this.Utility.el(this.ids.productsCanvas);
+    const productsCanvas = Utility.el(this.ids.productsCanvas);
     if (productsCanvas && window.Chart) {
       const ctx = productsCanvas.getContext('2d');
       this.clearChart(this.charts.products);
@@ -308,7 +304,7 @@ class Report {
     const salesKeys = Object.keys(reports.salesByDay).sort();
     const lineLabels = salesKeys.length ? salesKeys : (() => { const a = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); a.push(d.toISOString().slice(0,10)); } return a; })();
     const lineValues = lineLabels.map(k => Number(reports.salesByDay[k] || 0));
-    const salesCanvas = this.Utility.el(this.ids.salesCanvas);
+    const salesCanvas = Utility.el(this.ids.salesCanvas);
     if (salesCanvas && window.Chart) {
       const ctx = salesCanvas.getContext('2d');
       this.clearChart(this.charts.sales);
@@ -325,7 +321,7 @@ class Report {
     // Platform table
     const platformBody = document.querySelector(`#${this.ids.platformTable} tbody`);
     if (platformBody) {
-      platformBody.innerHTML = Object.entries(reports.platformOverview).map(([k, v]) => `<tr><td>${this.Utility.toTitleCase(k)}</td><td>${v.count}</td><td>${this.Utility.fmtNGN(v.amount)}</td></tr>`).join('');
+      platformBody.innerHTML = Object.entries(reports.platformOverview).map(([k, v]) => `<tr><td>${Utility.toTitleCase(k)}</td><td>${v.count}</td><td>${Utility.fmtNGN(v.amount)}</td></tr>`).join('');
     }
 
     // Customer insights
@@ -340,11 +336,10 @@ class Report {
   }
 
   /* -------------------------
-     Public API: apply a date range, triggers re-render
+     Public API: apply a date range
   -------------------------*/
   applyRange(range, start = null, end = null) {
     this.currentRange = range;
-    // toggle active class on buttons
     document.querySelectorAll(this.ids.filterButtons).forEach(btn => {
       btn.classList.toggle('primary', btn.getAttribute('data-range') === range);
     });
@@ -355,7 +350,5 @@ class Report {
   }
 }
 
+// Instantiate
 new Report();
-
-// expose globally so HTML can call new Report()
-// window.Report = Report;

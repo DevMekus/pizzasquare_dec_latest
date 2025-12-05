@@ -25,6 +25,10 @@ class OverviewPage {
       Order.getTodayRevenue(Order.ORDERS)
     );
 
+    const newCustomerCount = Order.getNewCustomers(Order.ORDERS);
+    document.getElementById("kpiNewCustomersNum").textContent = newCustomerCount;
+   
+
   }
 
   recentOrderFiler() {
@@ -60,7 +64,7 @@ class OverviewPage {
             <div class="dish-bar" style="display:flex;align-items:center;margin-bottom:6px">
                 <strong style="width:120px">${d.name}</strong>
                 <div class="bar" style="flex:1;height:12px;background:#e5e7eb;border-radius:6px;margin:0 8px;overflow:hidden">
-                    <i style="display:block;height:100%;width:${(d.count / max) * 100}%;background:#2563eb;border-radius:6px"></i>
+                    <i style="display:block;height:100%;width:${(d.count / max) * 100}%;background:#00b034;border-radius:6px"></i>
                 </div>
                 <div style="width:48px;text-align:right;color:var(--muted)">${d.count}</div>
             </div>
@@ -102,6 +106,8 @@ class OverviewPage {
       </div>`
     ).join("");
   }
+
+
 
 }
 

@@ -485,11 +485,29 @@ export default class Order {
         pingNotification();
     }
 
-    static getTodayRevenue(data) {   
-        const today = Utility.today;
-        const todaysOrders = data.filter((order) => order.created_at.split(" ")[0] === today);
-        return todaysOrders.reduce((sum, order) => sum + Number(order.amount), 0);
+    // static getTodayRevenue(data) {   
+    //     const today = Utility.today;
+    //     const todaysOrders = data.filter((order) => order.created_at.split(" ")[0] === today);
+    //     return todaysOrders.reduce((sum, order) => sum + Number(order.total), 0);
+    // }
+
+    static getTodayRevenue(data) {
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
+
+        const todaysOrders = data.filter(order => {
+        // Extract only the date part from created_at
+        const orderDate = order.created_at.split(' ')[0];
+        return orderDate === todayStr;
+        });
+
+        const totalRevenue = todaysOrders.reduce((sum, order) => {
+            return sum + Number(order.total || 0);
+        }, 0);
+
+        return totalRevenue;
     }
+
 
     static renderRecentOrders(filter = "all", q = "") {
         const tbody = document.getElementById("ordersTbody");
@@ -573,6 +591,25 @@ export default class Order {
             .map(([name, count]) => ({ name, count }))
             .sort((a, b) => b.count - a.count) // highest first
             .slice(0, limit);
+    }
+
+    static getNewCustomers(data) {
+        const customers = {};
+
+        data.forEach(order => {
+        // Use a unique key for the customer
+        const key = order.customer_phone || order.userid || order.customer_email || 'guest';
+
+        if (!customers[key]) {
+            customers[key] = 0;
+        }
+        customers[key]++;
+        });
+
+    // Count customers who only appear once (new customers)
+            const newCustomers = Object.values(customers).filter(visits => visits === 1).length;
+
+        return newCustomers;
     }
 
 

@@ -15,7 +15,7 @@
                     <a href="<?= $user['role']=='admin'? 'reports': '#' ?>" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                           
                             <div class="kpi-card-info">                                
-                                <h3 class="num loading" id="kpiOrdersNum"></h3>
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiOrdersNum"></h3>
                                 <div class="muted">Today's Order</div>
                             </div>
                         </div>
@@ -25,8 +25,19 @@
                     <a href="orders" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
-                                <h3 class="num loading" id="kpiRevenueNum"></h3>
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiRevenueNum"></h3>
                                 <div class="muted">Revenue Today</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-sm-4">
+                    <a href="orders" class="" data-aos="fade-up">
+                        <div class="kpi-card-n">                            
+                            <div class="kpi-card-info">                                
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiNewCustomersNum"></h3>
+                                <div class="muted">New Customers Today</div>
                             </div>
                         </div>
                     </a>
