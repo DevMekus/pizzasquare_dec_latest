@@ -63,6 +63,11 @@
     max-width: 100%;
   }
 
+   .totals .col {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
   @media (max-width: 992px) {
     .pos-wrap {
       grid-template-columns: 1fr;
@@ -75,10 +80,10 @@
   }
 
   .pos-card {
-    background: var(--bg);
-    // border: 1px solid var(--neutral-300);
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background: var(--bg);   
+    border-radius: 0px;
+    box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08); 
+    transition: all 0.3s ease;
   }
 
   #cartSummarySection {
@@ -87,6 +92,8 @@
     max-height: calc(100vh - 100px);
     overflow: auto;
   }
+
+ 
 
   @media (max-width: 992px) {
     #cartSummarySection {

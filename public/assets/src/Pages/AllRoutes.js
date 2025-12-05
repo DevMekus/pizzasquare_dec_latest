@@ -1,4 +1,4 @@
-// import Order from "../Classes/Order.js";
+import Order from "../Classes/Order.js";
 import Utility from "../Classes/Utility.js";
 import AuthHelper from "./AuthPage.js";
 
@@ -53,6 +53,7 @@ class AllRoutes {
     if (!logout) return;
     AuthHelper.logout();
   }
+
   displayFooterYear() {
     // year
     const domEl = document.getElementById("year");
@@ -183,11 +184,11 @@ class AllRoutes {
     });
   }
 
-  // orderAlertSystem() {
-  //   const domEl = Utility.el("orderAlert");
-  //   if (!domEl) return;
-  //   Order.orderNotification();
-  // }
+  orderAlertSystem() {
+    const domEl = Utility.el("orderAlert");
+    if (!domEl) return;
+    Order.orderNotification();
+  }
 }
 
 new AllRoutes();

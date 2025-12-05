@@ -8,17 +8,14 @@ class OrderPage {
     }
 
     async initialize() {
-        Order.ORDERS  = await getItem("admin/orders") || [];   
+        Order.ORDERS  = await getItem("orders") || [];   
         Utility.runClassMethods(this, ["initialize"]);
     } 
 
     renderPizzaSquareOrders() {
         const tbody = document.querySelector("#ordersTable tbody");
-        if (!tbody) return;
-        
-        Order.switchOrderFunction(Order.ORDERS)
-
-       
+        if (!tbody) return;        
+        Order.switchOrderFunction(Order.ORDERS)       
     }
 
     searchOrder() {
@@ -147,7 +144,7 @@ class OrderPage {
             const status = document.getElementById("statusTool").value;
             const id = document.getElementById("statusTool").dataset.id;
             $("#displayDetails").modal("hide")
-            const patch = await patchItem(`admin/orders/${id}`, { status }, "Update order status to " + status + "?");
+            const patch = await patchItem(`orders/${id}`, { status }, "Update order status to " + status + "?");
             if (patch){
                 Utility.toast("Order status updated successfully","success");
                 setTimeout(() => {

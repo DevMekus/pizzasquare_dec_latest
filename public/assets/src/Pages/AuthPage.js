@@ -374,7 +374,7 @@ class AuthPage {
        
       if (urlParam === "logout"){
         Utility.toast("Logout successful", "success");
-        dom.innerHTML = `<span class="bold color-red">Logout successful</span>`;
+        dom.innerHTML = `<span class="bold color-success">Logout successful</span>`;
       }
 
       if (urlParam === "new"){

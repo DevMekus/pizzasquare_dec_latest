@@ -1,6 +1,7 @@
 import Utility from "./Utility.js";
 import Pagination from "./Pagination.js";
 import { getItem } from "../Utils/CrudRequest.js";
+import {CONFIG} from "../Utils/config.js";
 
 export default class Order {
     static ORDERS = [];
@@ -452,8 +453,9 @@ export default class Order {
     }
 
     static orderNotification() {
+        
         async function pingNotification() {
-            const orders = await getItem("admin/orders") || [];
+            const orders = await getItem("orders") || [];
             if (orders.length == 0) return;
             //pending orders
             const pending = orders.filter(
@@ -461,15 +463,30 @@ export default class Order {
             );
 
             Utility.el("orderAlert").textContent = pending.length;
+            let route = ''
+            if(Utility.role === 'admin'){
+                route = `${CONFIG.BASE_URL}/secure/admin/orders`
+            } else if(Utility.role === 'cashier'){
+                 route = `${CONFIG.BASE_URL}/secure/pos/orders`
+            } else {
+                 route = `${CONFIG.BASE_URL}/secure/management/orders`
+            }
 
             if (pending.length > 0) {
                 Swal.fire({
-                title: "Pending Order",
-                text: "You have a pending order.",
-                icon: "info",
-                confirmButtonText: "Okay",
-                confirmButtonColor: "#d51d28",
+                    title: "Pending Order",
+                    text: "You have a pending order.",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Go to Orders",
+                    cancelButtonText: "Close",
+                    confirmButtonColor: "#d51d28",
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = route;
+                    }
                 });
+
 
                 Utility.showNotification(
                 "Pending Order",
@@ -485,11 +502,21 @@ export default class Order {
         pingNotification();
     }
 
-    // static getTodayRevenue(data) {   
-    //     const today = Utility.today;
-    //     const todaysOrders = data.filter((order) => order.created_at.split(" ")[0] === today);
-    //     return todaysOrders.reduce((sum, order) => sum + Number(order.total), 0);
-    // }
+    static orderNotFound() {
+        Order.renderDom.innerHTML = ``;
+        Order.renderDom.innerHTML = `
+        <div class="order-not-found" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" 
+            alt="Not Found" class="not-found-icon" />
+            <h2>Oops! We Could not Find This Order</h2>
+            <p>
+                Double-check your order number and try again. <br/>
+                Maybe it ran off to grab some extra cheese 🍕.
+            </p>          
+        </div>
+
+        `;
+    }
 
     static getTodayRevenue(data) {
         const today = new Date();
@@ -611,6 +638,130 @@ export default class Order {
 
         return newCustomers;
     }
+
+
+    static userOrderSummary(order) {
+        // Items are already an array in your model
+        let items = order.items || [];
+
+    // Compute total from items (or fallback to order.total)
+        let total = 0;
+        const itemsHtml = items
+            .map((item) => {
+            const price = Number(item.unit_price);
+            const qty = Number(item.qty);
+            const itemTotal = price * qty;
+            total += itemTotal;
+
+            return `
+                <div class="summary-item bounce-card">
+                <div class="item-details">
+                    <h4>${item.product_name}</h4>
+                    <small>Quantity: ${qty}</small>
+                </div>
+                <span class="price">${Utility.fmtNGN(itemTotal)}</span>
+                </div>
+            `;
+            })
+            .join("");
+
+    // If backend provides total, use it as final override
+            const grandTotal = order.total ? Number(order.total) : total;
+
+        Order.renderDom.innerHTML = `
+            <section class="container">
+            <section class="order-summary" data-aos="fade-up">
+                <h2>🧾 Your Order Summary</h2>
+
+                <!-- Order tracker -->
+                <div class="tracker">
+                <div class="tracker-progress" id="progress"></div>
+
+                <div class="step bounce-card" id="step1">
+                    <div class="step-icon"><i class="fas fa-pizza-slice"></i></div>
+                    <p>Baking</p>
+                </div>
+
+                <div class="step bounce-card" id="step2">
+                    <div class="step-icon"><i class="fas fa-motorcycle"></i></div>
+                    <p>On the Way</p>
+                </div>
+
+                <div class="step bounce-card" id="step3">
+                    <div class="step-icon"><i class="fas fa-check"></i></div>
+                    <p>Delivered</p>
+                </div>
+                </div>
+
+                <!-- Status -->
+                <p><strong>Status:</strong> 
+                <span class="badge-status" id="statusText">${order.status}</span>
+                </p>
+
+                <!-- Customer Info -->
+                <p><strong>Customer:</strong> ${order.customer_name}</p>
+                <p><strong>Phone:</strong> ${order.customer_phone}</p>
+
+                <!-- Items -->
+                <div class="summary-items">
+                ${itemsHtml}
+                </div>
+
+                <!-- Totals -->
+                <div class="summary-total">
+                <strong>Total:</strong>
+                <span>${Utility.fmtNGN(grandTotal)}</span>
+                </div>             
+
+            </section>
+            </section>
+        `;
+
+        Order.updateOrderTracker(order);
+    }
+
+
+    static updateOrderTracker(order) {
+    const steps = [
+      { status: "Pending", progress: 0, activeSteps: 1 },
+      { status: "Preparing", progress: 50, activeSteps: 2 },
+      { status: "Delivered", progress: 100, activeSteps: 3 },
+    ];
+
+    function updateTracker(stepIndex) {
+      document.getElementById("progress").style.width =
+        steps[stepIndex].progress + "%";
+      document.getElementById("statusText").innerText = steps[stepIndex].status;
+
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById("step" + i).classList.remove("active");
+      }
+      for (let i = 1; i <= steps[stepIndex].activeSteps; i++) {
+        document.getElementById("step" + i).classList.add("active");
+      }
+    }
+
+    // map backend status to step index
+    let currentStep = 0;
+    switch (order.status.toLowerCase()) {
+      case "pending":
+        currentStep = 0;
+        break;
+      case "preparing":
+        currentStep = 1;
+        break;
+      case "delivered":
+        currentStep = 2;
+        break;
+      default:
+        currentStep = 0; // fallback
+    }
+
+    updateTracker(currentStep);
+  }
+
+
+
 
 
     

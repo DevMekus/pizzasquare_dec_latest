@@ -237,6 +237,9 @@ class OrderService{
         $payments = Utility::$payments;
         $order_toppings = Utility::$order_toppings;
 
+        $status = '';
+        isset($orderData['customer_type']) && $orderData['customer_type'] === 'walk_in' ? $status = 'delivered' : $status = 'pending';
+
         try {
            Database::beginTransaction();
             
@@ -250,7 +253,7 @@ class OrderService{
                 'order_note' => $orderData['order_note'] ?? null,
                 'delivery' => isset($orderData['delivery_type']) ? strtolower($orderData['delivery_type']) : 'pickup',
                 'delivery_address' => isset($orderData['delivery_address']) ? $orderData['delivery_address'].", ".$orderData['city'] : null,
-                'status' => 'pending',
+                'status' => $status,
                 'total' => $orderData['total_amount'] ?? 0,
                 'attendant' => $orderData['attendant'] ?? null,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -410,7 +413,7 @@ class OrderService{
             $delete = Database::delete(
                 $order,
                 [
-                    'order_id' => $id
+                    'id' => $id
                 ]
             );
             

@@ -3551,6 +3551,10 @@ body {
   margin: auto;
   max-width: 100%;
 }
+#POS_SYSTEM .totals .col {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 @media (max-width: 992px) {
   #POS_SYSTEM .pos-wrap {
     grid-template-columns: 1fr;
@@ -3562,8 +3566,9 @@ body {
 }
 #POS_SYSTEM .pos-card {
   background: var(--bg);
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 0px;
+  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08);
+  transition: all 0.3s ease;
 }
 #POS_SYSTEM #cartSummarySection {
   position: sticky;

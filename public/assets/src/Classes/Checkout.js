@@ -317,19 +317,40 @@ export default class Checkout {
     const t = Checkout.calcTotals();
     const customer = {
       name: document.getElementById("name").value.trim(),
-      phone: document.getElementById("phone")?.value.trim() || "",
-      email: document.getElementById("email")?.value.trim() || "",
+      phone: document.getElementById("phone")?.value.trim(),
+      email: document.getElementById("email")?.value.trim() || null,
       location: "",
       locationArea: "",
     };
 
-    if (!customer.name) {
+    if (!customer.name || !customer.phone || customer.phone.length < 10) {
       Utility.SweetAlertResponse({
         success: false,
-        message: "Enter customer information",
+        message: "Customer name and valid phone number are required",
       });
       proceed = false;
     }
+
+    if (Checkout.isPos) {
+      const cash = Utility.el("cashAmount")
+        ? parseFloat(Utility.el("cashAmount").value || 0)
+        : 0;
+      const card = Utility.el("cardAmount")
+        ? parseFloat(Utility.el("cardAmount").value || 0)
+        : 0;
+      const transfer = Utility.el("transferAmount")
+        ? parseFloat(Utility.el("transferAmount").value || 0)
+        : 0;
+
+          if (cash == 0 && card == 0 && transfer == 0) {
+            Utility.SweetAlertResponse({
+              success: false,
+              message: "At least one payment method is required",
+            });
+            proceed = false;
+          }
+    }
+    
 
     return {
       order_id: Utility.generateId(),
@@ -338,8 +359,8 @@ export default class Checkout {
       customer_name: customer.name,
       email_address: customer.email,
       customer_type: Checkout.isPos ? "walk_in" : "website",
-      delivery_address: Cart.deliveryAddress.value || "",
-      city: Cart.deliveryArea || '',
+      delivery_address: Cart.deliveryAddress ? Cart.deliveryAddress.value : "",
+      city: Cart.deliveryArea ? Cart.deliveryArea : "",
       delivery_type: !Checkout.isPos ? Cart.method : "pickup",
       customer_phone: Utility.el("phone")?.value  || null,
       order_note: Utility.el("instructions")?.value || null,
@@ -347,13 +368,13 @@ export default class Checkout {
       attendant: Utility.el("attendant")?.value || null,
 
       payment: {
-        payment_type: Utility.el("paymentMethod")?.value || "single",
+        payment_type: Utility.el("splitPaymentCheck")?.checked ? "split" : "single",
         item_amount: parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0),
         total_paid: parseFloat(Cart.GRANDTOTAL),
-        cash: Utility.el("cashAmount") ? parseFloat(Utility.el("cashAmount").value) : 0,
-        card: Utility.el("cardAmount") ? parseFloat(Utility.el("cardAmount").value) : 0,
+        cash: Utility.el("cashAmount") ? parseFloat(Utility.el("cashAmount").value || 0) : 0,
+        card: Utility.el("cardAmount") ? parseFloat(Utility.el("cardAmount").value || 0) : 0,
         online: !Checkout.isPos ? parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0) : 0,
-        transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value) : 0,
+        transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value || 0) : 0,
         delivery_fee:
           Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0,
       },

@@ -30,7 +30,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
         <aside>
             <section class="pos-card mb-3 p-4" id="cartSummarySection" aria-label="Current order">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="mb-0">Current Order <sup>
+                    <h5 class="mb-0">Customer Order <sup>
                             <span id="cartCount"
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                                 0
@@ -68,35 +68,59 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                         <div class="col text-end"><strong><span id="grandTotal">0</span></strong></div>
                     </div>
                 </div>
+
+                 <input id="attendant" type="hidden" class="form-control" value="<?= $user['fullname']; ?>" />
+
+                <div class="input-group mt-3">
+                    <span class="input-group-text bg-white"><i class="bi bi-tags-fill"></i></span>
+                    <input id="coupon" type="text" class="form-control" placeholder="Promo code (e.g. PIZZA10)" />
+                    <button id="applyCoupon" class="btn btn-outline-primary">Apply</button>
+                </div>
+             
+            </section>
+            <section class="pos-card mb-3 p-4 bg-light" id="customerSection" aria-label="customerSection">
+                <h5 class="mb-0">Customer Order Details</h5>
                 <div class="mt-3 d-grid gap-2">
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-person-fill"></i></span>
-                        <input id="name" type="text" class="form-control" placeholder="Customer name" />
-                    </div>
-
-                    <input id="address" type="hidden" class="form-control" placeholder="Address" />
-
-                    <input id="attendant" type="hidden" class="form-control" value="<?= $user['fullname']; ?>" />
-
-                    <div class="btn-group" role="group">
-                        <input type="radio" class="btn-check" name="pay" id="payCash" autocomplete="off" checked>
-                        <label class="btn btn-outline-secondary" for="payCash"><i class="bi bi-cash"></i> Cash</label>
-
-                        <input type="radio" class="btn-check" name="pay" id="payCard" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="payCard"><i class="bi bi-credit-card"></i> Card</label>
-
-                        <input type="radio" class="btn-check" name="pay" id="payTransfer" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="payTransfer"><i class="bi bi-bank"></i> Transfer</label>
+                        <input id="name" type="text" class="form-control" placeholder="Enter Customer Fullname" required/>
                     </div>
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-tags-fill"></i></span>
-                        <input id="coupon" type="text" class="form-control" placeholder="Promo code (e.g. PIZZA10)" />
-                        <button id="applyCoupon" class="btn btn-outline-primary">Apply</button>
-                    </div>
-                    <button id="confirmOrder" class="btn btn-primary btn-lg"><i class="fa-solid fa-receipt me-1"></i> Confirm Order</button>
+                        <span class="input-group-text bg-white"><i class="bi bi-phone-fill"></i></span>
+                        <input id="phone" type="text" class="form-control" placeholder="Enter Customer Phone" required/>
+                    </div>                   
                 </div>
             </section>
+            <section class="pos-card mb-3 p-4" id="paymentSection" aria-label="paymentSection">
+                <h5 class="mb-0">Payment Information</h5>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" value="" id="splitPaymentCheck"/>
+                    <label class="form-check-label" for="splitPaymentCheck">
+                        Split payment used
+                    </label>
+                </div>
+                <div class="mt-3 d-grid gap-2">
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-white"><i class="bi bi-cash-stack"></i></span>
+                        <input id="cashAmount" type="number" class="form-control" placeholder="CASH PAYMENT" required/>
+                    </div>
 
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-white"><i class="bi bi-credit-card-2-front"></i></span>
+                        <input id="cardAmount" type="number" class="form-control" placeholder="CARD PAYMENT" required/>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-white"><i class="bi bi-bank"></i></span>
+                        <input id="transferAmount" type="number" class="form-control" placeholder="TRANSFER PAYMENT" required/>
+                    </div>
+
+                    
+                    <div class="d-grid">
+                        <button id="confirmOrder" class="btn btn-primary btn-lg"><i class="fa-solid fa-receipt me-1"></i> Proceed with Order</button>                        
+                    </div>
+                </div>
+            </section>
 
         </aside>
     </main>
