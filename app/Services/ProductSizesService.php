@@ -64,44 +64,48 @@ class ProductSizesService
     {
         try {
 
-            foreach ($data as $product) {
+            foreach ($data as $product) {             
 
-                $upload = [
-                    "product_id"        => intval($product['product_id']),
-                    "size_id"           => intval($product['size_id']),
-                    "price"             => intval($product['price']),
-                    "shared_stock" => intval($product['shared_stock']),
-                ];
+                //check is size already exists for product
+                $existing = Database::findWhere("product_sizes", [
+                    "product_id" => intval($product['product_id']),
+                    "size_id"    => intval($product['size_id'])
+                ]); 
 
-                Database::insert("product_sizes", $upload);
-                
-                //if $product['shared_stock'] = 0 then save product in product_stock with 0 qty
-                if (isset($product['shared_stock']) && intval($product['shared_stock']) === 0) {
-                    Database::insert("product_stock", [
-                        "product_id" => intval($product['product_id']),
-                        "size_id"     => intval($product['size_id']), 
-                        "qty"         => 0
-                    ]); 
-                } else {
-                    // Else, save the shared stock quantity
-                    //Get existing category_size_stock entry and be sure not to duplicate
-                    $existingEntry = Database::findWhere("category_size_stock", [
-                        "category_id" => intval($product['category_id']),
-                        "size_id"     => intval($product['size_id'])
-                    ]);
+                if (!$existing) {
+                    $upload = [
+                        "product_id"        => intval($product['product_id']),
+                        "size_id"           => intval($product['size_id']),
+                        "price"             => intval($product['price']),
+                        "shared_stock" => intval($product['shared_stock']),
+                    ];
+                    Database::insert("product_sizes", $upload);
 
-
-                    if (!$existingEntry) {
-                        Database::insert("category_size_stock", [
-                            "category_id" => intval($product['category_id']),
+                    //if $product['shared_stock'] = 0 then save product in product_stock with 0 qty
+                    if (isset($product['shared_stock']) && intval($product['shared_stock']) === 0) {
+                        Database::insert("product_stock", [
+                            "product_id" => intval($product['product_id']),
                             "size_id"     => intval($product['size_id']), 
                             "qty"         => 0
+                        ]); 
+                    } else {
+                        // Else, save the shared stock quantity
+                        //Get existing category_size_stock entry and be sure not to duplicate
+                        $existingEntry = Database::findWhere("category_size_stock", [
+                            "category_id" => intval($product['category_id']),
+                            "size_id"     => intval($product['size_id'])
                         ]);
-                    }   
-                }            
-               
-                
-                
+
+
+                        if (!$existingEntry) {
+                            Database::insert("category_size_stock", [
+                                "category_id" => intval($product['category_id']),
+                                "size_id"     => intval($product['size_id']), 
+                                "qty"         => 0
+                            ]);
+                        }   
+                    }  
+                }
                         
             }
 
@@ -116,6 +120,7 @@ class ProductSizesService
 
     /**
      * Update a product size
+     * !Not sure used anywhere yet
      */
     public static function updateSize($id, $data)
     {
@@ -130,6 +135,37 @@ class ProductSizesService
             return false;
         }
     }
+
+     /**
+     * Update a product size
+     * 
+     */
+    public static function updateProductPrice($id, $data)
+    {
+        try {
+            //get previous data   
+            $previousData = Database::findWhere("product_sizes", [
+                "id" => intval($id)
+            ]);
+
+        
+
+            if (!$previousData) {              
+                Utility::log("Product size not found with id: " . $id, 'error', 'ProductSizesService::updateProductPrice', ['id'=>$id,'data'=>$data]);
+                return false;
+            }
+
+            $updateData = [
+                'price' => isset($data['price']) ? floatval($data['price']) : floatval($previousData['price']),                
+            ];           
+
+            return Database::update("product_sizes", $updateData, ["id" => $id]);
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductSizesService::updateSize', ['id'=>$id,'data'=>$data], $th);
+            return false;
+        }
+    }
+
 
     /**
      * Delete a product size

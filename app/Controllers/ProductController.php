@@ -144,12 +144,12 @@ class ProductController
     {
         try {
             $id = RequestValidator::parseId($id);
-            $data = RequestValidator::sanitize($_POST);
+            $data = RequestValidator::sanitize($_POST);           
             
             $product = ProductService::fetchById($id);
             if (!$product) {
                 Response::error(404, "Product not found");
-            }
+            }          
 
             $updated = ProductService::update($id, $data, $product[0]);
 

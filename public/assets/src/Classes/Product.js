@@ -119,6 +119,7 @@ export default class Product {
             <td><span class="status ${p.is_active == "1" ? "active" : "danger"}">${p.is_active == "1" ? "Active" : "Inactive"}</span></td>
             <td>
                 <button class="btn btn-sm btn-primary edit-btn" data-id="${p.id}">Edit</button>
+                ${Utility.role==='admin' ? `<button class="btn btn-sm btn-outline-error delete-btn" data-id="${p.id}">Delete</button>` : ''}
             </td>
             `;
             tbody.appendChild(tr);

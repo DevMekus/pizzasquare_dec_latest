@@ -71,32 +71,41 @@
 <div class="modal fade" id="editProductModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form id="editProductForm">
+      <form id="editProductForm" enctype="multipart/form-data">
         <div class="modal-header">
           <h5 class="modal-title">Edit Product</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="editProductId">
-          <div class="mb-3">
-            <label for="editProductName" class="form-label">Name</label>
-            <input type="text" id="editProductName" class="form-control">
+          <input type="hidden" id="editProductId" name="product_id">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label for="editProductName" class="form-label">Product Name</label>
+                <input type="text" id="editProductName" name="name" class="form-control">
+              </div>
+             
+              <div class="mb-3">
+                <label for="editProductDescription" class="form-label">Description</label>
+                <textarea id="editProductDescription" name="description" class="form-control"></textarea>
+              </div>
+              <div class="mb-3" id="statusSelectContainer">
+                <label for="editProductStatus" class="form-label">Status</label>
+                <select id="editProductStatus" name="is_active" class="form-select">
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <img id="currentProductImage" src="" alt="Current Product Image" class="img-fluid mb-3" style="max-height: 200px;">
+               <div class="mb-3">
+                <label for="productImage" class="form-label">Change Image</label>
+                <input type="file" id="productImage" name="productImage" accept="image/*" class="form-control">
+              </div>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="editProductSKU" class="form-label">SKU</label>
-            <input type="text" id="editProductSKU" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="editProductDescription" class="form-label">Description</label>
-            <textarea id="editProductDescription" class="form-control"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="editProductStatus" class="form-label">Status</label>
-            <select id="editProductStatus" class="form-select">
-              <option value="1">Active</option>
-              <option value="0">Inactive</option>
-            </select>
-          </div>
+          
           <hr>
           <h6>Sizes & Pricing</h6>
           <div id="sizesContainer" class="row g-2">
@@ -104,7 +113,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+         
           <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
       </form>

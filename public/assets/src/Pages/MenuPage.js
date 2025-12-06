@@ -1,37 +1,41 @@
 import Utility from "../Classes/Utility.js";
 import Product from "../Classes/Product.js";
 import Sizes from "../Classes/Sizes.js";
-import { postItem } from "../Utils/CrudRequest.js";
+import { postItem, getItem } from "../Utils/CrudRequest.js";
 import Category from "../Classes/Category.js";
 
+
 export default class MenuUtils{
-    static openEditModal(productId) {
-        const product = Product.PRODUCTS.find(p => p.id === productId);
-        if (!product) return;
+    static async openEditModal(productId) {       
+        const res = await getItem(`products/full/${productId}`);
+        if (!res || !res.product || res.product.length === 0) return;
+       
+        const product =  res.product[0];
+        const sizes = res.sizes || [];
 
         document.getElementById("editProductId").value = product.id;
         document.getElementById("editProductName").value = product.name;
-        document.getElementById("editProductSKU").value = product.sku;
+        // document.getElementById("editProductSKU").value = product.sku;
         document.getElementById("editProductDescription").value = product.description;
         document.getElementById("editProductStatus").value = product.is_active;
+
+        document.getElementById("currentProductImage").src = product.image || '/assets/images/no-image.png';
 
         // Render sizes for the product category
         const sizesContainer = document.getElementById("sizesContainer");
         sizesContainer.innerHTML = "";
-        const categorySizes = Sizes.SIZES.filter(s => s.category_id === product.category_id);
+       
 
-        categorySizes.forEach(size => {
+        sizes.forEach(size => {
             const row = document.createElement("div");
             row.classList.add("col-md-3");
             row.innerHTML = `
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="size-${size.id}" data-size-id="${size.id}">
-                <label class="form-check-label" for="size-${size.id}">${size.label}</label>
-                <input type="number" class="form-control mt-1 size-price" placeholder="Price" data-size-id="${size.id}">
-                <div class="form-check mt-1">
-                <input class="form-check-input shared-stock" type="checkbox" data-size-id="${size.id}">
-                <label class="form-check-label">Shared Stock</label>
-                </div>
+                <input class="form-check-input" type="checkbox" id="size-${size.size_id}" data-size-id="${size.size_id}">
+                <label class="form-check-label" for="size-${size.size_id}">${size.size_label}</label>
+                <input type="number" class="form-control mt-1 size-price" value="${size.price}" placeholder="Price" data-size-id="${size.size_id}" data-location="${size.id}">
+              
+               
             </div>
             `;
             sizesContainer.appendChild(row);
@@ -83,32 +87,38 @@ class MenuPage {
     }
 
     async handleEditProductForm(){
-        document.getElementById("editProductForm").addEventListener("submit", e => {
+        document.getElementById("editProductForm").addEventListener("submit", async e => {
             e.preventDefault();
-            const productId = document.getElementById("editProductId").value;
-            const updatedName = document.getElementById("editProductName").value;
-            const updatedSKU = document.getElementById("editProductSKU").value;
-            const updatedDesc = document.getElementById("editProductDescription").value;
-            const updatedStatus = document.getElementById("editProductStatus").value;
-
-            // Collect sizes data
+           
+            const data = new FormData(e.target);           
             const sizesData = [];
             document.querySelectorAll("#sizesContainer .form-check-input[type='checkbox']").forEach(cb => {
                 const sizeId = cb.dataset.sizeId;
                 const price = document.querySelector(`.size-price[data-size-id="${sizeId}"]`).value || 0;
-                const sharedStock = document.querySelector(`.shared-stock[data-size-id="${sizeId}"]`).checked ? 1 : 0;
-
-                if (cb.checked) {
-                sizesData.push({ size_id: sizeId, price: price, uses_shared_stock: sharedStock });
-                }
+                const location = document.querySelector(`.size-price[data-size-id="${sizeId}"]`).dataset.location || null;               
+                sizesData.push({ size_id: sizeId, price: price, id: location });
+                
             });
 
-            console.log("Update Product", {
-                productId, updatedName, updatedSKU, updatedDesc, updatedStatus, sizesData
-            });
+            data.append("sizes", JSON.stringify(sizesData));           
+            const id = data.get("product_id");
+            $("#editProductModal").modal("hide");
 
-            // TODO: Call backend API to save product and sizes
-            });
+            
+            //API SUBMIT
+            const success = await postItem(`admin/products/${id}`, data, "Update Product?");
+            if (success) {
+                Utility.SweetAlertResponse({success: true, message: "Product updated successfully!"});
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                Utility.SweetAlertResponse({success: false, message: "Failed to update product."});
+            }
+            
+
+        
+        });
     }
 }
 new MenuPage();

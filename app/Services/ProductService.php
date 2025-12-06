@@ -95,11 +95,12 @@ class ProductService
     {
         $categories = Utility::$categories;
         $products_tbl = Utility::$products;
+        $product_sizes = Utility::$product_sizes;
 
         try {
 
             // Fetch the matching products
-            $products = Database::joinTables(
+                $products = Database::joinTables(
                 "$products_tbl p",
                 [
                     [
@@ -107,11 +108,18 @@ class ProductService
                         "table" => "$categories c",
                         "on"   => "p.category_id = c.id"
                     ],
+                    [
+                        "type" => "LEFT",
+                        "table" => "$product_sizes ps",
+                        "on"   => "p.id = ps.product_id"
+                    ],
                 ],
                 [
                     "p.*",
                     "c.id AS category_id",
                     "c.name AS category",
+                    "ps.id AS size_id",
+                    "ps.price AS size_price",
                 ],
                 [
                     "OR" => [
@@ -256,11 +264,38 @@ class ProductService
     {
         try {
             $products_tbl = Utility::$products;
+          
 
-             $image = null;
+            Database::beginTransaction();
+
+            $sizes = null;
+
+            if (isset($data['sizes'])) {
+                $raw = $data['sizes'];
+
+                // Convert &quot; back to normal quotes
+                $clean = html_entity_decode($raw, ENT_QUOTES);
+
+                // Now decode JSON normally
+                $sizes = json_decode($clean, true);               
+
+                foreach ($sizes as $size) {
+                    ProductSizesService::updateProductPrice($size['id'], $size);
+                } 
+
+                unset($data['sizes']);
+            }
+            
+            $image = null;
+            $file = $_FILES['productImage'] ?? null;
+            $hasFile = $file &&
+                    (
+                        (is_array($file['name']) && !empty($file['name'][0]) && $file['error'][0] === UPLOAD_ERR_OK) ||
+                        (!is_array($file['name']) && !empty($file['name']) && $file['error'] === UPLOAD_ERR_OK)
+                    );
 
             if (
-                !empty($_FILES['productImage']['name'][0])
+                $hasFile
             ) {
                 $target_dir = "public/UPLOADS/products/";
                 $product_images = Utility::uploadDocuments('productImage', $target_dir);
@@ -281,8 +316,8 @@ class ProductService
                 'category_id'  => isset($data['category_id']) ? intval($data['category_id']) : $product['category_id'],
                 'name'         => isset($data['name']) ? $data['name'] : $product['name'],                  
                 'description'  => isset($data['description']) ? $data['description'] : $product['description'],
-                'image'        => $image,               
-                'is_active'    => isset($data['is_active']) ? $data['is_active'] : $product['is_active'],
+                'image'        => isset($image) ? $image : $product['image'],               
+                'is_active'    => isset($data['is_active']) ? intval($data['is_active']) : intval($product['is_active']),
             ];      
 
 
@@ -294,13 +329,17 @@ class ProductService
                     'type'   => 'product',
                     'title'  => 'product updated'
                 ]);
+                Database::commit();
 
                 return true;
-            }
+            }   
+            
+            Database::rollBack();
 
             return false;
 
         } catch (\Throwable $th) {
+          
             Utility::log(
                 $th->getMessage(),
                 'error',

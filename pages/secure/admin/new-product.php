@@ -37,7 +37,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
 
                                     <div class="mb-3">
                                         <label class="form-label">Product Description (Optional)</label>
-                                        <textarea id="productDescription" name="description" class="form-controll" rows="2" placeholder="Enter product description"></textarea>
+                                        <textarea id="productDescription" name="description" class="form-control" rows="2" placeholder="Enter product description"></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Product Image</label>

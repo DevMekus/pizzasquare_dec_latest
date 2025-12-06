@@ -98,6 +98,8 @@ class ProductPage {
                 price: document.querySelector(`.size-price[data-size="${s.code}"]`).value,
                 shared_stock: document.querySelector(`.size-stock[data-size="${s.code}"]`).value
             }));  
+
+            console.log(payload);
             
            
 
@@ -119,8 +121,6 @@ class ProductPage {
     }
 
 
-    
-
     saveNewProduct(){
         document.getElementById("newProductForm").addEventListener("submit", async (e)=>{
             e.preventDefault();
@@ -140,10 +140,7 @@ class ProductPage {
                 }
         })
     }
-
-    
-
-    
+   
 
 }
 
