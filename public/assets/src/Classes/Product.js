@@ -432,6 +432,7 @@ export default class Product {
                 title: product.name,
                 size: addToCartBtn.dataset.size || null,
                 size_id: addToCartBtn.dataset.sizeId || null,
+                barbecueSauce: product.category.toLowerCase() === "pizza" ? "beneath" : null,
                 price: finalUnitPrice,
                 qty,
                 image: imageUrl,

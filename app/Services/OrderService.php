@@ -267,6 +267,7 @@ class OrderService{
                 $itemData = [
                     'order_id' => intval($newOrderId),
                     'product_id' => intval($item['id']),
+                    'barbecue_sauce' => $item['barbecueSauce'] ?? null,
                     'size_id' => intval($item['size_id']),
                     'unit_price' => floatval($item['price']),
                     'qty' => intval($item['qty']),
@@ -332,6 +333,8 @@ class OrderService{
                     'customer_email' => $orderData['email_address'] ?? null,
                     'customer_name' => $orderData['customer_name'] ?? null,
                     'customer_phone' => $orderData['customer_phone'] ?? null,
+                    'delivery_type' => $orderData['delivery_type'] ?? null,
+                    'delivery_address' => isset($orderData['delivery_address']) ? $orderData['delivery_address'].", ".$orderData['city'] : null,
                     'total_amount' => $orderData['total_amount'] ?? 0,
                     'order_details' => json_encode($orderData['cart']),
                 ]);

@@ -147,7 +147,7 @@ export default class Cart {
     title,
     size,
     size_id,
-    barbecueSauce = "beneath",
+    barbecueSauce = null,
     price,
     qty,
     image,

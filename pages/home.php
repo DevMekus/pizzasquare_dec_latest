@@ -68,7 +68,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                     <label class="form-label fw-bold">Barbecue Sauce</label>
                                     <select id="crustSelect" class="form-select">
                                         <option value="beneath" data-price="0" selected>Beneath</option>
-                                        <option value="ontop" data-price="0">Ontop</option>
+                                        <option value="on top" data-price="0">On top</option>
                                         <option value="none" data-price="0">None</option>
                                     </select>
                                 </div>

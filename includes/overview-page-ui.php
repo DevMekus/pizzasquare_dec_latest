@@ -37,7 +37,7 @@
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
                                 <h3 class="num loading" style="color: #d51d28;" id="kpiNewCustomersNum"></h3>
-                                <div class="muted">New Customers Today</div>
+                                <div class="muted">New Customers</div>
                             </div>
                         </div>
                     </a>

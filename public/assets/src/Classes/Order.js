@@ -171,6 +171,8 @@ export default class Order {
         const domFooter = Utility.el("detailModalButtons");
         let domTitle = Utility.el("detailModalLabel");
 
+       
+
         domTitle.innerHTML = "";
         domBody.innerHTML = "";
         domFooter.innerHTML = "";
@@ -187,6 +189,7 @@ export default class Order {
                         <strong>${i.product_name}</strong> (x${i.qty}) - 
                         ${Utility.fmtNGN(i.unit_price)}<br/>
                         <small class="muted">${i.size_id ? `Size ID: ${i.size_id}` : ""}</small><br/>
+                        <small class="muted">${i.barbecue_sauce ? `Barbecue Sauce: ${i.barbecue_sauce}` : ""}</small><br/>
                         <img src="${i.image}" 
                             alt="${i.product_name}" 
                             width="80" 
@@ -633,7 +636,7 @@ export default class Order {
         customers[key]++;
         });
 
-    // Count customers who only appear once (new customers)
+        // Count customers who only appear once (new customers)
             const newCustomers = Object.values(customers).filter(visits => visits === 1).length;
 
         return newCustomers;
