@@ -1,7 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import Product from "../Classes/Product.js";
 import Sizes from "../Classes/Sizes.js";
-import { postItem, getItem } from "../Utils/CrudRequest.js";
+import { postItem, getItem, deleteItem } from "../Utils/CrudRequest.js";
 import Category from "../Classes/Category.js";
 
 
@@ -67,15 +67,7 @@ class MenuPage {
             
     }
 
-    // async loadEvents(){
-    //     Product.renderProducts(document.getElementById("category_id").value);
-    //     await Category.loadCategories();
-    //     Category.categoryFormSelect(); 
-        
-    //     document.getElementById("category_id").addEventListener("change", function(){
-    //         Product.renderProducts(this.value);
-    //     });
-    // }
+    
 
     async loadEventDelegations(){
         document.querySelector("#productTable tbody").addEventListener("click", e => {
@@ -119,6 +111,32 @@ class MenuPage {
 
         
         });
+    }
+
+    deleteProductDelegation(){
+        document.addEventListener("click", async (e) => {
+            if (e.target.classList.contains("delete-btn")) {
+                const id = e.target.dataset.id;
+                if (!id) return;
+
+                // Confirm delete action
+                console.log("Attempting to delete product with ID:", id);
+                try {
+                    const success = await deleteItem(`admin/products/${id}`, "Delete Product?");                 
+
+                    if (success) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);                        
+                    }
+                } catch (err) {
+                    console.error("Delete error:", err);
+                    Utility.toast("Error deleting product!");
+                }
+            }
+        });
+
+
     }
 }
 new MenuPage();

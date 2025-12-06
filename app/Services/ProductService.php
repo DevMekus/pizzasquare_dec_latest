@@ -358,11 +358,19 @@ class ProductService
     {
         try {
             $products_tbl = Utility::$products;
+            $product_sizes = Utility::$product_sizes;
+            $product_stock = Utility::$product_stock;
 
-             if (!empty($product['image'])) {                   
+            Database::beginTransaction();
+
+           
+            Database::delete($product_sizes, ['product_id' => $id]);
+            Database::delete($product_stock, ['product_id' => $id]);
+            
+            if (!empty($product['image'])) {                   
                     $filePath = __DIR__ . "/../../public/UPLOADS/products/" . basename($product['image']);
                     if (file_exists($filePath)) unlink($filePath);
-                }
+            }
 
             if (Database::delete($products_tbl, ['id' => $id])) {
 
@@ -372,8 +380,12 @@ class ProductService
                     'title'  => 'product deleted'
                 ]);
 
+
+                Database::commit();
+
                 return true;
             }
+            Database::rollBack();
 
             return false;
 
