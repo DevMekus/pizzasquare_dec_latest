@@ -26,14 +26,17 @@
              <div class="d-flex flex-wrap flex-md-nowrap gap-3 justify-content-between align-items-end mb-3">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="enableBtn" >
-                    <label class="form-check-label" for="checkDefault">
-                         Enable Sound
+                    <label class="form-check-label" for="enableBtn">
+                         Sound
                     </label>
                 </div>
                 
+                 <a href="<?= BASE_URL ?>secure/pos/overview" class="icon-btn" aria-label="Notifications">
+                    <i class="bi bi-home"></i> Terminal
+                 </a>
                  <a href="<?= BASE_URL ?>secure/pos/orders" class="icon-btn" aria-label="Notifications">
                      <div class="me-2 position-relative">
-                         <i class="bi bi-cart"></i>
+                         <i class="bi bi-cart"></i> Orders
                          <span
                              class="badge bg-danger position-absolute"
                              style="top: -6px; right: -6px; font-size: 0.65rem"

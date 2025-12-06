@@ -36,19 +36,19 @@
             <div class="link-wrap <?= $route == "menu" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/menu" class="">
                     <span class="icon">🍕</span>
-                    <span class="label">Menu</span>
+                    <span class="label">Product Manager</span>
                 </a>
             </div>
-            <div class="link-wrap <?= $route == "categories" ? 'active' : '' ?>">
+            <!-- <div class="link-wrap <?= $route == "categories" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/categories" class="">
                     <span class="icon">📑 </span>
-                    <span class="label">Categories</span>
+                    <span class="label">Category Manager</span>
                 </a>
-            </div>
+            </div> -->
             <div class="link-wrap <?= $route == "sizes" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/sizes" class="">
-                    <span class="icon">👤 </span>
-                    <span class="label">Sizes</span>
+                    <span class="icon">📑 </span>
+                    <span class="label">Variance Manager</span>
                 </a>
             </div>
                <div class="link-wrap <?= $route == "level_stock" ? 'active' : '' ?>">

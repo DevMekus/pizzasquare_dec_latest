@@ -4,6 +4,10 @@
         <div class="center-mobile">Manage Your business Products.</div>
         <div class="actions">
           <a href="new-product" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Add Product</a>
+
+          <?php if ($user['role']=='admin'): ?>
+              <a href="<?= BASE_URL; ?>secure/admin/categories" class="btn btn-ghost btn-sm">Category Manager</a>
+          <?php endif ?>
         </div>
     </div>
    

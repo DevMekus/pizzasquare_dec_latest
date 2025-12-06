@@ -108,6 +108,7 @@ Router::group('v1/admin', function () use (
     Router::add('GET', '/users', [$user, 'getprofiles']); 
     Router::add('GET', '/users/{id}', [$user, 'getProfile']); 
     Router::add('POST', '/users', [$user, 'register']);
+    Router::add('DELETE', '/users/{id}', [$user, 'deleteProfile']);
 
      #ActivityController
     Router::add('GET',  '/log', [$activity, 'listActivities']);

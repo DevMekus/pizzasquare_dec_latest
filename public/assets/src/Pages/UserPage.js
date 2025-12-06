@@ -26,13 +26,14 @@ class UserPage {
         const filtered = User.USERS.filter((u) => {
             const name = (u.fullname ?? "").toLowerCase();
             const email = (u.email_address ?? "").toLowerCase();
-            return name.includes(query) || email.includes(query);
+            const phone = (u.phone ?? "")
+            return name.includes(query) || email.includes(query) || phone.includes(query);
         });
 
         clearTimeout(timeout);
         timeout = setTimeout(() => {
             User.renderUserTable(filtered.length > 0 ? filtered : User.USERS);
-        }, 500);
+        }, 100);
         });
     }
 
@@ -66,10 +67,11 @@ class UserPage {
             if (deleteBtn) {
                 const id = deleteBtn.dataset.delUser;
                 $("#displayDetails").modal("hide");
-                const del = await deleteItem(`admin/users/${id}`, "Delete user?");
+                const del = await deleteItem(`admin/users/${id}`, "Delete user account?");
                 if (del){
-                    User.USERS = await getItem("admin/users");
-                    User.renderUserTable(User.USERS);
+                   setTimeout(() => {
+                        Utility.reloadPage();
+                   }, 1000);
                 } else {
                     Utility.toast("Failed to delete user", "error");
                 }
