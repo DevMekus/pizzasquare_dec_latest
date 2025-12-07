@@ -59,8 +59,8 @@ class ProductPage {
                             <div class="col-sm-6">
                                 <label>Shared Stock?</label>
                                 <select class="form-select size-stock" data-size="${s.code}">
-                                    <option value="1">Yes (Use parent stock)</option>
-                                    <option value="0">No (Own stock)</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
                             </div>
                         </div>

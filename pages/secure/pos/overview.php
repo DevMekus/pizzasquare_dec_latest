@@ -86,7 +86,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                         <input id="name" type="text" class="form-control" placeholder="Enter Customer Fullname" required/>
                     </div>
                     <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="bi bi-phone-fill"></i></span>
+                        <span class="input-group-text bg-white"><i class="fas fa-phone"></i></span>
                         <input id="phone" type="text" class="form-control" placeholder="Enter Customer Phone" required/>
                     </div>                   
                 </div>
@@ -102,17 +102,17 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                 <div class="mt-3 d-grid gap-2">
                     <div class="input-group mb-2">
                         <span class="input-group-text bg-white"><i class="bi bi-cash-stack"></i></span>
-                        <input id="cashAmount" type="number" class="form-control" placeholder="CASH PAYMENT" required/>
+                        <input id="cashAmount" type="number" class="form-control" placeholder="CASH" required/>
                     </div>
 
                     <div class="input-group mb-2">
                         <span class="input-group-text bg-white"><i class="bi bi-credit-card-2-front"></i></span>
-                        <input id="cardAmount" type="number" class="form-control" placeholder="CARD PAYMENT" required/>
+                        <input id="cardAmount" type="number" class="form-control" placeholder="CARD" required/>
                     </div>
 
                     <div class="input-group mb-2">
-                        <span class="input-group-text bg-white"><i class="bi bi-bank"></i></span>
-                        <input id="transferAmount" type="number" class="form-control" placeholder="TRANSFER PAYMENT" required/>
+                        <span class="input-group-text bg-white"><i class="bi bi-phone-fill"></i></span>
+                        <input id="transferAmount" type="number" class="form-control" placeholder="TRANSFER" required/>
                     </div>
 
                     

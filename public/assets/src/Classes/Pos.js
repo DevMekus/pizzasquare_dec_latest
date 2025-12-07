@@ -150,7 +150,7 @@ export default class Pos {
               <div class="small">Attendant: ${order.attendant ?? ""}</div>
               <hr/>
   
-              <div class="table-responsive">
+              <div class="table-responsive mb-3 mt-3">
               <table class="table table-sm">
                   <thead>
                   <tr>
@@ -164,7 +164,7 @@ export default class Pos {
               </table>
               </div>
   
-              <div class="receipt-totals">
+              <div class="receipt-totals mt-3">
   
               <div>
                   <span>Subtotal:</span>

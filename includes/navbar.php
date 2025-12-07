@@ -8,9 +8,8 @@ $parts = explode("/", trim($current, "/"));
 
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-nav-primary sticky-top shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark bg-nav-primary sticky shadow-sm">
     <div class="container">
-
         <!-- Brand -->
         <a class="navbar-brand" href="<?= BASE_URL ?>">
             <img src="<?= BASE_URL ?>assets/images/logo_white.png" alt="Pizzasquare Logo" height="34">

@@ -33,13 +33,13 @@ class UserController{
     public function login(){
         try {
             $data = RequestValidator::validate([
-                'email_address' => 'required|email',
-                'user_password' => 'required|min:6',
+                'login_cred' => 'required|min:3',
+                'user_password' => 'required|min:3',
             ]);
             
             $data = RequestValidator::sanitize($data);
 
-            $loggedIn = UserService::authenticate($data['email_address'], $data['user_password']);
+            $loggedIn = UserService::authenticate($data['login_cred'], $data['user_password']);
 
             if ($loggedIn) {
                 Response::success($loggedIn, "Login successful");

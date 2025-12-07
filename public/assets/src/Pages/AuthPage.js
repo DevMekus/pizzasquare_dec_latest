@@ -134,9 +134,9 @@ class AuthPage {
     try {
       if (!AuthHelper.loginForm) return;      
 
-      AuthHelper.emailInput?.addEventListener("input", () =>
-        Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError)
-      );
+      // AuthHelper.emailInput?.addEventListener("input", () =>
+      //   Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError)
+      // );
       AuthHelper.password?.addEventListener("input", () =>
         Utility.validatePassword(AuthHelper.password, AuthHelper.pwError)
       );
@@ -145,7 +145,7 @@ class AuthPage {
         e.preventDefault();
 
         const ok =
-          Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError) &
+          // Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError) &
           Utility.validatePassword(AuthHelper.password, AuthHelper.pwError);
 
         if (!ok) {

@@ -86,7 +86,7 @@ class UserService{
         return true;
     }
 
-    public static function authenticate($email, $password){
+    public static function authenticate($login_cred, $password){
             $profile = Utility::$profile_tbl;
             $accounts = Utility::$accounts;
         try {
@@ -100,7 +100,12 @@ class UserService{
                     ]
                 ],
                 ["$profile.*", "$accounts.*"],
-                ["email_address" => $email]
+                [
+                    "OR" => [
+                        "$profile.email_address" => $login_cred,
+                        "$profile.phone" => $login_cred,
+                    ]
+                ]
             );
 
 

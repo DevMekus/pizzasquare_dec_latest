@@ -1075,7 +1075,7 @@ export default class Utility {
             .receipt-totals {
               width: 300px; /* fixed container width */
               font-family: 'Courier New', monospace;
-              font-size: 12px;
+              font-size: 14px;
               margin-top: 10px;
               box-sizing: border-box;
             }

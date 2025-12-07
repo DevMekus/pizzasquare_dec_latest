@@ -185,15 +185,12 @@ export default class Order {
         const itemsHtml = items
             .map((i) => {
                 let html = `
-                    <li class="mb-2">
+                    <li class="mb-1">
                         <strong>${i.product_name}</strong> (x${i.qty}) - 
                         ${Utility.fmtNGN(i.unit_price)}<br/>
                         <small class="muted">${i.size_id ? `Size ID: ${i.size_id}` : ""}</small><br/>
-                        <small class="muted">${i.barbecue_sauce ? `Barbecue Sauce: ${i.barbecue_sauce}` : ""}</small><br/>
-                        <img src="${i.image}" 
-                            alt="${i.product_name}" 
-                            width="80" 
-                            style="border-radius:8px; margin:4px 0;" />
+                        <small class="muted">${i.barbecue_sauce ? `Barbecue Sauce: ${i.barbecue_sauce}` : ""}</small>
+                      
                 `;
 
                 // Toppings (now an array)
@@ -221,6 +218,7 @@ export default class Order {
         const contactName = order.customer_name || "N/A";
         const contactPhone = order.customer_phone || "N/A";
         const contactEmail = order.email_address || "N/A";
+        const delivery_address = order.delivery_address || "N/A";
 
         domBody.innerHTML = `
             <div class="container">
@@ -242,6 +240,10 @@ export default class Order {
                             </li>
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <strong>Email:</strong> <span>${contactEmail}</span>
+                            </li>
+                          
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Address:</strong> <span>${delivery_address}</span>
                             </li>
                         </ul>
 
@@ -391,10 +393,11 @@ export default class Order {
 
             <div class="small">Customer: ${order.customer_name}</div>
             <div class="small">Phone: ${order.customer_phone}</div>
-            <div class="small">Attendant: ${order.attendant ?? ""}</div>
-            <hr/>
+            ${order.attendant ? `<div class="small">Cashier: ${order.attendant ?? ""}</div>` : ""}            
+            <div class="small">Address: ${order.delivery_address ?? ""}</div>
+            <hr/>          
 
-            <div class="table-responsive">
+            <div class="table-responsive mt-3">
             <table class="table table-sm">
                 <thead>
                 <tr>
@@ -408,7 +411,7 @@ export default class Order {
             </table>
             </div>
 
-            <div class="receipt-totals">
+            <div class="receipt-totals mt-3">
 
             <div>
                 <span>Subtotal:</span>
@@ -433,17 +436,8 @@ export default class Order {
             <div class="grand">
                 <span>Grand Total:</span>
                 <span><strong>${Utility.fmtNGN(grandTotal)}</strong></span>
-            </div>
-
-            <div class="small">
-                <span>Payment:</span>
-                <span>${Utility.toTitleCase(paymentType)}</span>
-            </div>
-
-            <div class="small">
-                <span>Status:</span>
-                <span>${Utility.toTitleCase(order.status)}</span>
-            </div>
+            </div>        
+           
 
             </div>
         `;

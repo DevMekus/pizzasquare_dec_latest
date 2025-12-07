@@ -13,7 +13,7 @@
              <img src="<?= BASE_URL ?>assets/images/logo_color.png" alt="Pizzasquare" />
              <div class="d-none d-lg-block titleTop">
                  <div class="brand-title">Point of Sale</div>
-                 <div class="small muted motto">Fast • Reliable • Delightful</div>
+                 <div class="small muted motto">Fast & Reliable</div>
              </div>
 
          </a>
@@ -32,7 +32,7 @@
                 </div>
                 
                  <a href="<?= BASE_URL ?>secure/pos/overview" class="icon-btn" aria-label="Notifications">
-                    <i class="bi bi-home"></i> Terminal
+                    <i class="bi bi-home"></i> Sales
                  </a>
                  <a href="<?= BASE_URL ?>secure/pos/orders" class="icon-btn" aria-label="Notifications">
                      <div class="me-2 position-relative">

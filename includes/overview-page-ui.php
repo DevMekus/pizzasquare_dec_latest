@@ -25,7 +25,7 @@
                     <a href="orders" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
-                                <h3 class="num loading" style="color: #d51d28;" id="kpiRevenueNum"></h3>
+                                <h3 class="nums loading" style="color: #d51d28;" id="kpiRevenueNum"></h3>
                                 <div class="muted">Revenue Today</div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                         </div>
 
 
-                        <div style="overflow:auto;max-height:360px">
+                        <div style="overflow:auto;max-height:22.5rem">
                             <table class="table-sm">
                                 <thead>
                                     <tr>
@@ -86,7 +86,7 @@
                 <div class="col-sm-6">
                       <!-- Analytics -->
                     <div class="kpi-card-n analytics bounce-card" data-aos="fade-left">
-                        <h5 style="margin-top:0">Top Dishes</h5>
+                        <h5 style="margin-top:0">All Time Best Sellers</h5>
                         <div id="topDishes" class="list"></div>
                     </div>
                 </div>

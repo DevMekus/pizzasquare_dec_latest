@@ -274,15 +274,15 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <p class="section-sub">Tag <strong>@pizzasquareng</strong> to get featured.</p>
                 </div>
                 <div class="d-flex gap-3 flex-wrap justify-content-center justify-content-md-start">
-                    <a href="https://www.instagram.com/pizzasquareng" class="btn btn-ghost">Instagram</a>
-                    <a href="https://web.facebook.com/pizzasquareng/" class="btn btn-ghost">Facebook</a>
-                    <a href="https://www.tiktok.com/@pizzasquareng" class="btn btn-ghost">Tiktok</a>
-                    <a href="https://x.com/pizzasquareng" class="btn btn-ghost">X </a>
+                    <a href="https://www.instagram.com/pizzasquareng" target="_blank" class="btn btn-ghost">Instagram</a>
+                    <a href="https://web.facebook.com/pizzasquareng/" target="_blank" class="btn btn-ghost">Facebook</a>
+                    <a href="https://www.tiktok.com/@pizzasquareng" target="_blank" class="btn btn-ghost">Tiktok</a>
+                    <a href="https://x.com/pizzasquareng" target="_blank" class="btn btn-ghost">X </a>
 
                 </div>
             </div>
 
-            <div class="row g-3 mt-4">
+            <!-- <div class="row g-3 mt-4">
                 <?php for ($i = 1; $i <= 6; $i++): ?>
                     <div class="col-6 col-md-3" data-aos="fade-up">
                         <div class="ig-card bounce-card"><img loading="lazy" src="<?php echo BASE_URL; ?>assets/images/socials/<?= $i ?>.png" alt="ig<?= $i ?>"></div>
@@ -290,6 +290,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 <?php endfor; ?>
 
 
+            </div> -->
+            <div class="row">
+                <!-- LightWidget WIDGET --><script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script><iframe src="//lightwidget.com/widgets/1713a282c76558c8aba3d9300224b1be.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>
             </div>
         </div>
         <div id="reelsContainer"></div>

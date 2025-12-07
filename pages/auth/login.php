@@ -58,8 +58,8 @@ require_once ROOT_PATH . '/includes/header.php';
                 <form id="loginForm" novalidate>
                     <!-- Email / Username -->
                     <div class="field">
-                        <label for="email">Email address</label>
-                        <input id="email" name="email_address" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
+                        <label for="email">Email or Phone</label>
+                        <input id="email" name="login_cred" type="text" inputmode="email" placeholder="you@example.com or 0804567890" required aria-required="true" />
                         <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
 

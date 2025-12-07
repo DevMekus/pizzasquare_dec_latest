@@ -1,28 +1,28 @@
-/* ---------- Topbar + Navbar (compact demo) ---------- */
-.topbar {
-  background: var(--neutral-100);
+// /* ---------- Topbar + Navbar (compact demo) ---------- */
+// .topbar {
+//   background: var(--neutral-100);
 
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  font-size: 0.9rem;
-}
+//   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+//   font-size: 0.9rem;
+// }
 
-.topbar .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.4rem 0;
-}
+// .topbar .container {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   padding: 0.4rem 0;
+// }
 
-.topbar .left,
-.topbar .right {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
+// .topbar .left,
+// .topbar .right {
+//   display: flex;
+//   gap: 1rem;
+//   align-items: center;
+// }
 
-.topbar i {
-  color: var(--primary);
-}
+// .topbar i {
+//   color: var(--primary);
+// }
 
 .bg-nav-primary {
   background-color: var(--primary);
@@ -50,6 +50,12 @@
   max-width: 100px; 
   color: var(--text);
   padding: 3px;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .btn-primary-brand {
