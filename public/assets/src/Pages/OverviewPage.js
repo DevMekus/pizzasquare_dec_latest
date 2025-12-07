@@ -14,7 +14,7 @@ class OverviewPage {
         el.innerHTML = Utility.inlineLoader();
     }); 
     
-    Order.ORDERS = await getItem("admin/orders");   
+    Order.ORDERS = await getItem("orders");   
     Utility.runClassMethods(this, ["initialize"]);
   }
 

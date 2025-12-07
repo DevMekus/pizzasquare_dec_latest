@@ -39,6 +39,12 @@ $route = $parts[2] ?? null;
                     <span class="label">Menu</span>
                 </a>
             </div>
+             <div class="link-wrap <?= $route == "level_stock" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/management/level_stock" class="">
+                    <span class="icon">🗃️</span>
+                    <span class="label">Stock Manager</span>
+                </a>
+            </div>
            
           
         </div>

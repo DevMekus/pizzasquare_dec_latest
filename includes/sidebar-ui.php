@@ -51,12 +51,12 @@
                     <span class="label">Size Manager</span>
                 </a>
             </div>
-               <div class="link-wrap <?= $route == "level_stock" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/level_stock" class="">
-                        <span class="icon">🗃️</span>
-                        <span class="label">Stock Manager</span>
-                    </a>
-                </div>
+            <div class="link-wrap <?= $route == "level_stock" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/level_stock" class="">
+                    <span class="icon">🗃️</span>
+                    <span class="label">Stock Manager</span>
+                </a>
+            </div>
             <div class="">
                 <p class="muted">Manage also</p>
                 
