@@ -227,12 +227,14 @@ class AuthPage {
                 "POST"
             );
 
-           AuthHelper.setLoading(false);
+          AuthHelper.setLoading(false); 
+          Utility.SweetAlertResponse(response);         
 
-          if (!response.success) {
+          if (!response.success) {           
             Utility.toast("An error has occurred", "error");
             return;
-          } 
+          }
+
           Utility.toast("Registration successful. Please sign in.", "success");
           setTimeout(() => {
             window.location.href = `${CONFIG.BASE_URL}/auth/login?f-bk=new`;

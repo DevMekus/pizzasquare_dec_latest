@@ -25,7 +25,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 <div class="h">
                     <div>
                         <h2 id="loginTitle">Recover Your Password</h2>
-                        <div class="desc">Sign in to continue to your dashboard</div>
+                        <div class="desc">Enter your email to receive a password reset link.</div>
                     </div>
                     <div style="display:flex;gap:8px;align-items:center">
                         <button id="themeToggle" class="btn btn-sm" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
@@ -35,7 +35,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 <form id="recoverForm" novalidate>
                     <!-- Email / Username -->
                     <div class="field">
-                        <label for="email">Email or Username</label>
+                        <label for="email">Email address</label>
                         <input id="email" name="email_address" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
                         <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>

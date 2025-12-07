@@ -23,8 +23,8 @@ if (!$token) header('location: ' . BASE_URL . 'auth/login');
                 </div>
                 <div class="h">
                     <div>
-                        <h2 id="loginTitle">Rest Your Password</h2>
-                        <div class="desc">Sign in to continue to your dashboard</div>
+                        <h2 id="loginTitle">Reset Your Password</h2>
+                        <div class="desc">Please enter your new password below.</div>
                     </div>
                     <div style="display:flex;gap:8px;align-items:center">
                         <button id="themeToggle" class="btn btn-sm" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>

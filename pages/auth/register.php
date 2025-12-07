@@ -60,15 +60,15 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
                       <div class="field">
-                        <label for="phone">Phone number</label>
-                        <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+1234567890" required aria-required="true" />
+                        <label for="phone">Mobile number</label>
+                        <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="Eg: 08055544014" required aria-required="true" />
                         <div id="phoneError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
 
                     <!-- Email / Username -->
                     <div class="field">
                         <label for="email">Email address</label>
-                        <input id="email" name="email_address" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
+                        <input id="email" name="email_address" type="email" inputmode="email" placeholder="Eg: info@pizzasquare.ng" required aria-required="true" />
                         <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
 

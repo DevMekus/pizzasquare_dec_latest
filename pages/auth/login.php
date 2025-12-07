@@ -56,7 +56,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 </div>
 
                 <form id="loginForm" novalidate>
-                    <!-- Email / Username -->
+                    <!-- Email / Mobile -->
                     <div class="field">
                         <label for="email">Email or Mobile Number</label>
                         <input id="email" name="login_cred" type="text" inputmode="email" placeholder="Info@pizzasquare.ng or 08055544014" required aria-required="true" />

@@ -12,11 +12,14 @@ class UserService{
         $profile = Utility::$profile_tbl;
         $accounts = Utility::$accounts;
         try {
-            $existingUser = Database::find($profile, $data['email_address'], 'email_address');
+            
+            $existingEmail = self::fetchUserById($data['email_address']);
+            $existingPhone= self::fetchUserById($data['phone']);  
            
-            if ($existingUser) {
+            if ($existingEmail || $existingPhone) {
                 Response::error(409, "User already exists");
             }
+
 
             $userid = Utility::generate_uniqueId();      
 
@@ -224,6 +227,7 @@ class UserService{
                         "u.id" => $id,
                         "u.userid" => $id,
                         "u.email_address" => $id,
+                        "u.phone" => $id,
                     ]
                 ],
                 ["u.userid" => $id]
