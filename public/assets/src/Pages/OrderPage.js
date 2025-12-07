@@ -1,6 +1,6 @@
 import Order from "../Classes/Order.js";
 import Utility from "../Classes/Utility.js";
-import { postItem, getItem, deleteItem, patchItem } from "../Utils/CrudRequest.js";
+import {  getItem, deleteItem, patchItem } from "../Utils/CrudRequest.js";
 
 class OrderPage {
      constructor() {

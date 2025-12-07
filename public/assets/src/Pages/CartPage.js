@@ -34,36 +34,42 @@ class CartPage {
     tick();
   }
 
-  async deliveryPickupFunction() {
+  
+
+  deliveryPickupFunction() {
     const toggle = document.getElementById("deliveryToggle");
     const radioDelivery = document.getElementById("methodDelivery");
     const radioPickup = document.getElementById("methodPickup");
     const orderBtn = Utility.el("placeOrder");
-   
-    const orderingStatus = Checkout.checkOrderingStatus( radioDelivery.checked ? "delivery" : "pickup" );
-    if (!orderingStatus) orderBtn.style.display = "none"; 
 
+    function updateOrderButton() {
+        const status = Checkout.checkOrderingStatus(radioDelivery.checked ? "delivery" : "pickup");
+        orderBtn.style.display = status ? "block" : "none";
+    }
+
+    // Initial check
+    updateOrderButton();
 
     if (radioDelivery.checked) Cart.handleHomeDelivery();
 
-    toggle.addEventListener("click", async () => {
-      toggle.classList.toggle("active");
-      Cart.deliveryFeedback.innerHTML = ``;
+    toggle.addEventListener("click", () => {
+        toggle.classList.toggle("active");
+        Cart.deliveryFeedback.innerHTML = ``;
 
-      if (toggle.classList.contains("active")) {
-        radioPickup.checked = true;
-        radioDelivery.checked = false;
-        Cart.handlePickupDelivery();
-      } else {
-        radioDelivery.checked = true;
-        radioPickup.checked = false;
-        Cart.handleHomeDelivery();
-      }
-      const orderingStatus = Checkout.checkOrderingStatus( radioDelivery.checked ? "delivery" : "pickup" );
-     if (!orderingStatus) orderBtn.style.display = "none"; 
-       
+        if (toggle.classList.contains("active")) {
+            radioPickup.checked = true;
+            radioDelivery.checked = false;
+            Cart.handlePickupDelivery();
+        } else {
+            radioDelivery.checked = true;
+            radioPickup.checked = false;
+            Cart.handleHomeDelivery();
+        }
+
+        updateOrderButton();
     });
-  }
+}
+
 
   submitYourOrder() {
     document

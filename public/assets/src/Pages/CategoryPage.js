@@ -1,6 +1,6 @@
-import Category from "../Classes/Category";
-import Utility from "../Classes/Utility";
-import { deleteItem, postItem, putItem } from "../Utils/CrudRequest";
+import Category from "../Classes/Category.js";
+import Utility from "../Classes/Utility.js";
+import { deleteItem, postItem, putItem } from "../Utils/CrudRequest.js";
 
 class CategoryPage {
     constructor() {

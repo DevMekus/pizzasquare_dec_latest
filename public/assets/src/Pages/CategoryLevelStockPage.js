@@ -1,7 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import Category from "../Classes/Category.js";
 import CategoryLevelStock from "../Classes/CategoryLevelStock.js";
-import { postItem, putItem } from "../Utils/CrudRequest.js";
+
 
 class CategoryLevelStockPage{
 

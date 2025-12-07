@@ -419,81 +419,69 @@ export default class Checkout {
       Pagination.render(data.length, page, data, Checkout.CouponTable);
   }
 
+ 
+
   static checkOrderingStatus(orderType) {
-      const statusEl = Utility.el("orderingStatus");
-      const statusTextEl = Utility.el("orderingStatusText");
-   
-      const now  = new Date();
-      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
-      const hour = now.getHours();
-      const minute = now.getMinutes();
+    const statusEl = Utility.el("orderingStatus");
+    const statusTextEl = Utility.el("orderingStatusText");
 
-      //Convert to HHMM format (e.g, 19:30 -> 1930)
-      const time = parseInt(hour.toString().padStart(2, "0") + minute.toString().padStart(2, "0"));
-          
-      // ---- RULE 1: Delivery closes 7pm every day ----
-      const deliveryClose = 1900;
+    const now = new Date();
+    const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const hour = now.getHours();
+    const minute = now.getMinutes();
 
-      // ---- RULE 2: Ordering hours ----
-      const weekdayOpen  = 1000;  // 10 AM
-      const weekdayClose = 2200;  // 10 PM
+    // Convert to HHMM format (e.g., 19:30 -> 1930)
+    const time = parseInt(hour.toString().padStart(2, "0") + minute.toString().padStart(2, "0"));
 
-      const sundayOpen  = 1200;   // 12 PM
-      const sundayClose = 2200;   // 10 PM
+    // ---- RULE 1: Delivery closes 7PM every day ----
+    const deliveryClose = 1900;
 
-      function orderingMessage(message) {
-        statusEl.style.display = "flex"; 
+    // ---- RULE 2: Ordering hours ----
+    const weekdayOpen = 1000;  // 10 AM
+    const weekdayClose = 2200; // 10 PM
+
+    const sundayOpen = 1200;   // 12 PM
+    const sundayClose = 2200;  // 10 PM
+
+    function orderingMessage(message) {
+        statusEl.style.display = "flex";
         statusEl.classList.remove("d-none");
-        statusTextEl.textContent = `${message}`;
-     
-      }
+        statusTextEl.textContent = message;
+    }
 
-        // -------- A. DELIVERY RULES ----------
-      if (orderType === "delivery") {
-          // No delivery on Sundays
-          if (day === "Sunday") {
-            orderingMessage("Delivery not available today");
+    // -------- A. DELIVERY RULES ----------
+    if (orderType === "delivery") {
+        // No delivery on Sundays
+        if (day === "Sunday") {
+            orderingMessage("Delivery not available today. Please choose Pickup.");
             return false;
-          }
+        }
 
-          // Delivery after 7PM every day
-          if (time >= deliveryClose) {
+        // Delivery after 7PM every day
+        if (time >= deliveryClose) {
             orderingMessage("Delivery Orders Closed, Please Select 'Pickup Option'");
             return false;
-          }
-      }
+        }
+    }
 
-       // -------- B. ORDERING HOURS RULES ----------
-      if (day === "Sunday") {
-
-        // Before Sunday opening hours (12PM)
-        if (time < sundayOpen) {
-          orderingMessage("We're closed at the moment, please check back during our opening hours");
+    // -------- B. ORDERING HOURS RULES ----------
+    if (day === "Sunday") {
+        if (time < sundayOpen || time > sundayClose) {
+            orderingMessage("We're closed at the moment, please check back during our opening hours");
             return false;
         }
-
-        // After 10PM
-        if (time > sundayClose) {
-          orderingMessage("We're closed at the moment, please check back during our opening hours");
+    } else {
+        // Weekdays (Mon–Sat)
+        if (time < weekdayOpen || time > weekdayClose) {
+            orderingMessage("We're closed at the moment, please check back during our opening hours");
             return false;
         }
+    }
 
-      } else {
-          // Weekdays (Mon–Sat)
-          if (time < weekdayOpen) {
-              orderingMessage("We're closed at the moment, please check back during our opening hours");
-              return false;
-          }
+    // If all rules pass → Allow ordering
+    return true;
+}
 
-          if (time > weekdayClose) {
-              orderingMessage("We're closed at the moment, please check back during our opening hours");
-              return false;
-          }
-      }
-
-      // If all rules pass → Allow ordering
-      return true;
-  }
   
 
      

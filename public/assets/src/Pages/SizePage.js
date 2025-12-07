@@ -1,7 +1,7 @@
-import Sizes from "../Classes/Sizes";
-import Utility from "../Classes/Utility";
-import Category from "../Classes/Category";
-import { deleteItem, postItem, putItem } from "../Utils/CrudRequest";
+import Sizes from "../Classes/Sizes.js";
+import Utility from "../Classes/Utility.js";
+import Category from "../Classes/Category.js";
+import { deleteItem, postItem, putItem } from "../Utils/CrudRequest.js";
 
 class SizePage {
     constructor() {

@@ -1,6 +1,6 @@
 import Utility from "../Classes/Utility.js";
 import User from "../Classes/User.js";
-import { deleteItem, getItem, patchItem, postItem, putItem } from "../Utils/CrudRequest.js";
+import { deleteItem, getItem, postItem } from "../Utils/CrudRequest.js";
 
 class UserPage {
     constructor() {

@@ -1,4 +1,3 @@
-import Utility from "../Classes/Utility.js";
 import { CONFIG } from "./config.js";
 
 /**

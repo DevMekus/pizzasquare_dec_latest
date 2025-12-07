@@ -1,4 +1,4 @@
-import { deleteItem, getItem, postItem, putItem } from "../Utils/CrudRequest.js";
+import { deleteItem, getItem, postItem } from "../Utils/CrudRequest.js";
 import Utility from "../Classes/Utility.js";
 import Deals from "../Classes/Deals.js";
 

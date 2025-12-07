@@ -1,5 +1,5 @@
 import {getItem} from '../Utils/CrudRequest.js'
-import Pagination from './Pagination.js';
+
 
 export default class Category {
     static CATEGORIES = []  

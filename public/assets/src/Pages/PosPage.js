@@ -3,9 +3,9 @@ import Product from "../Classes/Product.js";
 import Pos from "../Classes/Pos.js";
 import Checkout from "../Classes/Checkout.js";
 import Category from "../Classes/Category.js";
-import { getItem, postItem } from "../Utils/CrudRequest.js";
+import { getItem } from "../Utils/CrudRequest.js";
 import AuthHelper from "./AuthPage.js";
-import Order from "../Classes/Order.js";
+
 
 class PosPage{
     constructor() {

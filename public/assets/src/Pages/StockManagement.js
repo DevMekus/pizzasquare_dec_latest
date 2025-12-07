@@ -1,7 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import Category from "../Classes/Category.js";
 import StockManager from "../Classes/StockManager.js";
-import { postItem, putItem } from "../Utils/CrudRequest.js";
+import { postItem } from "../Utils/CrudRequest.js";
 
 class StockManagement {
     constructor() {

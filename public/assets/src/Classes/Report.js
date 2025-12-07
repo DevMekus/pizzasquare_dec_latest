@@ -3,7 +3,8 @@
    Requires Chart.js to be loaded before this script.
 */
 
-import { getItem } from "../Utils/CrudRequest";
+import { getItem } from "../Utils/CrudRequest.js";
+
 
 class Report {
   constructor(options = {}) {
@@ -89,7 +90,8 @@ class Report {
       const s = this.Utility.el(this.ids.startDate).value;
       const e = this.Utility.el(this.ids.endDate).value;
       if (!s || !e) {
-        alert('Please select both start and end dates');
+        alert('Please select both start and end dates');      
+       
         return;
       }
       this.applyRange('custom', s, e);

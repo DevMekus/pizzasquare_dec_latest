@@ -1,4 +1,4 @@
-import { getItem } from "../Utils/CrudRequest";
+import { getItem } from "../Utils/CrudRequest.js";
 
 
 export default class StockManager {
