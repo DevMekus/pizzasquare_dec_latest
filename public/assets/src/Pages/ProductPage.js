@@ -1,7 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import Product from "../Classes/Product.js";
 import Sizes from "../Classes/Sizes.js";
-import { postItem } from "../Utils/CrudRequest.js";
+import { postItem, postItemReturn } from "../Utils/CrudRequest.js";
 import Category from "../Classes/Category.js";
 
 class ProductPage {
@@ -76,7 +76,7 @@ class ProductPage {
             e.preventDefault();           
 
             const product_id = Utility.el("productSelect").value;
-            const category_id = Utility.el("productSelect").selectedOptions[0].dataset.ci;
+            const category_id = Utility.el("productSelect").selectedOptions[0].dataset.cid;
 
             if (!product_id){
                 Utility.SweetAlertResponse({success: false, message: "Please select a product first."});
@@ -97,14 +97,10 @@ class ProductPage {
                 size_id: s.id, // <----- REQUIRED
                 price: document.querySelector(`.size-price[data-size="${s.code}"]`).value,
                 shared_stock: document.querySelector(`.size-stock[data-size="${s.code}"]`).value
-            }));  
-
-            console.log(payload);
-            
-           
+            }));
 
             //API SUBMIT
-            postItem('admin/product-sizes', {data: JSON.stringify(payload)},"Create Sizes?").then(success => {
+            postItem('admin/product-sizes', payload,"Create Sizes?").then(success => {
                 if (success) {
                     Utility.SweetAlertResponse({success: true, message: "Sizes assigned successfully!"});
                     document.getElementById("assignSizesForm").reset();
@@ -126,14 +122,20 @@ class ProductPage {
             e.preventDefault();
             const payload = new FormData(e.target);            
             
-            const success = await postItem('admin/products', payload,"Create New Product?");
+            const response = await postItemReturn('admin/products', payload,"Create New Product?");
             
-                if (success) {               
+                if (response.success) {               
                     Utility.SweetAlertResponse({success: true, message: "Product created! Select Sizes"});
                     document.getElementById("assignSizesCard").style.display = "block";
                     
                     await Product.loadProducts();  
                     Product.loadProductDropdowns();
+                    const newId = response.data.id; // <-- Use ID returned from backend
+                    Utility.el("productSelect").value = newId;
+                    //add the category id to the dataset
+                    const newProduct = Product.PRODUCTS.find(p => p.id == newId);
+                    Utility.el("productSelect").selectedOptions[0].dataset.cid = newProduct.category_id;
+                    console.log(Utility.el("productSelect").value); 
                     e.target.reset();
                 } else {
                     Utility.SweetAlertResponse({success: false, message: "Failed to create product."});

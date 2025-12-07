@@ -16,8 +16,8 @@ export default class Product {
 
     static async loadProducts() {
         const products = await getItem('products');       
-        Product.PRODUCTS = products;    
-        // Product.renderProducts(products);
+        Product.PRODUCTS = products;   
+        
     }
     
     static renderMenuTab() {
@@ -68,7 +68,7 @@ export default class Product {
         productSelect.innerHTML = '';
         productSelect.innerHTML = '<option value="">-- Select Product --</option>';
         Product.PRODUCTS.forEach(p => {
-        productSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+        productSelect.innerHTML += `<option value="${p.id}" data-cid="${p.category_id}">${p.name}</option>`;
         });
     }
 

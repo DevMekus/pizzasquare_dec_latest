@@ -60,62 +60,156 @@ class ProductSizesService
     /**
      * Add new size for a product
      */
+
     public static function addBulkSizes($data)
     {
         try {
 
-            foreach ($data as $product) {             
+            foreach ($data as $product) {
 
-                //check is size already exists for product
+                $productId   = intval($product['product_id']);
+                $sizeId      = intval($product['size_id']);
+                $price       = intval($product['price']);
+                $sharedStock = intval($product['shared_stock']);
+                $categoryId  = isset($product['category_id']) ? intval($product['category_id']) : null;
+
+                // 1. Check if size already exists for this product
                 $existing = Database::findWhere("product_sizes", [
-                    "product_id" => intval($product['product_id']),
-                    "size_id"    => intval($product['size_id'])
-                ]); 
+                    "product_id" => $productId,
+                    "size_id"    => $sizeId
+                ]);
 
-                if (!$existing) {
-                    $upload = [
-                        "product_id"        => intval($product['product_id']),
-                        "size_id"           => intval($product['size_id']),
-                        "price"             => intval($product['price']),
-                        "shared_stock" => intval($product['shared_stock']),
-                    ];
-                    Database::insert("product_sizes", $upload);
-
-                    //if $product['shared_stock'] = 0 then save product in product_stock with 0 qty
-                    if (isset($product['shared_stock']) && intval($product['shared_stock']) === 0) {
-                        Database::insert("product_stock", [
-                            "product_id" => intval($product['product_id']),
-                            "size_id"     => intval($product['size_id']), 
-                            "qty"         => 0
-                        ]); 
-                    } else {
-                        // Else, save the shared stock quantity
-                        //Get existing category_size_stock entry and be sure not to duplicate
-                        $existingEntry = Database::findWhere("category_size_stock", [
-                            "category_id" => intval($product['category_id']),
-                            "size_id"     => intval($product['size_id'])
-                        ]);
-
-
-                        if (!$existingEntry) {
-                            Database::insert("category_size_stock", [
-                                "category_id" => intval($product['category_id']),
-                                "size_id"     => intval($product['size_id']), 
-                                "qty"         => 0
-                            ]);
-                        }   
-                    }  
+                if ($existing) {
+                    continue; // Skip duplicate product/size
                 }
-                        
+
+                // 2. Insert into product_sizes
+                Database::insert("product_sizes", [
+                    "product_id"    => $productId,
+                    "size_id"       => $sizeId,
+                    "price"         => $price,
+                    "shared_stock"  => $sharedStock,
+                ]);
+
+                // 3. Handle stock tables
+                if ($sharedStock === 0) {
+
+                    // Product-specific stock
+                    $productStockExists = Database::findWhere("product_stock", [
+                        "product_id" => $productId,
+                        "size_id"    => $sizeId,
+                    ]);
+
+                    if (!$productStockExists) {
+                        Database::insert("product_stock", [
+                            "product_id" => $productId,
+                            "size_id"    => $sizeId,
+                            "qty"        => 0
+                        ]);
+                    }
+
+                } else {
+
+                    // Shared stock requires category_id
+                    if (!$categoryId) {
+                        Utility::log(
+                            "category_id is required when shared_stock = 1",
+                            'error',
+                            'ProductSizesService::addBulkSizes',
+                            $product
+                        );
+                        throw new \Exception("category_id is required when shared_stock = 1");
+                    }
+
+                    // Category-level stock
+                    $categoryStockExists = Database::findWhere("category_size_stock", [
+                        "category_id" => $categoryId,
+                        "size_id"     => $sizeId
+                    ]);
+
+                    if (!$categoryStockExists) {
+                        Database::insert("category_size_stock", [
+                            "category_id" => $categoryId,
+                            "size_id"     => $sizeId,
+                            "qty"         => 0
+                        ]);
+                    }
+                }
             }
 
             return true;
 
         } catch (\Throwable $th) {
-            Utility::log($th->getMessage(), 'error', 'ProductSizesService::addBulkSizes', $data, $th);
+            Utility::log(
+                $th->getMessage(),
+                'error',
+                'ProductSizesService::addBulkSizes',
+                $data,
+                $th
+            );
             return false;
         }
     }
+
+
+
+
+    // public static function addBulkSizes($data)
+    // {
+    //     try {
+
+    //         foreach ($data as $product) {             
+
+    //             //check is size already exists for product
+    //             $existing = Database::findWhere("product_sizes", [
+    //                 "product_id" => intval($product['product_id']),
+    //                 "size_id"    => intval($product['size_id'])
+    //             ]); 
+
+    //             if (!$existing) {
+    //                 $upload = [
+    //                     "product_id"        => intval($product['product_id']),
+    //                     "size_id"           => intval($product['size_id']),
+    //                     "price"             => intval($product['price']),
+    //                     "shared_stock" => intval($product['shared_stock']),
+    //                 ];
+    //                 Database::insert("product_sizes", $upload);
+
+    //                 //if $product['shared_stock'] = 0 then save product in product_stock with 0 qty
+    //                 if (isset($product['shared_stock']) && intval($product['shared_stock']) === 0) {
+    //                     Database::insert("product_stock", [
+    //                         "product_id" => intval($product['product_id']),
+    //                         "size_id"     => intval($product['size_id']), 
+    //                         "qty"         => 0
+    //                     ]); 
+    //                 } else {
+    //                     // Else, save the shared stock quantity
+    //                     //Get existing category_size_stock entry and be sure not to duplicate
+    //                     $existingEntry = Database::findWhere("category_size_stock", [
+    //                         "category_id" => intval($product['category_id']),
+    //                         "size_id"     => intval($product['size_id'])
+    //                     ]);
+
+
+    //                     if (!$existingEntry) {
+    //                         Database::insert("category_size_stock", [
+    //                             "category_id" => intval($product['category_id']),
+    //                             "size_id"     => intval($product['size_id']), 
+    //                             "qty"         => 0
+    //                         ]);
+    //                     }   
+    //                 }  
+    //             }
+                        
+    //         }
+
+    //         return true;
+
+    //     } catch (\Throwable $th) {
+    //         Utility::log($th->getMessage(), 'error', 'ProductSizesService::addBulkSizes', $data, $th);
+    //         return false;
+    //     }
+    // }
 
 
     /**

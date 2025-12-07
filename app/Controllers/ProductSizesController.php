@@ -25,27 +25,26 @@ class ProductSizesController
     {
         $payload = Request::getBody();
 
-        // If data is wrapped inside "data", decode it
-        if (isset($payload['data']) && is_string($payload['data'])) {
-            $payload = json_decode($payload['data'], true);
-        }
+       
 
         if (!is_array($payload) || empty($payload)) {
             Response::error(422, "Invalid data format. Expected an array.");
         }
 
         $validatedData = [];
+       
 
         foreach ($payload as $index => $item) {
             $row = RequestValidator::validate([
                 'product_id'    => 'required|integer',
                 'size_id'       => 'required|integer',
                 'price'         => 'required|integer',
-                'shared_stock'  => 'required|integer'
+                'shared_stock'  => 'required|integer',
+                'category_id'  => 'required|integer'
             ], $item);
 
             $validatedData[] = RequestValidator::sanitize($row);
-        }      
+        }
 
         $result = ProductSizesService::addBulkSizes($validatedData);
 

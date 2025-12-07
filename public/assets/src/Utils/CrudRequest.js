@@ -118,3 +118,28 @@ export async function deleteItem(route, message = "Delete item?", showResponse =
     }
 }
 
+export async function postItemReturn(route, data, message = "Add item?", showResponse = true){
+    try {
+         const result = await Utility.confirm(message);
+         if (result.isConfirmed){
+                Utility.alertLoader("Uploading data...")
+                const response = await HttpRequest(
+                    `${CONFIG.API}/${route}`,
+                    data,
+                    "POST"
+                );
+
+                Utility.clearAlertLoader()
+                if (showResponse) {
+                    Utility.SweetAlertResponse(response);
+                }
+                console.log(response);
+                return response
+         } else {
+             Utility.toast("Action cancelled");
+         }
+    } catch (error) {
+        Utility.toast("An error has occurred")
+    }
+}
+
