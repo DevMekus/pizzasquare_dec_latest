@@ -14,12 +14,23 @@
                 </ul>
             </div>
             <div class="col-md-4">
-                <h6>Contact</h6>
+                <h6>Contact Us</h6>
                 <ul class="list-unstyled mb-4">
-                    <li><?= BRAND_PHONE ?></li>
-                    <li><?= BRAND_EMAIL ?></li>
+                    <li>
+                        <a href="tel:<?= BRAND_PHONE ?>" class="text-decoration-none">
+                            <?= BRAND_PHONE ?>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="mailto:<?= BRAND_EMAIL ?>" class="text-decoration-none">
+                            <?= BRAND_EMAIL ?>
+                        </a>
+                    </li>
+
                     <li>Enugu, Nigeria</li>
                 </ul>
+
                 <h6>Lets Be Social</h6>
                 <div class="right">
                     <a href="https://web.facebook.com/pizzasquareng/" target="_blank">

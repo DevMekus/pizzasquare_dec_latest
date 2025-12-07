@@ -115,6 +115,11 @@ async buildYourPizza() {
     Product.EXTRAS = await getItem("extras");
     const pizzasFull = await getItem("pizzas-with-sizes");
 
+    if (!pizzasFull || !pizzasFull.length) {
+        domEl.innerHTML = `<p class="text-danger fw-bold mt-2">No pizzas found</p>`;
+        return;
+    }
+
     const pizzaSelect = Utility.el("pizzaSelect");
     const crustSelect = Utility.el("crustSelect");
     const toppingsWrap = Utility.el("toppingsWrap");
