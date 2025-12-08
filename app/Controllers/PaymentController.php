@@ -31,13 +31,5 @@ class PaymentController{
           
     }
 
-    public function splitPayment($order_id, $payments){
-        // Logic to split payment among multiple methods
-        //create multiple payment records
-    }
-
-    public function getPayments($order_id){
-        // Logic to retrieve all payments for an order
-        //fetch payment records
-    }
+   
 }

@@ -64,7 +64,6 @@ Router::group('v1', function () use (
     Router::add('GET', '/products/full/{id}', [$product, 'showFull']);
     Router::add('GET', '/pizzas-with-sizes', [$product, 'pizzasWithSizes']);
 
-
     #Sizes Routes
     Router::add('GET', '/sizes', [$sizes, 'index']);
     Router::add('GET', '/sizes/{id}', [$sizes, 'show']);

@@ -109,10 +109,7 @@ class UserController{
         }
     }
 
-    public function changePassword($userid){
-        // Logic to change user password
-    }
-
+   
     public function logout(){
         try {
              $data = RequestValidator::validate([

@@ -246,7 +246,7 @@ export default class Product {
         const sizeSectionHtml = hasSizes
             ? `
             <div class="size-toggle">
-                <label class="section-title">Make your choice</label>
+                <label class="section-title">Select Size</label>
                 <div class="toggle-group slide-in mt-2">
                 ${sizesObj
                     .map((sz, i) => {
@@ -288,11 +288,12 @@ export default class Product {
             <div class="product-layout">
                 <div class="product-left">
                     <img src="${imageUrl}" alt="${product.name}" class="product-image ${product.category.toLowerCase() === 'pizza' ? 'spin' : 'zoom'}">
-                    <p class="text-center muted mt-4">${product.description || ""}</p>
+                    
                 </div>
 
                 <div class="product-right">
                     <h3 class="mb-1">${Utility.toTitleCase(product.name)}</h3>
+                    <p class="text-center muted mt-4">${product.description || ""}</p>
                     <div class="badges center-mobile">
                         <span class="tag">${Utility.toTitleCase(product.category)}</span>
                     </div>
