@@ -663,7 +663,7 @@ Retrieve VAT information.
   "data": [
     {
       "id": 1,
-      "vat_percentage": 7.5
+      "vat": 7.5
     }
   ]
 }

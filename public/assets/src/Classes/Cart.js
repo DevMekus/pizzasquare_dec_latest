@@ -174,7 +174,7 @@ export default class Cart {
         total: price * qty,
       };
       Cart.cart.push(newItem);
-      Utility.toast(`${title} added to Order.`);
+      Utility.toast(`${title} added to your cart.`);
      
     }
 

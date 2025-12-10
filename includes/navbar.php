@@ -5,6 +5,8 @@ use App\Utils\Utility;
 $current = Utility::currentRoute();
 $parts = explode("/", trim($current, "/"));
 
+$userid = $_SESSION['userid'] ?? null;
+
 
 ?>
 
@@ -51,20 +53,27 @@ $parts = explode("/", trim($current, "/"));
 
                 <!-- Auth Buttons -->
                 <li class="nav-item d-lg-none">
-                    <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary w-100 my-1">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        Sign In
-                    </a>
+                   <?php if ($userid) : ?>
+                        <button class="btn btn-primary w-100 my-1 logout" data-id="<?= $userid; ?>"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+                    <?php else : ?>
+                        <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary w-100 my-1">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Sign In
+                        </a>
+                    <?php endif; ?>
                 </li>
 
             </ul>
 
             <!-- Desktop Auth Buttons -->
             <div class="d-none d-lg-flex ms-3 gap-2">
+                <?php if ($userid) : ?>
+                    <button class="btn btn-primary-brand logout" data-id="<?= $userid; ?>"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+                <?php else : ?>
                 <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary-brand">
                     <i class="bi bi-box-arrow-in-right"></i> Sign In
                 </a>
-
+                <?php endif; ?>
             </div>
 
         </div>

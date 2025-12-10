@@ -65,25 +65,28 @@ export default class AuthHelper {
   }
 
   static logout() {
-    const logout = document.querySelector(".logout");
-    if (!logout) return;
+    const logouts = document.querySelectorAll(".logout");
+    if (!logouts) return;
 
-    logout.addEventListener("click", async () => {
-      const result = await Utility.confirm("Logging out?");
-      const userid = logout.dataset.id;
-      if (result.isConfirmed) {
-        Utility.toast("Please wait...", "info");
+    logouts.forEach(logout => {
+        logout.addEventListener("click", async () => {
+      
+          const result = await Utility.confirm("Logging out?");
+          const userid = logout.dataset.id;
+          if (result.isConfirmed) {
+            Utility.toast("Please wait...", "info");
 
-        const response = await HttpRequest(
-          `${CONFIG.API}/auth/logout`,
-          { userid },
-          "POST"
-        );
+            const response = await HttpRequest(
+              `${CONFIG.API}/auth/logout`,
+              { userid },
+              "POST"
+            );
 
-         Utility.SweetAlertResponse(response);
-        response.success && await destroyCurrentSession();
-      }
-    });
+            Utility.SweetAlertResponse(response);
+            response.success && await destroyCurrentSession();
+          }
+        });
+    })
   }
 }
 
