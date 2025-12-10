@@ -144,11 +144,11 @@ export default  class User {
         ${Utility.toTitleCase(u.status)}</span></td>
         <td>
             <button class="btn btn-sm btn-primary" 
-            data-edit-user="${u.userid}">Edit</button>
+            data-edit-user="${u.userid}">Manage</button>
             <a class="btn btn-sm btn-ghost" 
             href="${CONFIG.BASE_URL}/secure/admin/user?userid=${
             u.userid
-        }">Manage</a>
+        }">View</a>
             <button class="btn btn-sm btn-ghost" 
             data-del-user="${u.userid}">Delete</button>         
             </td>

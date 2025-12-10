@@ -13,6 +13,7 @@ class EmailServices{
             '{{banner_image_url}}' => BASE_URL . 'assets/images/emails/registration_banner.jpeg',
             '{{user_name}}' => $data['fullname'],
             '{{user_email}}' => $data['email_address'],
+            '{{user_mobile}}' => $data['phone'],
             '{{user_password}}' => $data['user_password'],
             '{{site_name}}' => BRAND_NAME,
             '{{company_address}}' => COMPANY_ADDRESS,
