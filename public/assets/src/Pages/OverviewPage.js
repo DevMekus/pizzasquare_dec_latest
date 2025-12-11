@@ -9,8 +9,7 @@ class OverviewPage {
   }
 
   async initialize() {
-    document.querySelectorAll(".loading").forEach((el) => {
-    //   el.classList.remove("loading");
+    document.querySelectorAll(".loading").forEach((el) => {   
         el.innerHTML = Utility.inlineLoader();
     }); 
     
@@ -26,9 +25,15 @@ class OverviewPage {
     );
 
     const newCustomerCount = Order.getNewCustomers(Order.ORDERS);
-    document.getElementById("kpiNewCustomersNum").textContent = newCustomerCount;
-   
+    // document.getElementById("kpiNewCustomersNum").textContent = newCustomerCount;
 
+    //Low stock products
+    const categoryStock = await getItem("admin/category-stocks") || [];
+    const productsStock = await getItem("admin/product-stocks") || [];
+   
+    const lowAlerts = Product.countTheLowStocks(productsStock, categoryStock);
+    document.getElementById("kpiLowStockNum").textContent = lowAlerts;
+   
   }
 
   recentOrderFiler() {

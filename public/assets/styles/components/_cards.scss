@@ -76,7 +76,7 @@
   background: var(--bg);
   padding: 1.2rem;
   border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08);
+  box-shadow: 0 4px 14px rgba(6, 23, 2, 0.08);
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -86,7 +86,7 @@
   background: var(--bg);
   padding: 1.2rem;
   border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08); 
+  box-shadow: 0 4px 14px rgba(2, 23, 9, 0.08); 
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -108,24 +108,51 @@
   letter-spacing: 0.5px;
 }
 
+
 /* ✅ Mobile Optimization */
 @media (max-width: 768px) {
   .summary-cards {
-    padding: 1rem;
+    padding: 0.5rem;
     gap: 0.8rem;
   }
 
   .kpi-card {
-    padding: 1rem;
+    padding: 0.4rem;
     border-radius: 12px;
+   
+  }
+
+  .kpi-card-n {
+    background: var(--bg);
+    padding: 1rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08); 
+    transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   .kpi-card h2 {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .kpi-card .label {
-    font-size: 0.75rem;
+    font-size: 0.45rem;
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--text-light);
+  }
+
+  .icon-box i {
+    font-size: 0.2rem;
   }
 }
 

@@ -1032,7 +1032,7 @@ export default class Utility {
 
             .receipt-container {
               width: 100%;
-              padding: 6px 8px 6px 10px; /* add a little more left space */
+              padding: 8px 10px 8px 10px; /* add a little more left space */
               box-sizing: border-box;
             }
 

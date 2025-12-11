@@ -139,6 +139,7 @@ class EmailServices{
             '{{customer_phone}}' => $data['customer_phone'] ?? 'N/A',
             '{{delivery_type}}' => $data['delivery_type'] ?? 'N/A',
             '{{delivery_address}}' => $data['delivery_address'] ?? 'N/A',
+            '{{delivery_instructions}}' => $data['delivery_instructions'] ?? 'N/A',
             '{{total_amount}}'   => number_format($data['total_amount'], 2),
             '{{order_details}}'  => $data['order_details'] ?? '',
             '{{support_email}}'  => BRAND_EMAIL,

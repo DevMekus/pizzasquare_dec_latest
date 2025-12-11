@@ -1,5 +1,5 @@
-<div class="content-centered p-4">
-  <div data-aos="fade-down" class="page-header mt-4">
+<div class="content-centered">
+  <div data-aos="fade-down" class="page-header">
         <div class="welcome">Category Size Stock</div>
         <div class="center-mobile">Manage product stocks.</div>
          <div class="actions mt-2 mb-3" data-aos="fade-down">

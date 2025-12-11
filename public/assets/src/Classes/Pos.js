@@ -99,6 +99,7 @@ export default class Pos {
           const discount = 0;
           const grandTotal = Number(order.total);           // already includes delivery
           const paymentType = order.payment_type;
+           const deliveryNote = order.order_note || "";
   
           // Build items HTML
           const itemsHtml = items
@@ -151,18 +152,20 @@ export default class Pos {
               <hr/>
   
               <div class="table-responsive mb-3 mt-3">
-              <table class="table table-sm">
-                  <thead>
-                  <tr>
-                      <th>Item</th>
-                      <th class="text-end">Qty</th>
-                      <th class="text-end">Price</th>
-                      <th class="text-end">Total</th>
-                  </tr>
-                  </thead>
-                  <tbody>${itemsHtml}</tbody>
-              </table>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="text-end">Qty</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>${itemsHtml}</tbody>
+                </table>
               </div>
+              <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+              <hr/>  
   
               <div class="receipt-totals mt-3">
   
@@ -215,6 +218,6 @@ export default class Pos {
           Pos.couponEl.value = "";
           Checkout.updateCart();
           Checkout.renderCart();
-      }
+  }
 
 }

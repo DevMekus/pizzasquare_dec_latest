@@ -217,8 +217,9 @@ export default class Order {
 
         const contactName = order.customer_name || "N/A";
         const contactPhone = order.customer_phone || "N/A";
-        const contactEmail = order.email_address || "N/A";
+        const contactEmail = order.customer_email || "N/A";
         const delivery_address = order.delivery_address || "N/A";
+        const delivery_instructions = order.order_note || "N/A";
 
         domBody.innerHTML = `
             <div class="container">
@@ -265,6 +266,9 @@ export default class Order {
                             </li>
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <strong>Payment Type:</strong> <span>${Utility.toTitleCase(order.payment_type)}</span>
+                            </li>
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <strong>Order Note:</strong> <span>${Utility.toTitleCase(delivery_instructions)}</span>
                             </li>
                             <li class="d-flex justify-content-between border-bottom py-1">
                                 <strong>Status:</strong> 
@@ -345,6 +349,7 @@ export default class Order {
         const discount = 0;
         const grandTotal = Number(order.total);           // already includes delivery
         const paymentType = order.payment_type;
+        const deliveryNote = order.order_note || "";
 
         // Build items HTML
         const itemsHtml = items
@@ -395,21 +400,24 @@ export default class Order {
             <div class="small">Phone: ${order.customer_phone}</div>
             ${order.attendant ? `<div class="small">Cashier: ${order.attendant ?? ""}</div>` : ""}            
             <div class="small">Address: ${order.delivery_address ?? ""}</div>
+            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
             <hr/>          
 
             <div class="table-responsive mt-3">
-            <table class="table table-sm">
-                <thead>
-                <tr>
-                    <th>Item</th>
-                    <th class="text-end">Qty</th>
-                    <th class="text-end">Price</th>
-                    <th class="text-end">Total</th>
-                </tr>
-                </thead>
-                <tbody>${itemsHtml}</tbody>
-            </table>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="text-end">Qty</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>${itemsHtml}</tbody>
+                </table>
             </div>
+            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+            <hr/>    
 
             <div class="receipt-totals mt-3">
 

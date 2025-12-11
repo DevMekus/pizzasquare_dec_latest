@@ -59,10 +59,15 @@ require_once ROOT_PATH . '/includes/header.php';
                         <input id="fullname" name="fullname" type="text" inputmode="text" placeholder="John Doe" required aria-required="true" />
                         <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
-                      <div class="field">
+                    <div class="field">
                         <label for="phone">Mobile number</label>
                         <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="Eg: 08055544014" required aria-required="true" />
                         <div id="phoneError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
+                    </div>
+                    <div class="field">
+                        <label for="address">Address</label>
+                        <input id="address" name="address" type="text" inputmode="text" placeholder="Eg: 123 Main St" required aria-required="true" />
+                        <div id="addressError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
 
                     <!-- Email / Username -->

@@ -242,7 +242,7 @@ export default class Cart {
       if (found) {
         Cart.deliveryFeedback.innerHTML = `<p>🚚 Delivery to <strong>${
           found.city
-        }</strong>: ${Utility.fmtNGN(found.delivery_price)}</p>`;
+        }</strong>: <br/>${Utility.fmtNGN(found.delivery_price)}</p>`;
         Cart.DELIVERY_BASE = Number(found.delivery_price);
         Cart.deliveryArea = found.city;
       } else {
@@ -271,7 +271,8 @@ export default class Cart {
 
     Utility.el("manual-delivery").innerHTML = `
       <label class="form-label small">Select Delivery Area</label>
-      <select class="select-tags" id="manual-locations-select">     
+      <select class="select-tags" id="manual-locations-select">
+        <option value="">-- Select Area --</option>     
         ${areas}
       </select>
     `;

@@ -61,6 +61,7 @@ Router::group('v1/admin', function () use (
 
     #Category Size Stock Routes
     Router::add('GET', '/c-stock', [$cstock, 'index']);
+    Router::add('GET', '/category-stocks', [$cstock, 'categoryStock']);
     Router::add('GET', '/c-stock/{id}', [$cstock, 'show']);
     Router::add('POST', '/c-stock', [$cstock, 'create']);
     Router::add('PUT', '/c-stock/{id}', [$cstock, 'update']);

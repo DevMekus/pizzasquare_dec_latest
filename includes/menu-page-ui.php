@@ -1,5 +1,5 @@
- <div class="content-centered p-4">
-    <div data-aos="fade-down" class="page-header mt-4">
+ <div class="content-centered">
+    <div data-aos="fade-down" class="page-header">
         <div class="welcome">Manage Products</div>
         <div class="center-mobile">Manage Your business Products.</div>
         <div class="actions">

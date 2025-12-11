@@ -26,8 +26,8 @@ $image = isset($user['avatar']) ? json_decode($user['avatar']) : null;
         <div id="rightContent">
             <?php require "navbar.php" ?>
             <section class="inner-container">
-                <div class="content-centered p-4">
-                    <div data-aos="fade-down" class="page-header mt-4">
+                <div class="content-centered">
+                    <div data-aos="fade-down" class="page-header">
                         <div class="welcome">User Information! </div>
                     </div>
                     <div class="card shadow-sm border-0 rounded-3 mt-4 mb-4" data-aos="fade-up">

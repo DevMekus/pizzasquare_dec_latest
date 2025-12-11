@@ -163,5 +163,44 @@ class CategorySizeStockService
         }
     }
 
+    public  static function categoryStocks(){
+        $category_stock = Utility::$category_size_stock;
+        $categories = Utility::$categories; 
+        try {
+            return Database::joinTables(
+                "$category_stock cs",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$categories c",
+                        "on"   => "cs.category_id = c.id"
+                    ],
+                ],
+                [
+                    "c.id",
+                    "c.name AS category",
+                    "cs.id AS stock_id",
+                    "cs.size_id",
+                    "cs.qty",
+                    "cs.low_stock_threshold"
+                   
+                ],
+                [],
+                [
+                  
+                    "order" => "cs.id ASC"
+                ]
+            );
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'CategorySizeStockService::categoryStocks', [], $th);
+            return false;
+        }
+    }
+
+
+
+          
+
 
 }

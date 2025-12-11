@@ -147,6 +147,10 @@
     max-width: 100%;
     padding: 2px;
   }
+
+  .page-header {
+    margin: 1rem 0rem;
+  }
 }
 
 .orders-header {
@@ -187,6 +191,7 @@
 
   .welcome {
     text-align: center;
+    line-height: 25px;
   }
 }
 

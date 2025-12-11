@@ -1,5 +1,5 @@
    <section class="inner-container">
-        <div class="content-centered p-4">
+        <div class="content-centered">
             <div data-aos="fade-down" class="page-header">
                 <div class="welcome">Welcome back, <?= $user['fullname'] ?>!</div>
                 <div>Here's a quick overview of your shop today.  </div>
@@ -12,32 +12,42 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <a href="<?= $user['role']=='admin'? 'reports': '#' ?>" class="" data-aos="fade-up">
+                    <a href="orders" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                           
                             <div class="kpi-card-info">                                
-                                <h3 class="num loading" style="color: #d51d28;" id="kpiOrdersNum"></h3>
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiOrdersNum">0</h3>
                                 <div class="muted">Today's Order</div>
                             </div>
                         </div>
                     </a>
                 </div>
                 <div class="col-sm-4">
-                    <a href="orders" class="" data-aos="fade-up">
+                    <a href="<?= $user['role']=='admin'? 'reports': '#' ?>" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
-                                <h3 class="nums loading" style="color: #d51d28;" id="kpiRevenueNum"></h3>
+                                <h3 class="nums loading" style="color: #d51d28;" id="kpiRevenueNum">0</h3>
                                 <div class="muted">Revenue Today</div>
                             </div>
                         </div>
                     </a>
                 </div>
 
-                <div class="col-sm-4">
+                <!-- <div class="col-sm-3">
                     <a href="orders" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
-                                <h3 class="num loading" style="color: #d51d28;" id="kpiNewCustomersNum"></h3>
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiNewCustomersNum">0</h3>
                                 <div class="muted">New Customers</div>
+                            </div>
+                        </div>
+                    </a>
+                </div> -->
+                <div class="col-sm-4">
+                    <a href="<?= $user['role']=='admin'? 'level_stock': '#' ?>" class="" data-aos="fade-up">
+                        <div class="kpi-card-n">                            
+                            <div class="kpi-card-info">                                
+                                <h3 class="num loading" style="color: #d51d28;" id="kpiLowStockNum">0</h3>
+                                <div class="muted">Low Stock</div>
                             </div>
                         </div>
                     </a>

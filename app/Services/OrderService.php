@@ -335,6 +335,7 @@ class OrderService{
                     'customer_phone' => $orderData['customer_phone'] ?? null,
                     'delivery_type' => $orderData['delivery_type'] ?? null,
                     'delivery_address' => isset($orderData['delivery_address']) ? $orderData['delivery_address'].", ".$orderData['city'] : null,
+                    'delivery_instructions' => $orderData['order_note'] ?? null,
                     'total_amount' => $orderData['total_amount'] ?? 0,
                     'order_details' => json_encode($orderData['cart']),
                 ]);

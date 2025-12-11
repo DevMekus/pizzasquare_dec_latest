@@ -306,7 +306,7 @@ class ProductStockService
 
             if ($row["qty"] < $qty) {
                 // send an email notification about insufficient stock
-                //MailClient::sendInsufficientStockNotification($product_id, $size_id, $qty);
+                //EmailServices::sendInsufficientStockNotification($category_id, $size_id, $qty);
                 return "insufficient_stock";
             }
 

@@ -692,6 +692,20 @@ export default class Product {
 }
 
 
+    static countTheLowStocks(productStock, categoryStock){
+        let lowProductStocks = productStock.filter(item => {
+            return parseInt(item.qty) <= parseInt(item.low_stock_threshold);
+        }).length;
+
+        let lowCategoryStocks = categoryStock.filter(item => {
+            return parseInt(item.qty) <= parseInt(item.low_stock_threshold);
+        }).length;
+
+        const totalLowStocks = lowProductStocks + lowCategoryStocks;
+        return totalLowStocks;
+    }
+
+
 
 
     

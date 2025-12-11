@@ -13,8 +13,8 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
         <div id="rightContent">
             <?php require "navbar.php" ?>
             <section class="inner-container">
-                <div class="content-centered p-4">
-                    <div data-aos="fade-down" class="page-header mt-4">
+                <div class="content-centered">
+                    <div data-aos="fade-down" class="page-header">
                         <div class="welcome">Promotion Manager!</div>
                         <div class="center-mobile">Manage all the <? BRAND_NAME ?> promotionals</div>
                         <div class="actions">

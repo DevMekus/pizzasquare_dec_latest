@@ -17,8 +17,8 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
         <div id="rightContent">
             <?php require "navbar.php" ?>
             <section class="inner-container">
-                <div class="content-centered p-4 reports-page">
-                    <div data-aos="fade-down" class="page-header mt-4">
+                <div class="content-centered reports-page">
+                    <div data-aos="fade-down" class="page-header">
                         <div class="welcome">Analytics & Reports Manager! <span id="orderCount"></span></div>
                         <div class="center-mobile">Here's a quick overview of your shop today.</div>
                     </div>

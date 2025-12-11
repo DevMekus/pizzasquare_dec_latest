@@ -24,6 +24,22 @@ class CategorySizeStockController
         Response::success($data, "Category size stock data fetched successfully.");
     }
 
+      /** GET /c-stock */ 
+    public function categoryStock()
+    {
+        $data = CategorySizeStockService::categoryStocks();
+        
+        if ($data === false) {
+             Response::error(400,"Failed to fetch category size stock data.");
+        }
+
+        if (empty($data)) {
+             Response::error(404, "No category size stock data found.");
+        }
+        
+        Response::success($data, "Category size stock data fetched successfully.");
+    }
+
     /** GET /c-stock/{id} */
     public function show($id)
     {
