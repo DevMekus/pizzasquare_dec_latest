@@ -224,6 +224,32 @@ Retrieve all products with category information.
 
 ---
 
+### Get Product by ID
+Retrieve a specific product.
+
+**Endpoint:** `GET /products/{id}`
+
+**Parameters:**
+- `id` (integer|string) - Product ID, name, or SKU
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "message": "Product retrieved",
+  "data": {
+    "id": 1,
+    "name": "Mega Beef Pizza",
+    "sku": "UNIQUE_SKU_123",
+    "category": "Pizza",
+    "size_id": 2,
+    "size_price": 4500.00
+  }
+}
+```
+
+---
+
 ### Get Product Full Details
 Retrieve product information with all sizes.
 
@@ -519,18 +545,18 @@ Create a new order.
 **Request Body:**
 ```json
 {
-  "order_id": "ps12345", 
+  "order_id": "ORD_20240115_001",
   "userid": "user_123", // Optional for walk-in
   "customer_name": "John Doe",
   "customer_phone": "08012345678",
   "email_address": "john@example.com",
-  "customer_type": "online", // or "walk_in" or "mobile_app" Note: Use mobile_app for mobile app orders
-  "order_note": "Extra napkins please", // or null
+  "customer_type": "online", // or "walk_in" or "mobile_app"
+  "order_note": "Extra napkins please",
   "delivery_type": "delivery", // or "pickup"
   "delivery_address": "123 Main Street",
-  "city": "Abakpa Nike", // or null for pickup order
+  "city": "Enugu",
   "total_amount": 15000.00,
-  "attendant": "Staff_01", // or null for website and mobile orders
+  "attendant": "Staff_01",
   "cart": [
     {
       "id": 1,
@@ -550,11 +576,11 @@ Create a new order.
     "total_paid": 15000.00,
     "payment_type": "single", // or "split" for POS
     "cash": 15000.00,
-    "card": 0, // 0 for website and mobile order
-    "transfer": 0, // 0 for website and mobile order
-    "online": 0, //total_paid minus the delivery_fee for websites or mobile_app order
+    "card": 0,
+    "transfer": 0,
+    "online": 0, //online for websites or mobile_app
     "item_amount": 14000.00, //total_paid minus the delivery_fee
-    "delivery_fee": 1000.00, 
+    "delivery_fee": 1000.00
   }
 }
 ```

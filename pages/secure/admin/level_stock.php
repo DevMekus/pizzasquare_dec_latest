@@ -40,26 +40,28 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
 
                                 <!-- Shared Stock Section -->
                                 <!-- <h6 class="fw-bold mt-3">Category Shared Sizes Stock</h6> -->
-                                <table class="table table-bordered align-middle" id="categoryStockTable">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Size</th>
-                                            <th>Current Stock</th>
-                                            <th>Low Stock Alert</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Loaded dynamically -->
-                                    </tbody>
-                                </table>
+                               <div class="table-responsive">
+                                    <table class="table table-bordered align-middle" id="categoryStockTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Size</th>
+                                                <th>Current Stock</th>
+                                                <th>Low Stock Alert</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Loaded dynamically -->
+                                        </tbody>
+                                    </table>
+                               </div>
 
                             </div>
 
                           
                         </div>
                         <div  class="kpi-card-n mb-4">
-                            <div>   
+                            <div class="table-responsive">   
                                 <!-- Product Individual Stock -->
                                 <h6 class="fw-bold mt-3">Products Using Individual Stock</h6>
                                 <table class="table table-bordered align-middle" id="productStockTable">

@@ -20,7 +20,7 @@ export default class CategoryLevelStock{
 
             data.forEach(item => {
                 this.categoryStockTable.innerHTML += `
-                    <tr class="${item.qty <= item.low_stock_threshold ? 'table-danger' : ''}">
+                    <tr class="${parseInt(item.qty) <= parseInt(item.low_stock_threshold) ? 'table-danger' : ''}">
                         <td>${item.size}</td>
                         <td>
                             <input type="number" class="form-control" id="shared_qty_${item.id}" value="${item.qty ?? 0}">
@@ -54,7 +54,7 @@ export default class CategoryLevelStock{
 
             data.forEach(item => {
                 this.productStockTable.innerHTML += `
-                    <tr class="${item.qty <= item.low_stock_threshold ? 'table-danger' : ''}">
+                    <tr class="${parseInt(item.qty) <= parseInt(item.low_stock_threshold) ? 'table-danger' : ''}">
                         <td>${item.product_name}</td>
                         <td>${item.size_label ?? '-'}</td>
                         <td>

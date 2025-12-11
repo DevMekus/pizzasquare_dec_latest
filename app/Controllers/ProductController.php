@@ -36,9 +36,7 @@ class ProductController
         try {
             $id = RequestValidator::parseId($id);
 
-            $product = ProductService::fetchById($id);
-            // echo json_encode($id);
-            // exit;
+            $product = ProductService::fetchById($id);           
 
             if ($product) {
                 Response::success($product, "Product retrieved");

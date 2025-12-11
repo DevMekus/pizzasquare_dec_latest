@@ -11,7 +11,7 @@
 
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 mb-1">
                     <a href="orders" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                           
                             <div class="kpi-card-info">                                
@@ -21,7 +21,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 mb-1">
                     <a href="<?= $user['role']=='admin'? 'reports': '#' ?>" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
@@ -42,7 +42,7 @@
                         </div>
                     </a>
                 </div> -->
-                <div class="col-sm-4">
+                <div class="col-sm-4 mb-1">
                     <a href="<?= $user['role']=='admin'? 'level_stock': '#' ?>" class="" data-aos="fade-up">
                         <div class="kpi-card-n">                            
                             <div class="kpi-card-info">                                
