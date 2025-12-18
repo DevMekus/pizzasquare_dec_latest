@@ -21,18 +21,22 @@ class CartPage {
   }
 
   startETA() {
-    const start = Date.now();
-    const mins = 30; // average
-    const end = start + mins * 60 * 1000;
-    const tick = () => {
-      const remain = Math.max(0, end - Date.now());
-      const m = Math.floor(remain / 60000);
-      const s = Math.floor((remain % 60000) / 1000);
-      Cart.etaEl.textContent = `${m}m ${s}s`;
-      if (remain > 0) requestAnimationFrame(tick);
-    };
-    tick();
-  }
+  const mins = 15;
+  const end = Date.now() + mins * 60 * 1000;
+
+  const timer = setInterval(() => {
+    const remain = Math.max(0, end - Date.now());
+    const m = Math.floor(remain / 60000);
+    const s = Math.floor((remain % 60000) / 1000);
+
+    Cart.etaEl.textContent = `${m}m ${s}s`;
+
+    if (remain <= 0) {
+      clearInterval(timer);
+    }
+  }, 1000);
+}
+
 
   
 

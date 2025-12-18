@@ -849,78 +849,35 @@ export default class Utility {
     }
   }
 
-  static async detectLocation() {
+
+
+   static async detectLocation() {
     if (!navigator.geolocation) {
       Utility.toast("Geolocation not supported", "error");
       return null;
     }
 
     Utility.toast("Fetching location...", "info");
-
     return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          try {
-            const { latitude, longitude } = pos.coords;
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude } = pos.coords;
 
-            const res = await fetch(`${CONFIG.API}/geocode`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-              },
-              body: JSON.stringify({ lat: latitude, lon: longitude }),
-            });
-
-            // If server error (like 500), handle explicitly
-            if (!res.ok) {
-              Utility.toast(`Server error (${res.status})`, "error");
-              return resolve(null);
-            }
-
-            let data;
-            try {
-              data = await res.json();
-            } catch (jsonErr) {
-              Utility.toast("Invalid JSON response from server", "error");
-              return resolve(null);
-            }
-
-            if (data.error || !data.success) {
-              Utility.toast(
-                "Error: " + (data.error ?? "Unknown error"),
-                "error"
-              );
-              return resolve(null);
-            }
-
-            const rawData = data.data;
-            if (rawData.delivery_fee) {
-              Utility.toast(
-                `🚚 Delivery to ${rawData.area}: ${Utility.fmtNGN(
-                  rawData.delivery_fee
-                )}`,
-                "success"
-              );
-            } else {
-              Utility.toast(
-                `⚠️ No set price for ${rawData.area}, please select manually`,
-                "warning"
-              );
-            }
-
-            resolve(rawData);
-          } catch (err) {
-            Utility.toast("Unexpected error: " + err.message, "error");
-            resolve(null);
-          }
-        },
-        (err) => {
-          Utility.toast("Location access denied. Select manually.", "warning");
+        
+        try {
+          const res = await fetch(`${CONFIG.API}/geocode`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lat: latitude, lon: longitude }),
+          });
+          const data = await res.json();
+          if (!res.ok || data.error || !data.success) return resolve(null);
+          resolve(data.data);
+        } catch {
           resolve(null);
         }
-      );
+      }, () => resolve(null));
     });
+
   }
 
   static formatDateYMD(date) {

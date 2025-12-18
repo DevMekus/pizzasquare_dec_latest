@@ -201,6 +201,8 @@ export default class Cart {
       return;
     }
 
+    console.log(locationObj);
+
     const rawData = locationObj.raw;
     const addresses = rawData["address"];
     const currentLocation = addresses["amenity"];
@@ -246,7 +248,7 @@ export default class Cart {
         Cart.DELIVERY_BASE = Number(found.delivery_price);
         Cart.deliveryArea = found.city;
       } else {
-        Cart.deliveryFeedback.innerHTML = `<p>⚠️ We don’t have a set price for this area</p>`;
+        Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
         Cart.ORDERBTN.disabled = true;
         return;
       }

@@ -397,7 +397,7 @@ class AuthPage {
             `${CONFIG.BASE_URL}/checkout`
         );
         Utility.toast("Login to continue", "success");
-        dom.innerHTML = `<span class="bold color-red">Login to continue with checkout</span>`;
+        dom.innerHTML = `<span class="bold color-red">Please Login and continue with Checkout</span>`;
       }
         
     } catch (error) {

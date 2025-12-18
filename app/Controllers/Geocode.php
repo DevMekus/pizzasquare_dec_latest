@@ -31,7 +31,6 @@ class Geocode
             $lon = $data['lon'];
 
 
-
             // Fetch from Nominatim
             $url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$lat}&lon={$lon}";
 
@@ -54,6 +53,8 @@ class Geocode
             $data = json_decode($response, true);
 
             $deliveryZones = CityService::fetchAllCities();
+
+          
 
             if (empty($deliveryZones))
                 Response::error(404, "cities not found");
@@ -78,9 +79,6 @@ class Geocode
             }
 
 
-
-
-
             $response = [
                 "lat" => $lat,
                 "lon" => $lon,
@@ -91,15 +89,7 @@ class Geocode
 
             Response::success($response, "Location detected");
 
-            // // Return JSON response
-            // header("Content-Type: application/json");
-            // echo json_encode([
-            //     "lat" => $lat,
-            //     "lon" => $lon,
-            //     "area" => $area,
-            //     "delivery_fee" => $matchedPrice,
-            //     "raw" => $data
-            // ]);
+        
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'Geocode::reverseGeocode', [], $e);
             Response::error(500, "Error fetching location");

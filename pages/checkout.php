@@ -61,7 +61,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                 </div>
                             </div>
                             <div class="col-md-6 text-md-end small text-muted">
-                                Est. delivery time: <span id="eta">—</span>
+                                Est. Preparation Time: <span id="eta">—</span>
                             </div>
                         </div>
                     </div>
