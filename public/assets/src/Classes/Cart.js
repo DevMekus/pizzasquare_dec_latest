@@ -195,27 +195,26 @@ export default class Cart {
     Cart.deliveryFeedback.innerHTML = `Searching for your location...${Utility.inlineLoader()}`;
     const locationObj = await Utility.detectLocation();
 
-    if (!locationObj) {
+    if (!locationObj|| !locationObj.delivery_fee) {
       await Cart.renderManualLocation();
       Cart.handleManualLocation();
       return;
     }
-
-    console.log(locationObj);
-
+    
     const rawData = locationObj.raw;
     const addresses = rawData["address"];
     const currentLocation = addresses["amenity"];
 
     //Location not found
     if (!currentLocation || currentLocation == undefined) {
-      Cart.deliveryFeedback.innerHTML = `We could not detect your location. Select manually`;
+      Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
       await Cart.renderManualLocation();
       setTimeout(() => {
         Cart.handleManualLocation();
       }, 2000);
       return;
     }
+
     const deliveryFee = locationObj.delivery_fee;
     Cart.deliveryArea = addresses.suburb;
     Cart.DELIVERY_BASE = Number(deliveryFee);
