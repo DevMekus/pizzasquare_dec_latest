@@ -1,9 +1,43 @@
-# Pizza Square API Documentation
+## Pizza Square API Documentation
+#Introduction
+The Pizza Square API allows developers to integrate product listings, categories, deals, order processing, user authentication, and geolocation services into websites and mobile applications.
+All requests must be made over HTTPS.
 
 ## Base URL
-```
 https://pizzasquare.ng/api/v1/
-```
+
+## Headers
+All protected endpoints require a valid JWT token.
+
+Authorization: Bearer <token>
+Origin: https://pizzasquare.ng/
+Content-Type: application/json
+Accept: application/json
+
+## Authentication Overview
+Login returns a JWT token.
+Include the token in the Authorization header for secured routes.
+Tokens must not be shared or exposed publicly.
+Some routes allow guest/walk-in operations.
+
+## Standard Response Format
+All successful API responses follow this structure:
+{
+  "success": true,
+  "message": "Descriptive message",
+  "data": {...}
+}
+
+#Error responses:
+{
+  "success": false,
+  "message": "Error message",
+  "errors": {...} // optional
+}
+
+## API Versioning
+Current version: v1
+Future versions will follow /api/v2/, /api/v3/, etc.
 
 ## Table of Contents
 - [Authentication](#authentication)
@@ -16,6 +50,7 @@ https://pizzasquare.ng/api/v1/
 - [Orders](#orders)
 - [Geocoding](#geocoding)
 - [Payments](#payments)
+- [Profile](#users)
 
 ---
 
@@ -707,6 +742,46 @@ Verify Paystack payment.
 
 ---
 
+### User profile
+Get customer profile information.
+
+**Endpoint:** `GET /users/{id}`
+**Parameters:**
+- `id` (integer|string) - Userid
+
+**Authorisation:**
+- Bearer token
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "User information",
+  "data": [
+    {
+      "id": "1",
+      "userid": "user_id",
+      "fullname": "John Doe",
+      "email_address": "you@email.com",
+      "phone": "1234567890",
+      "user_password": encrypted_password,
+      "address": "User_address",
+      "city": "User_city", // or null
+      "city_state": "enugu",
+      "avatar": "http://localhost/pizzasquare_latest/public/UPLOADS/avatar/692dada62075d4.37102194.png",
+      "status": "active",
+      "role_id": "user_role_id",
+      "created_at": "2025-11-24",
+      "reset_token": "",
+      "reset_token_expiration": "",
+      "role": "role_name" //user or admin or cashier
+    }
+  ]
+}
+```
+---
+
 ## Error Responses
 
 All endpoints may return the following error responses:
@@ -759,7 +834,7 @@ All endpoints may return the following error responses:
 2. **File Uploads:** Use `multipart/form-data` for endpoints accepting images
 3. **Date Format:** All dates are in `Y-m-d H:i:s` format (e.g., `2024-01-15 10:30:00`)
 4. **Currency:** All prices are in Nigerian Naira (NGN)
-5. **Order Status:** Can be `pending`, `processing`, `ready`, `delivered`, or `cancelled`
+5. **Order Status:** Can be `pending`, `preparing`,`delivered`, or `cancelled`
 6. **Customer Type:** Either `online` or `walk_in` or `mobile_app`
 7. **Delivery Type:** Either `delivery` or `pickup`
 

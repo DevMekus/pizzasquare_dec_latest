@@ -54,6 +54,13 @@ export default class AuthHelper {
     const { userid, email, role } = decryptToken;
     let url = null;
 
+    const intended_url = sessionStorage.getItem('intended_url');
+    if (intended_url) {
+        sessionStorage.removeItem('intended_url');
+        window.location.href = intended_url;
+        return;
+    }
+
     if (role == "1") url = ``;
     if (role == "2") url = `secure/management/overview`;
     if (role == "3") url = `secure/pos/overview`;    
@@ -135,11 +142,9 @@ class AuthPage {
    */
   async login() {
     try {
-      if (!AuthHelper.loginForm) return;      
+      if (!AuthHelper.loginForm) return;     
 
-      // AuthHelper.emailInput?.addEventListener("input", () =>
-      //   Utility.validateEmail(AuthHelper.emailInput, AuthHelper.emailError)
-      // );
+      
       AuthHelper.password?.addEventListener("input", () =>
         Utility.validatePassword(AuthHelper.password, AuthHelper.pwError)
       );
@@ -386,9 +391,13 @@ class AuthPage {
         Utility.toast("Registration Successful", "success");
         dom.innerHTML = `<span class="bold color-success">Registration Successful. Login to continue</span>`;
       }
-       if (urlParam === "ctrue"){
+       if (urlParam === "checkout"){
+        sessionStorage.setItem(
+            'intended_url',
+            `${CONFIG.BASE_URL}/checkout`
+        );
         Utility.toast("Login to continue", "success");
-        dom.innerHTML = `<span class="bold color-red">Login to continue</span>`;
+        dom.innerHTML = `<span class="bold color-red">Login to continue with checkout</span>`;
       }
         
     } catch (error) {

@@ -1,7 +1,16 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
-require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
+
+
+if (!isset($_SESSION['userid'])) {
+    $_SESSION['intended_url'] = $_SERVER['REQUEST_URI'];
+    header('location: ' . BASE_URL . 'auth/login?f-bk=checkout');
+    exit;
+} else {
+    require_once ROOT_PATH . '/includes/reuse.php';
+}
+
 require_once ROOT_PATH . '/includes/navbar.php';
 
 

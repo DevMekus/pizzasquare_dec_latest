@@ -20,9 +20,6 @@ Router::group('/v1', function () use ($user, $order) {
     Router::add('POST', '/orders', [$order, 'createOrder']);
     Router::add('GET', '/orders', [$order, 'getOrders']);
     Router::add('PATCH', '/orders/{id}', [$order, 'updateOrderStatus']);
-
-
-
    
    
 }, [UserOnlyMiddleware::class]);

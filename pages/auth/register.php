@@ -46,7 +46,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 <div class="h">
                     <div>
                         <h2 id="loginTitle">Create an Account</h2>
-                        <div class="desc">Create an Account using your email and password</div>
+                        <div class="desc">Create an account with complete and accurate information</div>
                     </div>
                     <div style="display:flex;gap:8px;align-items:center">
                         <button id="themeToggle" class="btn btn-ghost" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
