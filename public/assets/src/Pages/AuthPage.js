@@ -54,8 +54,9 @@ export default class AuthHelper {
     const { userid, email, role } = decryptToken;
     let url = null;
 
+  
     const intended_url = sessionStorage.getItem('intended_url');
-    if (intended_url) {
+    if (intended_url && role == "1") {
         sessionStorage.removeItem('intended_url');
         window.location.href = intended_url;
         return;
