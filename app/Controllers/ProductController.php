@@ -58,7 +58,7 @@ class ProductController
         try {
             $id = RequestValidator::parseId($id);
 
-            $product = ProductService::fetchFullProduct($id);
+            $product = ProductService::fetchFullProduct($id);            
 
             if ($product) {
                 Response::success($product, "Product retrieved");

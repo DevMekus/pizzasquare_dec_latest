@@ -145,7 +145,15 @@ class UserService{
                 'type' => 'login',
                 'title' => 'login successful',
             ])) {
-                Response::success(['token' => $token], "Login successful");
+                $response = [
+                    'userid' => $user['userid'],
+                    'fullname' => $user['fullname'],
+                    'email_address' => $user['email_address'],
+                    'phone' => $user['phone'],
+                    'address' => $user['address'],
+                    'token' => $token,
+                ];
+                Response::success($response, "Login successful");
             }
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::attemptLogin', ['host' => 'localhost'], $e);

@@ -52,18 +52,19 @@ export default class Order {
         const contactName = o.customer_name  ?? "N/A";
 
         tr.innerHTML = `
-            <td class="color-danger fw-bold">${o.order_id}</td>        
-            <td>${
-                o.customer_type ? Utility.toTitleCase(o.customer_type) : "-"
-            }</td>
-            <td class="color-success fw-bold">
-            ${o.total ? Utility.fmtNGN(Number(o.total)) : 0}</td>        
-            <td>
-            <span class="status ${o.status ? o.status : ""}">
-            ${o.status ? Utility.toTitleCase(o.status) : ""}</span></td>
-            <td>
-            ${o.delivery ? Utility.toTitleCase(o.delivery) : "-"}</td>
             <td>${o.created_at ? o.created_at : "-"}</td>
+            <td class="color-success fw-bold">
+                ${o.total ? Utility.fmtNGN(Number(o.total)) : 0}
+            </td>
+            <td> 
+                ${
+                    o.customer_type ? Utility.toTitleCase(o.customer_type) : "-"
+                }
+            </td>
+            <td> <span class="status ${o.status ? o.status : ""}">
+            ${o.status ? Utility.toTitleCase(o.status) : ""}</span></td>
+            <td class="color-danger fw-bold">${o.order_id}</td> 
+            <td>${o.delivery ? Utility.toTitleCase(o.delivery) : "-"}</td>
             <td class="actions">
                 <button class="btn btn-sm btn-primary" data-action="view" data-id="${o.id}" >Manage</button>          
                 ${
@@ -75,7 +76,7 @@ export default class Order {
                     `
                     : ``
                 }    
-            </td>
+            </td> 
             `;
         tbody.appendChild(tr);
         });
@@ -188,7 +189,7 @@ export default class Order {
                     <li class="mb-1">
                         <strong>${i.product_name}</strong> (x${i.qty}) - 
                         ${Utility.fmtNGN(i.unit_price)}<br/>
-                        <small class="muted">${i.size_id ? `Size ID: ${i.size_id}` : ""}</small><br/>
+                        <small class="muted">${i.size_name ? `Size: <span class="badge bg-success">${i.size_name}</span>` : ""}</small><br/>
                         <small class="muted">${i.barbecue_sauce ? `Barbecue Sauce: ${i.barbecue_sauce}` : ""}</small>
                       
                 `;

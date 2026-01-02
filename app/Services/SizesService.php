@@ -142,6 +142,9 @@ class SizesService
      */
     public static function delete($id)
     {
+        // delete size_id in category_size_stocks table first
+        // $category_size_stock = Utility::$category_size_stock;
+        // Database::delete($category_size_stock, ['size_id' => $id]);
         try {
             return Database::delete(self::$table, ['id' => $id]);
         } catch (\Throwable $th) {

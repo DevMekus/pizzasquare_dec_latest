@@ -94,12 +94,12 @@
                                         <table id="ordersTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>          
-                                                    <th>Type</th>
-                                                    <th>Amount</th>         
-                                                    <th>Status</th>
-                                                    <th>Delivery</th>
                                                     <th>Date</th>
+                                                    <th>Amount</th>
+                                                    <th>Type</th> 
+                                                    <th>Status</th>
+                                                    <th>Id</th>
+                                                    <th>Service</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>

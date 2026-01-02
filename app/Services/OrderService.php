@@ -35,6 +35,7 @@ class OrderService{
         $order_items_tbl    = Utility::$order_items;
         $order_toppings_tbl = Utility::$order_toppings;
         $products_tbl       = Utility::$products;
+        $sizes_tbl          = Utility::$sizes;
 
         try {
 
@@ -82,7 +83,13 @@ class OrderService{
                         "type"  => "LEFT",
                         "table" => "$products_tbl p",
                         "on"    => "oi.product_id = p.id"
+                    ],
+                    [
+                        "type"  => "LEFT",
+                        "table" => "$sizes_tbl s",
+                        "on"    => "oi.size_id = s.id"
                     ]
+                    
                 ],
                 [
                     "oi.*",
@@ -91,6 +98,7 @@ class OrderService{
                     "p.image",
                     "p.description",
                     "p.category_id",
+                     "s.label AS size_name",
                     "p.is_active AS product_active"
                 ],
                 [
@@ -138,6 +146,7 @@ class OrderService{
         $order_items_tbl    = Utility::$order_items;
         $order_toppings_tbl = Utility::$order_toppings;
         $products_tbl       = Utility::$products;
+        $sizes_tbl          = Utility::$sizes;
 
         try {
 
@@ -162,7 +171,8 @@ class OrderService{
                     "pay.delivery_fee",
                     "pay.item_amount"
                 ],
-                [] // no filter = fetch ALL
+                [], // no filter = fetch ALL
+                ["order" => 'o.id DESC']
             );
 
             if (!$orders) return [];
@@ -177,6 +187,11 @@ class OrderService{
                             "type"  => "LEFT",
                             "table" => "$products_tbl p",
                             "on"    => "oi.product_id = p.id"
+                        ],
+                        [
+                            "type"  => "LEFT",
+                            "table" => "$sizes_tbl s",
+                            "on"    => "oi.size_id = s.id"
                         ]
                     ],
                     [
@@ -186,6 +201,7 @@ class OrderService{
                         "p.image",
                         "p.description",
                         "p.category_id",
+                        "s.label AS size_name",
                         "p.is_active AS product_active"
                     ],
                     [

@@ -108,18 +108,12 @@ class ProductService
                         "table" => "$categories c",
                         "on"   => "p.category_id = c.id"
                     ],
-                    [
-                        "type" => "LEFT",
-                        "table" => "$product_sizes ps",
-                        "on"   => "p.id = ps.product_id"
-                    ],
+                  
                 ],
                 [
                     "p.*",
                     "c.id AS category_id",
-                    "c.name AS category",
-                    "ps.id AS size_id",
-                    "ps.price AS size_price",
+                    "c.name AS category",                   
                 ],
                 [
                     "OR" => [
@@ -184,6 +178,100 @@ class ProductService
         }
     }
 
+    // public static function fetchById($id)
+    // {
+    //     $categories = Utility::$categories;
+    //     $products_tbl = Utility::$products;
+    //     $product_sizes = Utility::$product_sizes;
+
+    //     try {
+
+    //         // Fetch the matching products
+    //             $products = Database::joinTables(
+    //             "$products_tbl p",
+    //             [
+    //                 [
+    //                     "type" => "LEFT",
+    //                     "table" => "$categories c",
+    //                     "on"   => "p.category_id = c.id"
+    //                 ],
+    //                 [
+    //                     "type" => "LEFT",
+    //                     "table" => "$product_sizes ps",
+    //                     "on"   => "p.id = ps.product_id"
+    //                 ],
+    //             ],
+    //             [
+    //                 "p.*",
+    //                 "c.id AS category_id",
+    //                 "c.name AS category",
+    //                 "ps.id AS size_id",
+    //                 "ps.price AS size_price",
+    //             ],
+    //             [
+    //                 "OR" => [
+    //                     "p.id"   => $id,
+    //                     "p.name" => $id,
+    //                     "p.sku"  => $id,
+    //                 ]
+    //             ],
+    //             [
+    //                 "order" => "p.name ASC"
+    //             ]
+    //         );
+
+    //         // If nothing found
+    //         if (!$products || count($products) === 0) {
+    //             return [];
+    //         }
+
+    //         // CUSTOM PIZZA ORDER (same as other methods)
+    //         $customPizzaOrder = [
+    //             'Mega Beef',
+    //             'BBQ Chicken',
+    //             'Hotdog',
+    //             'Margherita',
+    //             'Italian Xtra'
+    //         ];
+
+    //         // Split pizzas & non-pizzas
+    //         $pizzas = [];
+    //         $others = [];
+
+    //         foreach ($products as $product) {
+    //             if (strtolower($product['category']) === 'pizza') {
+    //                 $pizzas[] = $product;
+    //             } else {
+    //                 $others[] = $product;
+    //             }
+    //         }
+
+    //         // SORT PIZZAS BY CUSTOM ORDER
+    //         usort($pizzas, function ($a, $b) use ($customPizzaOrder) {
+    //             $posA = false;
+    //             $posB = false;
+
+    //             foreach ($customPizzaOrder as $index => $name) {
+    //                 if (stripos($a['name'], $name) !== false) $posA = $index;
+    //                 if (stripos($b['name'], $name) !== false) $posB = $index;
+    //             }
+
+    //             $posA = ($posA === false ? PHP_INT_MAX : $posA);
+    //             $posB = ($posB === false ? PHP_INT_MAX : $posB);
+
+    //             return $posA <=> $posB;
+    //         });
+
+    //         // Merge pizzas (sorted) + others
+    //         return array_merge($pizzas, $others);
+
+    //     } catch (\Throwable $th) {
+    //         Utility::log($th->getMessage(), 'error', 'ProductService::fetchById', [], $th);
+    //         return false;
+    //     }
+    // }
+
+
 
     /** =========================
      *  FETCH Full Product DETAILS BY ID
@@ -192,6 +280,8 @@ class ProductService
     {
         $product = self::fetchById($productId);
         $sizes = ProductSizesService::fetchByProductId($productId);
+
+    
 
         return [
             "product" => $product,
