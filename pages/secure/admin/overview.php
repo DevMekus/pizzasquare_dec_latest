@@ -7,7 +7,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
 
 ?>
 
-<body id="ADMIN_SYSTEM" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
+<body id="ADMIN_SYSTEM" data-date="<?= CURRENT_DATE ?>" data-time="<?= CURRENT_TIME ?>" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
     <div id="overlay"></div>
     <section id="adminLayout">
         <?php require "sidebar.php" ?>

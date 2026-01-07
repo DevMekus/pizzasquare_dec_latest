@@ -5,7 +5,7 @@
     ?>
 
 
- <nav class="navbar navbar-expand-lg admin-nav sticky-top shadow-sm">
+ <nav class="navbar navbar-expand-lg admin-nav">
      <div class="container-fluid">
 
          <!-- Sidebar toggle: left, visible on mobile -->

@@ -28,7 +28,7 @@ export default class Utility {
   static ModalTitle = Utility.el("detailModalLabel");
   static ModalBody = Utility.el("detailModalBody");
   static ModalFooter = Utility.el("detailModalButtons");
-  static today = new Date().toISOString().slice(0, 10);
+  static today = document.body.dataset.date ?? new Date().toISOString().slice(0, 10);
   static NODATA = Utility.el("no-data");
   /**
    * Shortcut for getElementById

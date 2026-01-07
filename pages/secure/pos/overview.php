@@ -8,7 +8,14 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
 
 <body id="POS_SYSTEM" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
     <?php require "navbar.php" ?>
+    <section class="container mt-3">
+        <?php 
+            require ROOT_PATH . '/includes/xtra-thursdayAlert.php';
+        ?>
+    </section>
+   
     <main class="container-fluid pos-wrap">
+        
         <!-- Catalog -->
         <section class="catalog" aria-label="Product catalog">
             <div id="topFilter" class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">

@@ -66,7 +66,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkToday" checked>
                                                 <label class="form-check-label fw-bold color-success" for="checkToday">
-                                                    Todays order (<?= Date('Y-m-d') ?>)
+                                                    Todays order (<?= CURRENT_DATE ?>)
                                                 </label>
                                             </div>
                                         </div>

@@ -8,6 +8,8 @@ $role   = $_SESSION['role'] ?? null;
 $userid = $_SESSION['userid'] ?? null;
 $user = null;
 
+
+
 // Refresh user profile if not cached or expired
 $cacheDuration = 18000;
 $shouldRefresh = !isset($_SESSION['user_profile'])

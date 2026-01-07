@@ -7,10 +7,6 @@ $parts = explode("/", trim($current, "/"));
 
 $userid = $_SESSION['userid'] ?? null;
 
-// Current day of the week (full name, e.g., Monday)
-$dayName = date("l"); 
-
-
 
 ?>
 
@@ -44,11 +40,7 @@ $dayName = date("l");
                     <a class="nav-link <?= $current == 'track-order' ? 'active' : '' ?>" href="<?= BASE_URL ?>track-order">Track Order</a>
                 </li>
 
-                <?php if ($dayName === 'Thursday'):  ?>
-                      <li class="nav-item">
-                        <a class="nav-link <?= $current == 'xtra-thursday' ? 'active' : '' ?>" href="<?= BASE_URL ?>xtra-thursday">XtraThursday</a>
-                    </li>
-                <?php  endif; ?>
+              
 
                 <!-- Cart Icon only once -->
                 <li class="nav-item">

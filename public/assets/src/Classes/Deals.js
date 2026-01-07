@@ -215,6 +215,8 @@ export default class Deals {
     $("#displayDetails").modal("show");
     Deals.runCounter();
   }
+
+  
   
 
  

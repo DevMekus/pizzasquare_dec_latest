@@ -216,6 +216,7 @@
   transition: 0.2s ease;
   font-weight: 600;
 }
+
 .toggle-item input:checked + span {
   background: var(--secondary);
   color: var(--text-light);
@@ -390,3 +391,36 @@
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.xtrathursday-layout{
+  position: relative;
+}
+
+.xtrathursday-layout .toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  transform: translateX(-20px);
+  opacity: 0;
+  animation: slideIn 0.4s forwards;
+}
+
+.xtrathursday-layout .toggle-item span {
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #dcdcdc;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+.xtrathursday-layout .product-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+  padding-bottom: 70px; /* space for bottom button */
+  position: relative;
+}
+

@@ -11,6 +11,15 @@ define("COMPANY_ADDRESS", "99 Chime Avenue, New Haven, Enugu.");
 define("AUTH_INTRO", "Pizza Square Nigeria offers a wide range of Pizza and Shawarma menu crafted with authentic Italian recipes while maintaining original quality and classic taste.");
 define("TAG", "Made with Love From Italy");
 
+//Date and Timezone Settings
+date_default_timezone_set('Africa/Lagos');   
+$dateAndTime =  date('Y-m-d H:i:s');
+$date =  date('Y-m-d');
+$time =  date('H:i:s');
+
+define("CURRENT_DATE", $date);
+define("CURRENT_TIME", $time);
+
 
 // ===========================
 // ROOT AND URL DEFINITIONS

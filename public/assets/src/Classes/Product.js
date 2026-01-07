@@ -12,7 +12,8 @@ export default class Product {
     static isAdmin = false;
     static EXTRAS = [];
     static pagination = Utility.el("pagination");
-    static STATUS = ["available", "unavailable"]; 
+    static STATUS = ["available", "unavailable"];
+    static XTRATHURSDAYPRODUCTS = [] 
 
     static async loadProducts() {
         const products = await getItem('products');       
@@ -704,6 +705,197 @@ export default class Product {
         const totalLowStocks = lowProductStocks + lowCategoryStocks;
         return totalLowStocks;
     }
+
+    static async packageXLandM(products){
+        const result = {
+            xl: [],
+            m: []
+        }
+
+        products.forEach(product =>{
+            product.sizes.forEach(size =>{
+                if (size.size_label === "XL"){
+                    result.xl.push({
+                        product_id: product.id,
+                        product_name: product.name,
+                        product_image: product.image,
+                        product_description: product.description,
+                        size: size.size_label,
+                        stock_qty: size.category_stock_quantity,
+                        price: parseFloat(size.price)
+                    })
+                }
+
+                if (size.size_label === "M"){
+                    result.m.push({
+                        product_id: product.id,
+                        product_name: product.name,
+                        product_image: product.image,
+                        product_description: product.description,
+                        size: size.size_label,
+                        stock_qty: size.category_stock_quantity,
+                        price: parseFloat(size.price)
+                    })
+                }
+            })
+        })
+
+        return result
+    }
+
+    static xtraThursdayProducts(products){
+        const domElement = Utility.el("xtraThursdayDealsRow")
+        if (!domElement) return
+
+        if (products.length === 0) {
+            domElement.innerHTML = `
+                <div class="empty-state">
+                    <p class="muted">No Xtra Thursday products available at the moment.</p>
+                </div>
+            `;
+            return;
+        }
+        let html = '';
+        products.forEach((product, index) => {
+            html += Product.xtraThursdayProductCard(product, index);
+        });
+        domElement.innerHTML = html;
+
+        document.querySelectorAll(".xtrathursday-card").forEach((card) => {
+            card.addEventListener("click", (e) => {
+                const productId = card.dataset.product;
+                Product.singleXtraThursdayProductModal(productId);
+            }); 
+        });
+    }
+
+    static xtraThursdayProductCard(product, index) {
+        return `
+            <div class="col-6 col-md-3 mb-2" data-aos="fade-up" 
+                data-aos-delay="${index * 50}">
+                <div class="menu-card xtrathursday-card  bounce-card position-relative h-100" 
+                    data-product="${product.product_id}">                    
+                    <div style="display:flex; justify-content:center; align-items:center;">
+                    <img loading="lazy"
+                        src="${product.product_image}"
+                        alt="${product.product_name}"
+                        style="max-width:100%; height:auto; object-fit:cover; max-height:170px;" />
+                    </div>
+
+                    <div class="p-3">
+                        <div class="w-100 d-flex justify-content-between align-items-center flex-wrap flex-lg-nowrap">
+                        <h6 class="mb-0 product-title center-mobile text-center">${product.product_name}</h6>
+                        <div class="small text-muted  center-mobile">
+                            ₦${product.price.toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+          </div>
+        </div>
+        `      
+    }
+
+    static async singleXtraThursdayProductModal(productId) {
+        Product.EXTRAS = await getItem("extras");
+
+        const allProducts = Product.XTRATHURSDAYPRODUCTS['xl'];
+        const smallPizzas = Product.XTRATHURSDAYPRODUCTS['m'];
+
+        console.log(smallPizzas)
+        const product = allProducts.find(p => p.product_id == productId);
+        if (!product) return;
+        const domBody = Utility.ModalBody;
+        const title = Utility.ModalTitle;
+        title.textContent = `Xtra Thursday Deal`;
+        domBody.innerHTML = `
+            <div class="product-layout xtrathursday-layout">
+                <div class="product-left">
+                    <img src="${product.product_image}" alt="${product.product_name}" class="product-image zoom">   
+                </div>
+                <div class="product-right">
+                    <h3 class="text-center">${Utility.toTitleCase(product.product_name)}</h3>
+                    <p class="text-center muted mt-">${product.product_description || ""}</p>                   
+                    <div>
+                        <label class="section-title mb-3">Select your Free Medium Pizza</label>
+                        <div class="toggle-group slide-in mt-1 w-100 d-flex gap-2 flex-wrap">
+                            ${smallPizzas.map((sp, i) => {
+                                if (sp.product_name ==='Margherita Classic' || sp.product_name ==='Hotdog Sausage Fest'){
+                                return `                          
+                                        <label class="toggle-item mb-3">
+                                            <input type="radio" 
+                                                name="size"
+                                                value="${i}">
+                                            <span>${sp.product_name}</span>                       
+                                        </label>
+                                    `
+                                }
+                                
+                                }).join('')}
+                        </div>
+                    </div>
+                    <div class="extras-section center-mobile mt-3">
+                        <h6 class="muted center-mobile">Add Extra Toppings</h6>
+                            <div id="toppingsOptions" class="toppings-toggle center-mobile">                           
+                        </div>
+                                              
+                    </div>
+                    
+                    <div class="add-cart-footer mt-4">
+                        <button id="addToCartBtn" 
+                            class="btn-add-cart"
+                            data-size="${product.size}"
+                            data-size-id=""
+                            data-base-price="${product.price}"                          
+                            data-final-unit-price="${product.price}">
+                            Add to Cart • ₦<span id="cartPriceValue">${product.price.toLocaleString()}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        $("#displayDetails").modal("show");
+
+        const toppingsContainer = Utility.el("toppingsOptions");
+        const toppingsList = Product.EXTRAS.filter(
+            (t) => t.category_id == 1
+        );
+         toppingsList.forEach((topping) => {
+            const item = document.createElement("button");
+            item.className = "topping-btn";
+            item.dataset.id = topping.id;
+            item.dataset.price = topping.extras_price;
+            item.type = "button";
+            item.textContent = `${topping.extras} +₦${Number(topping.extras_price).toLocaleString()}`;
+
+            item.addEventListener("click", () => {
+                item.classList.toggle("active");
+                // updateTotalPrice();
+            });         
+
+            toppingsContainer.appendChild(item);
+        });
+
+        const addToCartBtn = Utility.el("addToCartBtn");
+        addToCartBtn.addEventListener("click", () => {
+            const finalUnitPrice = Number(addToCartBtn.dataset.finalUnitPrice);
+            Cart.addToCart({
+                product_id: product.product_id,
+                title: product.product_name,
+                size: addToCartBtn.dataset.size || null,
+                size_id: addToCartBtn.dataset.sizeId || null,
+                barbecueSauce: null,
+                price: finalUnitPrice,
+                qty: 1,
+                image: product.product_image,
+                toppings: [],
+                type: "xtrathursday",
+            });
+            Product.flyToCartAnimation(".product-image", "#cartCount");
+            addToCartBtn.classList.add("added");
+            setTimeout(() => addToCartBtn.classList.remove("added"), 1000);
+        });
+    }
+
 
 
 

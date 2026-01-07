@@ -6,7 +6,7 @@ require_once ROOT_PATH . '/includes/header.php';
 if($user['role']!=='manager')header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
 ?>
 
-<body id="ADMIN_SYSTEM" class="theme-light" data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
+<body id="ADMIN_SYSTEM" class="theme-light" data-date="<?= CURRENT_DATE ?>" data-time="<?= CURRENT_TIME ?>"  data-role="<?= $user['role']; ?>" data-userid="<?= $userid; ?>">
     <div id="overlay"></div>
     <section id="adminLayout">
         <?php require "sidebar.php" ?>

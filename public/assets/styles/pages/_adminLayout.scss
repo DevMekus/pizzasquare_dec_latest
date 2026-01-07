@@ -28,7 +28,8 @@
   background-color: var(--bg);
   transition: transform 0.3s ease;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-right: 1px solid $neutral-200;
+  // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   overflow-y: auto; /* enables internal scroll if content is long */
 }
 
@@ -39,7 +40,8 @@
   border-radius: 5px;
 
   &:hover {
-    background-color: $neutral-200;
+    background-color: var(--secondary);
+    color: #fff;
   }
 }
 
@@ -47,18 +49,19 @@
   margin-right: 10px;
 }
 
-.sidebar a.active {
-  background-color: var(--primary);
-  color: var(--text-light);
+
+.sidebar a {
+  color: $neutral-500;
+  font-family: "HelveticaFont", sans-serif;
+  font-weight: 500;
+}
+
+.sidebar .link-wrap.active {
+  background-color: var(--secondary) !important;
+  color: #fff !important;
   font-weight: bold;
   padding: 5px 10px;
   border-radius: 5px;
-}
-
-.sidebar a {
-  color: var(--text);
-  font-family: "HelveticaFont", sans-serif;
-  font-weight: 500;
 }
 
 #rightContent {
@@ -75,7 +78,7 @@
 .admin-nav {
   width: 100%;
   background: var(--bg);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 0px;
   z-index: 2;

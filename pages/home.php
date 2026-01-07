@@ -2,7 +2,6 @@
 require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/header.php';
 require_once ROOT_PATH . '/includes/navbar.php';
-
 ?>
 
 <body class="theme-light">
@@ -35,6 +34,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
                 <div class="w-100">
+                <?php 
+                    require ROOT_PATH . '/includes/xtra-thursdayAlert.php';
+                 ?>
                     <h2 class="section-title" data-aos="fade-right">Our Menu</h2>
                     <p class="section-sub" data-aos="fade-right" data-aos-delay="100">Select your Favourite Items.</p>
                 </div>
