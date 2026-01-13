@@ -58,6 +58,8 @@ class OrderService{
                     "pay.transfer",
                     "pay.online",
                     "pay.delivery_fee",
+                    "pay.vat",
+                    "pay.discount",
                     "pay.item_amount"
                 ],
                 [
@@ -169,6 +171,8 @@ class OrderService{
                     "pay.transfer",
                     "pay.online",
                     "pay.delivery_fee",
+                    "pay.vat",
+                    "pay.discount",
                     "pay.item_amount"
                 ],
                 [], // no filter = fetch ALL

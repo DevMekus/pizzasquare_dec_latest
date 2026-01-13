@@ -369,7 +369,7 @@ export default class Checkout {
 
       payment: {
         payment_type: Utility.el("splitPaymentCheck")?.checked ? "split" : "single",
-        item_amount: parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0),
+        item_amount: parseFloat(Cart.GRANDTOTAL) - (parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0) + parseFloat(t.tax) + parseFloat(t.discount)),
         total_paid: parseFloat(Cart.GRANDTOTAL),
         cash: Utility.el("cashAmount") ? parseFloat(Utility.el("cashAmount").value || 0) : 0,
         card: Utility.el("cardAmount") ? parseFloat(Utility.el("cardAmount").value || 0) : 0,

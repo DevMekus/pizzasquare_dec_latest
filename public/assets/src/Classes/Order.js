@@ -38,7 +38,9 @@ export default class Order {
         Order.updateSummary(data);
 
         if (!data || data.length == 0) {
-            Utility.renderEmptyState(Utility.NODATA);
+           tbody.innerHTML = `<tr><td colspan="${
+                Utility.role == "admin" ? 8 : 8
+                }" class="text-center muted"><i class="fas fa-info-circle"></i> No orders available</td></tr>`;          
             return;
         }
 
@@ -66,11 +68,11 @@ export default class Order {
             <td class="color-danger fw-bold">${o.order_id}</td> 
             <td>${o.delivery ? Utility.toTitleCase(o.delivery) : "-"}</td>
             <td class="actions">
-                <button class="btn btn-sm btn-primary" data-action="view" data-id="${o.id}" >Manage</button>          
+                <button class="btn btn-xs btn-primary" data-action="view" data-id="${o.id}" >Manage</button>          
                 ${
                     Utility.role == "admin"
                     ? `
-                    <button class="btn-ghost btn btn-sm" 
+                    <button class="btn-default btn btn-xs" 
                     data-id="${o.id}" data-action="delete"
                     >Delete</button> 
                     `
@@ -90,6 +92,8 @@ export default class Order {
         const cardOrderAmt     = Utility.el("cardOrderAmt");
         const onlineOrderAmt   = Utility.el("onlineOrderAmt");
         const deliveryFeeAmt   = Utility.el("deliveryFeeAmt");
+        const discountAmt   = Utility.el("discountAmt");
+        const vatAmt   = Utility.el("vatAmt");
         const subtotal         = Utility.el("Subtotal");
         const totalAmtToday    = Utility.el("totalAmtToday");
 
@@ -100,6 +104,8 @@ export default class Order {
             card: 0,
             online: 0,
             delivery: 0,
+            discount: 0,
+            vat: 0,
             subtotal: 0
         };
 
@@ -111,6 +117,8 @@ export default class Order {
             totals.online   += Number(order.online)   || 0;
             totals.delivery += Number(order.delivery_fee) || 0;
             totals.subtotal += Number(order.item_amount) || 0;
+            totals.discount += Number(order.discount) || 0;
+            totals.vat      += Number(order.vat) || 0;
         }
 
         // Update the DOM
@@ -119,12 +127,20 @@ export default class Order {
         cardOrderAmt.textContent     = Utility.fmtNGN(totals.card);
         onlineOrderAmt.textContent   = Utility.fmtNGN(totals.online);
         deliveryFeeAmt.textContent   = Utility.fmtNGN(totals.delivery);
+        discountAmt.textContent      = Utility.fmtNGN(totals.discount);
+        vatAmt.textContent           = Utility.fmtNGN(totals.vat);
 
         // Total for today (including delivery fees) 
    
         subtotal.textContent = Utility.fmtNGN(totals.subtotal);
         totalAmtToday.textContent = Utility.fmtNGN(
-            totals.transfer + totals.cash + totals.card + totals.online + totals.delivery
+            totals.transfer + 
+            totals.cash + 
+            totals.card + 
+            totals.online + 
+            totals.delivery + 
+            totals.discount + 
+            totals.vat
         );
     }
 
@@ -189,7 +205,7 @@ export default class Order {
                     <li class="mb-1">
                         <strong>${i.product_name}</strong> (x${i.qty}) - 
                         ${Utility.fmtNGN(i.unit_price)}<br/>
-                        <small class="muted">${i.size_name ? `Size: <span class="badge bg-success">${i.size_name}</span>` : ""}</small><br/>
+                        <small class="muted">${i.size_name ? `Size: <span class="badge bg-light">${i.size_name}</span>` : ""}</small><br/>
                         <small class="muted">${i.barbecue_sauce ? `Barbecue Sauce: ${i.barbecue_sauce}` : ""}</small>
                       
                 `;
@@ -295,10 +311,10 @@ export default class Order {
 
                     <!-- RIGHT SIDE -->
                     <div class="col-sm-5">
-                        <div class="p-3 rounded shadow-sm bg-white">
+                        <div class="p-3 rounded">
 
                             <h5>Update Order Status</h5>
-                            <p class="muted mb-1">Modify the order status below:</p>
+                            <p class="muted small mb-1">Modify the order status below:</p>
 
                             <select id="statusTool" 
                                     data-id="${order.order_id}" 
@@ -308,7 +324,7 @@ export default class Order {
 
                             <button data-action="printOrder"
                                     data-id="${order.id}"
-                                    class="btn btn-ghost btn-sms mb-2 w-100">
+                                    class="btn btn-secondary btn-xs mb-2 w-100">
                                 <i class="bi bi-printer"></i> Print Order
                             </button>
 
@@ -317,14 +333,14 @@ export default class Order {
                                     ? `
                             <div class="border-top pt-3">
                                 <p class="fw-bold mb-1 text-danger">Delete Order</p>
-                                <p class="muted mb-2">
+                                <p class="muted small mb-2">
                                     This will remove the order and all related data. <strong>This action cannot be undone.</strong>
                                 </p>
 
                                 <button id="deleteBtn"
                                         data-id="${order.order_id}"
                                         data-action="delete"
-                                        class="btn btn-ghost w-100">
+                                        class="btn btn-primary btn-sm w-100">
                                     <i class="bi bi-trash"></i> Delete Order
                                 </button>
                             </div>`
@@ -388,6 +404,11 @@ export default class Order {
 
         const receipt = `
             <div class="text-center mb-3">
+            <div class="logo mb-2">
+                <img src="${CONFIG.BASE_URL}/assets/images/logo_color.png" 
+                alt="Pizza Square Nigeria" 
+                style="max-width: 120px;" />
+            </div>  
             <h5 class="mb-0">Pizza Square Nigeria</h5>
             <div class="small text-muted">Online Order Re-print Receipt</div>
             </div>
@@ -400,8 +421,7 @@ export default class Order {
             <div class="small">Customer: ${order.customer_name}</div>
             <div class="small">Phone: ${order.customer_phone}</div>
             ${order.attendant ? `<div class="small">Cashier: ${order.attendant ?? ""}</div>` : ""}            
-            <div class="small">Address: ${order.delivery_address ?? ""}</div>
-            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+            <div class="small">Address: ${order.delivery_address ?? ""}</div>           
             <hr/>          
 
             <div class="table-responsive mt-3">

@@ -590,6 +590,9 @@ Create a new order.
     "online": 0, //total_paid minus the delivery_fee for websites or mobile_app order
     "item_amount": 14000.00, //total_paid minus the delivery_fee
     "delivery_fee": 1000.00, 
+    "vat": 100,  //The amount calculated from vat
+    "discount": 100,  //The amount calculated from the discount if coupon applies
+    
   }
 }
 ```

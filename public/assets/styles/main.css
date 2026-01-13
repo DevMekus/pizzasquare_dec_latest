@@ -1647,7 +1647,7 @@ tbody tr:hover {
 }
 
 .pizzasquare-table {
-  background: var(--surface);
+  background: #fff;
   box-shadow: var(--shadow);
   padding: 16px;
 }

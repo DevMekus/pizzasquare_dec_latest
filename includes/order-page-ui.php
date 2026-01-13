@@ -47,7 +47,7 @@
                                                 <strong>CARD:</strong> <span id="cardOrderAmt">N 0.00</span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>ONLINE:</strong> <span id="onlineOrderAmt"></span>
+                                                <strong>ONLINE:</strong> <span id="onlineOrderAmt">N 0.00</span>
                                             </li>
                                           
                                             <li class="d-flex justify-content-between border-bottom py-1">
@@ -55,6 +55,12 @@
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
                                                 <strong><em>(+) Delivery fees</em>:</strong> <span id="deliveryFeeAmt"></span>
+                                            </li>
+                                            <li class="d-flex justify-content-between border-bottom py-1">
+                                                <strong>(+)  <em>Discount</em>:</strong> <span id="discountAmt"></span>
+                                            </li>
+                                            <li class="d-flex justify-content-between border-bottom py-1">
+                                                <strong>(+)  <em>Vat</em>:</strong> <span id="vatAmt"></span>
                                             </li>
                                              <li class="d-flex justify-content-between border-bottom py-1">
                                                 <strong class="color-success">Grand Total:</strong> <span id="totalAmtToday" class="color-success fw-bold"></span>
@@ -73,25 +79,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-8">
-                                <div class="filter-bar d-flex mb-2 gap-3 w-100" data-aos="fade-right"> 
-                                        <input type="text" id="search" placeholder="Search orders..." class="form-control" />
-                                        <select id="statusFilter" class="form-select">
-                                            <option value="all">All Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="preparing">Preparing</option>
-                                            <option value="delivered">Delivered</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        </select>
-                                        <?php if ($user['role'] == 'admin'): ?>
-                                        <button id="exportCsv" class="btn btn-sm btn-ghost">
-                                            <i class="fa-solid fa-file-csv"></i> Export
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
+                            <div class="col-sm-8">                                
                                 <div>
                                     <div class="pizzasquare-table table-sm table-responsive" data-aos="fade-up">
-                                        <table id="ordersTable">
+                                        <div class="filter-bar d-flex mb-2 gap-3 w-100" data-aos="fade-right"> 
+                                        <input type="text" id="search" placeholder="Search orders..." class="form-control" />
+                                                <select id="statusFilter" class="form-select">
+                                                    <option value="all">All Status</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="preparing">Preparing</option>
+                                                    <option value="delivered">Delivered</option>
+                                                    <option value="cancelled">Cancelled</option>
+                                                </select>
+                                                <?php if ($user['role'] == 'admin'): ?>
+                                                <button id="exportCsv" class="btn btn-xs btn-secondary">
+                                                    <i class="fa-solid fa-file-csv"></i> Export
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                        <table id="ordersTable" class="table-sm">
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
