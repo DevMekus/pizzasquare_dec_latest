@@ -108,4 +108,22 @@ class OrderController{
             Response::error(500, "Error fetching vat");
         }
     }
+
+    public function updateVat($id)
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+            $data = RequestValidator::validate([
+                'vat' => 'required|numeric',
+            ]);
+
+            $data = RequestValidator::sanitize($data);
+
+            if (OrderService::updateVAT($id, $data))
+                Response::success([], "vat updated");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::updateVat', [], $e);
+            Response::error(500, "An error occurred while updating vat");
+        }
+    }
 }

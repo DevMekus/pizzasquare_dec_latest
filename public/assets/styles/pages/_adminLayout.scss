@@ -35,7 +35,7 @@
 
 .link-wrap {
   padding: 5px 10px;
-  margin: 5px 0px;
+  margin: 2px 0px;
   transition: background 0.3s;
   border-radius: 5px;
 
@@ -43,6 +43,13 @@
     background-color: var(--primary-100);
     color: #fff;
   }
+}
+
+.primary_horizontal {
+  border: 0;
+  height: 1px;
+  background: var(--primary-300);
+  margin: 10px 0;
 }
 
 .link-wrap .icon {
@@ -54,6 +61,7 @@
   color: $neutral-500;
   font-family: "HelveticaFont", sans-serif;
   font-weight: 500;
+  font-size: 1rem;
 }
 
 .sidebar .link-wrap.active {

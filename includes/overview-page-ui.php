@@ -2,7 +2,16 @@
         <div class="content-centered">
             <div data-aos="fade-down" class="page-header">
                 <div class="welcome">Welcome back, <?= $user['fullname'] ?>!</div>
-                <div>Here's a quick overview of your shop today.  </div>
+                <div>Here's a quick overview of your shop today.  </div>              
+            </div>
+            <div class="divider" data-aos="fade-down"></div>
+            <div class="shortcuts flex gap-2 align-center justify-end" data-aos="fade-down">
+                <button class="btn btn-secondary btn-sm" id="refreshOverview">
+                    Refresh Data
+                </button>
+                  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vatModal">
+                    UPDATE VAT: <span id="currentVat">...</span>%
+                </button>
             </div>
             <div class="controls mt-3 mb-3" data-aos="fade-down">
                 <div class="search">
@@ -114,13 +123,36 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="kpi-card-n half bounce-card" data-aos="fade-up">
-                        <h5 style="margin-top:0">Active Promotions</h5>
+                        <h5 style="margin-top:0">News 7 Update</h5>
                         <div id="promos" class="list"></div>
                     </div>
                 </div>
              </div>
           
         </div>
+
+        <div class="modal fade" id="vatModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">VAT Manager</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                     <form id="vatForm">
+                        <div class="modal-body">                    
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="vatInput" name="vat" placeholder="Enter VAT percentage" min="0" max="100" step="0.01" required />                             
+                                </div>
+                            <div class="formInfo"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
 
         <?php require "footer.php" ?>
     </section>

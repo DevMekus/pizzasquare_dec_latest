@@ -27,6 +27,32 @@ class OrderService{
         }
     }
 
+    public static function updateVAT($id, $data){
+        $vat_tbl = Utility::$vat_tbl;
+        //convert vat to percent. Expecting whole number like 10
+        $vatInWhole = floatval($data['vat']);
+        $vatInPercent = $vatInWhole / 100;
+
+        try {
+            $update = Database::update(
+                $vat_tbl,
+                [
+                    'vat' => floatval($vatInPercent),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ],
+                [
+                    'id' => $id
+                ]
+            );
+
+            return $update;
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'OrderService::updateVAT', ['VATID' => $id, 'UpdateData' => json_encode($data)], $th);
+            Response::error(500, "An error occurred while updating VAT");
+        }
+    }
+
 
     public static function fetchOrderById($id)
     {

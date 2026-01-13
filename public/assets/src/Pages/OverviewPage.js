@@ -1,5 +1,5 @@
 import Order from "../Classes/Order.js";
-import { getItem } from "../Utils/CrudRequest.js";
+import { getItem, patchItem } from "../Utils/CrudRequest.js";
 import Product from "../Classes/Product.js";
 import Utility from "../Classes/Utility.js";
 
@@ -34,6 +34,46 @@ class OverviewPage {
     const lowAlerts = Product.countTheLowStocks(productsStock, categoryStock);
     document.getElementById("kpiLowStockNum").textContent = lowAlerts;
    
+  }
+
+  async manageVatActions(){
+    //show current vat
+    try {
+      const response = await getItem("vat");     
+      if (response) {
+        const data = await response[0];
+        const vatWhole = data.vat * 100;
+        document.getElementById("currentVat").textContent = vatWhole;
+        document.getElementById("vatInput").value = vatWhole;
+
+
+         //update vat
+        document.getElementById("vatForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const currentVatEl = document.getElementById("currentVat");
+          const vatInputEl = document.getElementById("vatInput");
+          $("#vatModal").modal("hide")
+          const patch = await patchItem(`admin/vat/${data.id}`, { vat: parseFloat(vatInputEl.value) }, "Update Vat to " + vatInputEl.value + "% ?");  
+          
+          if (patch){
+                Utility.toast("Order status updated successfully","success");
+                setTimeout(() => {
+                    Utility.reloadPage();
+                }, 1000);
+                
+            } else {
+                Utility.toast("Failed to update order status");
+            }
+        
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching VAT:", error);
+    }
+
+   
+
+    
   }
 
   recentOrderFiler() {
@@ -87,14 +127,16 @@ class OverviewPage {
     async renderPromos() {
     const el = document.getElementById("promos");
 
-    const deals = await getItem("deals") || [];
+    const updates = await getItem("news_updates") || [];
 
-    if (deals.length == 0) {
-      el.innerHTML = `<p class="muted">You have no active promotion at the moment</p>`;
+    if (updates.length == 0) {
+      el.innerHTML = `<p class="muted">
+        No news updates at the moment.
+      </p>`;
       return;
     }
 
-    el.innerHTML = deals.map(
+    el.innerHTML = updates.map(
       (
         p
       ) => `<div style="display:flex;justify-content:space-between;align-items:center">

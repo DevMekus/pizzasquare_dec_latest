@@ -150,12 +150,16 @@ class Report {
     const orderCount = filteredOrders.length;
     const totalRevenue = filteredOrders.reduce((s, o) => s + Number(o.total || 0), 0);
     const totalDeliveryFees = filteredOrders.reduce((s, o) => s + Number(o.delivery_fee || 0), 0);
+    const totalDiscountFees = filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
+    const totalVatFees = filteredOrders.reduce((s, o) => s + Number(o.vat || 0), 0);
 
     const paymentSummary = {
       transfer: filteredOrders.reduce((s, o) => s + Number(o.transfer || 0), 0),
       cash:     filteredOrders.reduce((s, o) => s + Number(o.cash || 0), 0),
       card:     filteredOrders.reduce((s, o) => s + Number(o.card || 0), 0),
-      online:   filteredOrders.reduce((s, o) => s + Number(o.online || 0), 0)
+      online:   filteredOrders.reduce((s, o) => s + Number(o.online || 0), 0),
+      discount:   filteredOrders.reduce((s, o) => s + Number(o.discount || 0), 0),
+      vat:   filteredOrders.reduce((s, o) => s + Number(o.vat || 0), 0),
     };
 
     const platformOverview = {};
@@ -205,7 +209,7 @@ class Report {
     });
 
     return {
-      orderOverview: { orderCount, totalRevenue, totalDeliveryFees },
+      orderOverview: { orderCount, totalRevenue, totalDeliveryFees, totalDiscountFees, totalVatFees },
       paymentOverview: paymentSummary,
       platformOverview,
       productPerformance: Object.values(productStats).sort((a, b) => b.qty - a.qty),
@@ -229,13 +233,15 @@ class Report {
 
     // Order overview metrics
     const metricsEl = Utility.el(this.ids.orderOverviewMetrics);
-    if (metricsEl) {
-      metricsEl.innerHTML = `
-        <div class="metric"><div class="mini">Orders</div><strong>${reports.orderOverview.orderCount}</strong></div>
-        <div class="metric"><div class="mini">Revenue</div><strong>${Utility.fmtNGN(reports.orderOverview.totalRevenue)}</strong></div>
-        <div class="metric"><div class="mini">Delivery Fees</div><strong>${Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</strong></div>
-      `;
-    }
+    // if (metricsEl) {
+    //   metricsEl.innerHTML = `
+    //     <div class="metric"><div class="mini">Orders</div><strong>${reports.orderOverview.orderCount}</strong></div>
+    //     <div class="metric"><div class="mini">Revenue</div><strong>${Utility.fmtNGN(reports.orderOverview.totalRevenue)}</strong></div>
+    //     <div class="metric"><div class="mini">Delivery Fees</div><strong>${Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</strong></div>
+    //      <div class="metric"><div class="mini">Discounts Fees</div><strong>${Utility.fmtNGN(reports.orderOverview.totalDiscountFees)}</strong></div>
+    //       <div class="metric"><div class="mini">VAT</div><strong>${Utility.fmtNGN(reports.orderOverview.totalVatFees)}</strong></div>
+    //   `;
+    // }
 
     // Order Overview table
     const ovT = document.querySelector(`#${this.ids.orderOverviewTable} tbody`);
@@ -244,6 +250,8 @@ class Report {
         <tr><td>Total Orders</td><td>${reports.orderOverview.orderCount}</td></tr>
         <tr><td>Total Revenue</td><td>${Utility.fmtNGN(reports.orderOverview.totalRevenue)}</td></tr>
         <tr><td>Delivery Fees</td><td>${Utility.fmtNGN(reports.orderOverview.totalDeliveryFees)}</td></tr>
+        <tr><td>Discount Fees</td><td>${Utility.fmtNGN(reports.orderOverview.totalDiscountFees)}</td></tr>
+        <tr><td>VAT Fees</td><td>${Utility.fmtNGN(reports.orderOverview.totalVatFees)}</td></tr>
       `;
     }
 

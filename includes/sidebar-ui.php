@@ -32,7 +32,8 @@
                     <span class="label">Accounts</span>
                 </a>
             </div>
-            <p class="muted">Inventory Management</p>
+            <!-- <p class="muted small">Inventory Management</p> -->
+           <hr class="primary_horizontal"/>
             <div class="link-wrap <?= $route == "menu" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/menu" class="">
                     <span class="icon">🍕</span>
@@ -57,41 +58,36 @@
                     <span class="label">Stock Manager</span>
                 </a>
             </div>
-            <div class="">
-                <p class="muted">Manage also</p>
-                
-             
-                
-                <div class="link-wrap <?= $route == "extras" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/extras" class="">
-                        <span class="icon">🧀</span>
-                        <span class="label">Toppings</span>
-                    </a>
-                </div>
-                <div class="link-wrap <?= $route == "news-updates" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/news-updates" class="">
-                        <span class="icon">🎉</span>
-                        <span class="label">News & Updates</span>
-                    </a>
-                </div>
-                <div class="link-wrap <?= $route == "zones" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/zones" class="">
-                        <span class="icon">🚚</span>
-                        <span class="label">Delivery Manager</span>
-                    </a>
-                </div>
-                <div class="link-wrap <?= $route == "coupons" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/coupons" class="">
-                        <span class="icon">🏷️</span>
-                        <span class="label">Coupons</span>
-                    </a>
-                </div>
-                <div class="link-wrap <?= $route == "activities" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/activities" class="">
-                        <span class="icon">🕒</span>
-                        <span class="label">Activity log</span>
-                    </a>
-                </div>
+            <hr class="primary_horizontal"/>
+            <div class="link-wrap <?= $route == "extras" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/extras" class="">
+                    <span class="icon">🧀</span>
+                    <span class="label">Toppings</span>
+                </a>
+            </div>
+            <div class="link-wrap <?= $route == "news-updates" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/news-updates" class="">
+                    <span class="icon">🎉</span>
+                    <span class="label">News & Updates</span>
+                </a>
+            </div>
+            <div class="link-wrap <?= $route == "zones" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/zones" class="">
+                    <span class="icon">🚚</span>
+                    <span class="label">Delivery Manager</span>
+                </a>
+            </div>
+            <div class="link-wrap <?= $route == "coupons" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/coupons" class="">
+                    <span class="icon">🏷️</span>
+                    <span class="label">Coupons</span>
+                </a>
+            </div>
+            <div class="link-wrap <?= $route == "activities" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/activities" class="">
+                    <span class="icon">🕒</span>
+                    <span class="label">Activity log</span>
+                </a>
             </div>
 
         </div>

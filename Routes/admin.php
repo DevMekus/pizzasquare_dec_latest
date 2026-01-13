@@ -120,6 +120,8 @@ Router::group('v1/admin', function () use (
     Router::add('GET', '/orders', [$order, 'getOrders']);    
     Router::add('PATCH', '/orders/{id}', [$order, 'updateOrderStatus']);
     Router::add('DELETE', '/orders/{id}', [$order, 'deleteOrder']);
+    Router::add('GET', '/vat', [$order, 'listVat']);
+    Router::add('PATCH', '/vat/{id}', [$order, 'updateVat']);
     
 
 
