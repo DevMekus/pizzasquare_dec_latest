@@ -10,7 +10,7 @@ use App\Controllers\SizesController;
 use App\Controllers\CategorySizeStockController;
 use App\Controllers\ExtrasController;
 use App\Controllers\ProductStockController;
-use App\Controllers\DealController;
+use App\Controllers\NewsUpdateController;
 use App\Controllers\CityController;
 use App\Controllers\CouponController;
 use App\Controllers\Geocode;
@@ -24,7 +24,7 @@ $cstock = new CategorySizeStockController();
 $order = new OrderController();
 $xtra = new ExtrasController();
 $productStock = new ProductStockController();
-$deal = new DealController();
+$newsUpdate = new NewsUpdateController();
 $city = new CityController();
 $coupon = new CouponController();
 $geolocation = new Geocode();
@@ -40,7 +40,7 @@ Router::group('v1', function () use (
     $cstock,
     $xtra,
     $productStock,
-    $deal,
+    $newsUpdate,
     $city,
     $coupon,
     $geolocation,
@@ -74,9 +74,9 @@ Router::group('v1', function () use (
     Router::add('GET', '/extras', [$xtra, 'listExtras']);
     Router::add('GET', '/extras/{id}', [$xtra, 'getExtraById']);
     
-    #DealRoutes
-    Router::add('GET', '/deals', [$deal, 'listDeals']);
-    Router::add('GET', '/deals/{id}', [$deal, 'getDealById']);
+    #NewsUpdateRoutes
+    Router::add('GET', '/news_updates', [$newsUpdate, 'listNewsUpdates']);
+    Router::add('GET', '/news_updates/{id}', [$newsUpdate, 'getNewsUpdateById']);
 
      #CityRoutes
     Router::add('GET', '/city', [$city, 'listCities']);

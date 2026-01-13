@@ -17,6 +17,8 @@
   --card-radius: 14px;
   --gap: 18px;
   --pad: 18px;
+  --shadow: 0 8px 32px rgba(11, 110, 79, 0.08);
+  --btn-focus-outline: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
 // ==============================
@@ -206,7 +208,11 @@ a {
 
 .muted {
   color: var(--muted);
-  font-size: 13px;
+
+}
+
+.small-text {
+  font-size: 0.85rem;
 }
 
 header {

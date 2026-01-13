@@ -1,0 +1,202 @@
+// ==============================
+// Buttons (Extended)
+// ==============================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  border-radius: 0.375rem; /* rounded-md */
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-base);
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+  font-family: "HelveticaRoundedNormal";
+  text-transform: capitalize;
+
+  &-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: var(--font-size-sm);
+  }
+
+  &-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--font-size-lg);
+  }
+
+  /* Disabled state */
+  &:disabled,
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Icon-only style */
+  &.icon-btn {
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    font-size: var(--font-size-md);
+    justify-content: center;
+
+    &-sm {
+      width: 2rem;
+      height: 2rem;
+      font-size: var(--font-size-sm);
+    }
+
+    &-lg {
+      width: 3rem;
+      height: 3rem;
+      font-size: var(--font-size-lg);
+    }
+  }
+}
+
+.btn:active {
+  transform: translateY(5px);
+}
+
+// ==============================
+// Color Variants
+// ==============================
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--text-light);
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark-8);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--primary-dark-12);
+  }
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--text-dark);
+
+  &:hover:not(:disabled) {
+    background: var(--secondary-dark-8);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--secondary-dark-12);
+  }
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--text-dark);
+
+  &:hover:not(:disabled) {
+    background: var(--accent-dark-8);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--accent-dark-12);
+  }
+}
+
+.btn-error {
+  background: var(--error);
+  color: var(--text-light);
+
+  &:hover:not(:disabled) {
+    background: var(--error-dark-8);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--error-dark-12);
+  }
+}
+
+// ==============================
+// Outline Variant
+// ==============================
+// ==============================
+// Outline Button Variants
+// ==============================
+.btn-outline-primary {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+
+  &:hover:not(:disabled) {
+    background: var(--primary);
+    color: #fff;
+    border: 2px solid var(--primary);
+  }
+  &:active:not(:disabled) {
+    background: var(--primary-dark-12); // use precomputed dark variant
+    color: var(--text-dark);
+    border: 2px solid var(--primary);
+  }
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+
+  &:hover:not(:disabled) {
+    background: var(--secondary);
+    color: var(--text-dark);
+  }
+  &:active:not(:disabled) {
+    background: var(--secondary-dark-12);
+    color: var(--text-dark);
+  }
+}
+
+.btn-outline-accent {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+
+  &:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--text-dark);
+  }
+  &:active:not(:disabled) {
+    background: var(--accent-dark-12);
+    color: var(--text-dark);
+  }
+}
+
+.btn-outline-error {
+  background: transparent;
+  border: 2px solid var(--error);
+  color: var(--error);
+
+  &:hover:not(:disabled) {
+    background: var(--error);
+    color: var(--text-dark);
+  }
+  &:active:not(:disabled) {
+    background: var(--error-dark-12);
+    color: var(--text-dark);
+  }
+}
+
+.btn-special {
+  border: none;
+  border-radius: 25px 2px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(15, 23, 36, 0.07);
+}

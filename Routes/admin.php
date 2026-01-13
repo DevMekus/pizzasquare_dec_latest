@@ -8,7 +8,7 @@ use App\Controllers\CategorySizeStockController;
 use App\Controllers\ProductController;
 use App\Controllers\ProductSizesController;
 use App\Controllers\ProductStockController;
-use App\Controllers\DealController;
+use App\Controllers\NewsUpdateController;
 use App\Controllers\ExtrasController;
 use App\Controllers\CityController;
 use App\Controllers\CouponController;
@@ -23,7 +23,7 @@ $cstock = new CategorySizeStockController();
 $product = new ProductController();
 $productSizes = new ProductSizesController();
 $productStock = new ProductStockController();
-$deal = new DealController();
+$newsUpdate = new NewsUpdateController();
 $extras = new ExtrasController();
 $city = new CityController();
 $coupon = new CouponController();
@@ -40,7 +40,7 @@ Router::group('v1/admin', function () use (
     $product,
     $productSizes,
     $productStock,
-    $deal,
+    $newsUpdate,
     $extras,
     $city,
     $coupon,
@@ -85,10 +85,10 @@ Router::group('v1/admin', function () use (
     Router::add('PUT', '/category-stock/{stock_id}/update', [$productStock, 'adjustCategoryStock']);
 
 
-    #Deal Routes
-    Router::add('POST', '/deals', [$deal, 'postDeal']);
-    Router::add('POST', '/deals/{id}', [$deal, 'updateDeal']);
-    Router::add('DELETE', '/deals/{id}', [$deal, 'deleteDeal']);
+    #NewsUpdateRoutes Routes
+    Router::add('POST', '/news_updates', [$newsUpdate, 'postNewsUpdate']);
+    Router::add('POST', '/news_updates/{id}', [$newsUpdate, 'updateNewsUpdate']);
+    Router::add('DELETE', '/news_updates/{id}', [$newsUpdate, 'deleteNewsUpdate']);
 
     #ExtrasRoutes
     Router::add('POST', '/extras', [$extras, 'postExtras']);

@@ -15,28 +15,15 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
             <section class="inner-container">
                 <div class="content-centered">
                     <div data-aos="fade-down" class="page-header">
-                        <div class="welcome">Promotion Manager!</div>
-                        <div class="center-mobile">Manage all the <? BRAND_NAME ?> promotionals</div>
+                        <div class="welcome">News & Updates Manager!</div>
+                        <div class="center-mobile">Manage all the <? BRAND_NAME ?> news, updates and public announcements</div>
                         <div class="actions">
-                            <button class="btn btn-primary" id="addDealBtn"><i class="fa fa-plus"></i> New Deal</button>
+                            <button class="btn btn-primary btn-sm" id="addUpdateBtn"><i class="fa fa-plus"></i> New Update</button>
                         </div>
-                    </div>
-
-                    <!-- <section id="summary-cards" class="summary-cards" data-aos="fade-down">
-                        <div class="kpi-card bounce-card">
-                            <div class="icon-box bg-default"><i class="bi bi-gift fs-2"></i></div>
-                            <p>Total Deals</p>
-                            <h2 id="dealTotal">0</h2>
-                        </div>
-                        <div class="kpi-card bounce-card">
-                            <div class="icon-box bg-success"><i class="bi bi-check-lg fs-2"></i></div>
-                            <p>Active</p>
-                            <h2 id="dealActive">0</h2>
-                        </div>
-                    </section> -->
+                    </div>                    
 
                     <section class="pizzasquare-table table-responsive" data-aos="fade-up">
-                        <table id="dealsTable">
+                        <table id="update-table" class="table-sm">
                             <thead>
                                 <tr>
                                     <th>S/N</th>
@@ -47,7 +34,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody ></tbody>
                         </table>
 
                     </section>
@@ -66,7 +53,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
     </section>
 
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?= BASE_URL; ?>assets/src/Pages/DealPage.js"></script>
+    <script type="module" src="<?= BASE_URL; ?>assets/src/Pages/UpdatesPage.js"></script>
 
 </body>
 

@@ -44,7 +44,7 @@ Future versions will follow /api/v2/, /api/v3/, etc.
 - [Categories](#categories)
 - [Products](#products)
 - [Extras](#extras)
-- [Deals](#deals)
+- [News Update](#news_update)
 - [Cities](#cities)
 - [Coupons](#coupons)
 - [Orders](#orders)
@@ -389,25 +389,25 @@ Retrieve a specific extra/topping.
 
 ---
 
-## Deals
+## News Update
 
-### Get All Deals
-Retrieve all active deals.
+### Get All News updates
+Retrieve all active news update.
 
-**Endpoint:** `GET /deals`
+**Endpoint:** `GET /news_updates`
 
 **Response:** `200 OK`
 ```json
 {
   "success": true,
-  "message": "deals found",
+  "message": "news update found",
   "data": [
     {
       "id": 1,
-      "deal_id": "DEAL_001",
+      "news_id": "001",
       "title": "Weekend Special",
       "description": "Buy 2 Get 1 Free",
-      "image": "https://pizzasquare.ng/public/UPLOADS/deals/weekend.jpg",
+      "image": "https://pizzasquare.ng/public/UPLOADS/news_updates/weekend.jpg",
       "status": "active",
       "created_at": "2024-01-15"
     }
@@ -417,25 +417,25 @@ Retrieve all active deals.
 
 ---
 
-### Get Deal by ID
+### Get News Update by ID
 Retrieve a specific deal.
 
-**Endpoint:** `GET /deals/{id}`
+**Endpoint:** `GET /news_updates/{id}`
 
 **Parameters:**
-- `id` (integer|string) - Deal ID or deal_id
+- `id` (integer|string) - News ID or news_id
 
 **Response:** `200 OK`
 ```json
 {
   "success": true,
-  "message": "deal found",
+  "message": "news update found",
   "data": {
     "id": 1,
-    "deal_id": "DEAL_001",
+    "news_id": "001",
     "title": "Weekend Special",
     "description": "Buy 2 Get 1 Free",
-    "image": "https://pizzasquare.ng/public/UPLOADS/deals/weekend.jpg",
+    "image": "https://pizzasquare.ng/public/UPLOADS/news_updates/weekend.jpg",
     "status": "active"
   }
 }

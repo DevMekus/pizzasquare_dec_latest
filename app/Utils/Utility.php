@@ -21,7 +21,7 @@ class Utility
     public static $loginactivity = 'loginactivity';
     public static $roles = 'roles';
     public static $extras = 'extras';
-    public static $deals = 'deals';
+    public static $news_updates = 'news_updates';
     public static $city = 'city';
     public static $coupons = 'coupons';
     public static $vat_tbl = 'vat';

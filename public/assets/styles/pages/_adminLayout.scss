@@ -1,7 +1,7 @@
 #adminLayout {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg);
+  background-color: var(--surface);
   color: var(--text);
 }
 
@@ -40,7 +40,7 @@
   border-radius: 5px;
 
   &:hover {
-    background-color: var(--secondary);
+    background-color: var(--primary-100);
     color: #fff;
   }
 }
@@ -57,8 +57,8 @@
 }
 
 .sidebar .link-wrap.active {
-  background-color: var(--secondary) !important;
-  color: #fff !important;
+  background-color: var(--primary-200) !important;
+  color: var(--text) !important;
   font-weight: bold;
   padding: 5px 10px;
   border-radius: 5px;

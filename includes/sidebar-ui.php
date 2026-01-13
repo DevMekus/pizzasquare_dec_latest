@@ -68,10 +68,10 @@
                         <span class="label">Toppings</span>
                     </a>
                 </div>
-                <div class="link-wrap <?= $route == "deals" ? 'active' : '' ?>">
-                    <a href="<?= BASE_URL; ?>secure/admin/deals" class="">
+                <div class="link-wrap <?= $route == "news-updates" ? 'active' : '' ?>">
+                    <a href="<?= BASE_URL; ?>secure/admin/news-updates" class="">
                         <span class="icon">🎉</span>
-                        <span class="label">Deals Manager</span>
+                        <span class="label">News & Updates</span>
                     </a>
                 </div>
                 <div class="link-wrap <?= $route == "zones" ? 'active' : '' ?>">
