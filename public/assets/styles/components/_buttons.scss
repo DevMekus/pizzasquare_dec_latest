@@ -145,6 +145,12 @@
   background-color: var(--error-dark);
 }
 
+.btn-outline-error {
+  background-color: transparent;
+  border-color: var(--error);
+  color: var(--error);
+}
+
 .btn-warning {
   background-color: var(--warning);
   color: var(--white);

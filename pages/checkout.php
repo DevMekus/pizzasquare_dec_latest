@@ -33,7 +33,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <div class="cart-card p-3" data-aos="fade-up">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h5 class="mb-0">Your Cart</h5>
-                            <button class="btn btn-sm btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
+                            <button class="btn btn-xs btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
                         </div>
                         <div class="table-responsive">
                           
@@ -57,7 +57,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                 <div class="input-group coupon-input">
                                     <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                     <input type="text" id="coupon" class="form-control" placeholder="Promo code (e.g. PIZZA10)">
-                                    <button class="btn btn-sm btn-outline-secondary" id="applyCoupon">Apply</button>
+                                    <button class="btn  btn-outline" id="applyCoupon">Apply</button>
                                 </div>
                             </div>
                             <div class="col-md-6 text-md-end small text-muted">

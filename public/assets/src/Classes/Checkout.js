@@ -184,7 +184,7 @@ export default class Checkout {
                   <td class="text-end">${Utility.fmtNGN(item.price)}</td>
                   <td class="text-end">${Utility.fmtNGN(lineTotal)}</td>
                   <td class="text-end">
-                  <button class="btn btn-sm btn-outline-error" 
+                  <button class="btn btn-xs btn-outline-error" 
                   data-id="${
                     item.id
                   }" data-op="remove"><i class="bi bi-x"></i></button></td>
@@ -377,6 +377,8 @@ export default class Checkout {
         transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value || 0) : 0,
         delivery_fee:
           Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0,
+          vat: t.tax,
+          discount: t.discount,
       },
       proceed,
     };

@@ -331,6 +331,8 @@ class OrderService{
                 'online' => floatval($payment['online'] ?? 0),
                 'item_amount' => floatval($payment['item_amount'] ?? 0),
                 'delivery_fee' => floatval($payment['delivery_fee'] ?? 0),
+                'vat' => floatval($payment['vat'] ?? 0),
+                'discount' => floatval($payment['discount'] ?? 0),
                 'payment_date' => date('Y-m-d H:i:s'),
             ];
             
