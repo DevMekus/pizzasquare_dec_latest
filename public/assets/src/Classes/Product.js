@@ -1,4 +1,4 @@
-import {getItem} from '../Utils/CrudRequest.js'
+import {getItem, postItem} from '../Utils/CrudRequest.js'
 import Pagination from './Pagination.js';
 import Utility from './Utility.js';
 import Category from './Category.js';
@@ -6,7 +6,10 @@ import Cart from './Cart.js';
 
 
 export default class Product {
-    static PRODUCTS = []  
+    static PRODUCTS = [];  
+    static INGREDIENTS = [];
+    static PRODUCT_INGREDIENTS = [];
+    static ASSIGNED_INGREDIENTS = [];
     static currentCategory = null;  
     static currentCategoryId = null;
     static isAdmin = false;
@@ -1092,6 +1095,230 @@ export default class Product {
         </div>
         `      
     }
+
+
+    static loadIngredientsTable(ingredients, page = 1) {
+        const tbody = document.querySelector("#ingredientsTable tbody");
+        const notDATA = Utility.el("no-data");
+        tbody.innerHTML = "";
+       
+        const start = (page - 1) * Utility.PAGESIZE;
+        const end = start + Utility.PAGESIZE;
+        if (!ingredients || ingredients.length == 0) {
+        Utility.renderEmptyState(notDATA);   
+        return;
+        }
+     
+        const paginatedData = ingredients.slice(start, end);
+        paginatedData.forEach((item, idx) => {
+            const tr = document.createElement("tr");
+            tr.classList.add("bounce-card");
+            tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${item.category || ''}</td>   
+            <td>${Utility.toTitleCase(item.ingredient_name)}</td>              
+            <td>
+                <button class="btn btn-xs btn-primary" data-action='edit-ingredient' data-id="${item.id}">
+                Edit
+                </button>
+                <button class="btn btn-xs btn-default"
+                data-id="${item.id}" data-action='delete-ingredient'>
+                Delete
+                </button>
+            </td>
+            `;
+            tbody.appendChild(tr);
+            }
+        );
+        if (ingredients.length > Utility.PAGESIZE)
+        Pagination.render(ingredients.length, page, ingredients, Product.loadIngredientsTable,"listPagination");
+    
+    }
+
+    static assignIngredientsModal(){
+     const domBody = Utility.ModalBody;
+        const title = Utility.ModalTitle;
+        title.textContent = `Assign Ingredients to Product`;
+        const categoryHtml = Category.CATEGORIES.map((i, idx) => {
+            return `<option value="${i.id}" data-name="${i.name}" ${idx === 0 ? "selected" : ""}>
+            ${Utility.toTitleCase(i.name)}</option>`;
+            }).join("");
+
+        domBody.innerHTML = `
+                <form id="assignIngredientsForm">
+                 <p class="small muted" data-aos="fade-right" data-aos-delay="100">Browse all product ingredients on. Use the filters below to find exactly what you’re looking for.</p>
+                    
+                    <div class="form-group">
+                        <label>Select Ingredient Category</label>
+                        <select id="categorySelect">
+                            <option value="">-- Select Category --</option>
+                            ${categoryHtml}
+                        </select>
+                    </div>
+                    <div id="productSelectDom"></div>
+                    
+                    <p class="small muted mt-2" data-aos="fade-right" data-aos-delay="100">
+                        Select the ingredients you want to assign to the selected product.
+                    </p>
+                     <div class="collectionPit d-flex flex-wrap gap-2 align-items-center" id="collectionPit">
+                    </div>
+                    <div class="form-group mt-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Assign Ingredients</button>
+                    </div>
+                </form>
+        
+        `
+
+        $("#displayDetails").modal("show");
+      
+        displayIngredients(document.querySelector("#categorySelect").value);
+        
+        
+        document.querySelector("#categorySelect").addEventListener("change", (e) => {
+            const selectedCategoryId = e.target.value;
+          
+            displayIngredients(selectedCategoryId);
+        });
+        
+
+        function displayIngredients(selectedCategoryId){
+            const container = Utility.el("collectionPit");
+            container.innerHTML = "";
+            
+            const ingredients = Product.INGREDIENTS.filter(ing => ing.category_id == selectedCategoryId);
+
+            const categoryName = document.querySelector("#categorySelect").options[document.querySelector("#categorySelect").selectedIndex].dataset.name;
+
+            if (!selectedCategoryId){
+                container.innerHTML = `<p class="muted">Please select a category to load ingredients.</p>`;
+                title.textContent = `Assign Ingredients to Product`;
+                Utility.el("productSelectDom").innerHTML = "";
+                return;
+            }
+            // set the title
+            title.textContent = `Assign ${Utility.toTitleCase(categoryName)} Ingredients to Product`;
+
+            //inject the products select that category_id matches
+            const productSelectDom = Utility.el("productSelectDom");
+            productSelectDom.innerHTML = `
+                <div class="form-group">
+                    <label>Select Product</label>
+                    <select id="productSelectForIngredients">
+                        <option value="">-- Select Product --</option>
+                        ${Product.PRODUCTS.filter(p => p.category_id == selectedCategoryId).map(p => `<option value="${p.id}">${Utility.toTitleCase(p.name)}</option>`).join("")}
+                    </select>
+                </div>
+            `;
+
+            ingredients.forEach(ingredient => {
+                const div = document.createElement("div");
+                div.className = "ingredient-item";
+                div.innerHTML = `
+                    <input type="checkbox" id="ingredient-${ingredient.id}" value="${ingredient.id}">
+                    <label for="ingredient-${ingredient.id}">${Utility.toTitleCase(ingredient.ingredient_name)}</label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        Product.assignIngredientsToProduct();
+    }
+
+    static assignIngredientsToProduct() {
+        document.querySelector("#assignIngredientsForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const selectedProductId = document.querySelector("#productSelectForIngredients").value;
+            if (!selectedProductId) {
+                Utility.toast("Please select a product to assign ingredients to.", "error");
+                return;
+            }
+            const selectedIngredients = [];
+            document.querySelectorAll("#collectionPit input[type='checkbox']:checked").forEach(checkbox => {
+                selectedIngredients.push(checkbox.value);
+            }
+            );
+            if (selectedIngredients.length === 0) {
+                Utility.toast("Please select at least one ingredient to assign.", "error");
+                return;
+            }
+           
+            const data = {
+                product_id: selectedProductId,
+                ingredient_ids: selectedIngredients
+            };
+
+            $("#displayDetails").modal("hide");
+            const sendAssignRequest = await postItem("/admin/products/ingredients/assign", data,"Assigning ingredients to product...?");
+            if (sendAssignRequest) {
+                Utility.toast("Ingredients assigned successfully.", "success");
+                
+            } else {
+                Utility.toast(sendAssignRequest.message || "Failed to assign ingredients.", "error");
+            }
+        });
+    }
+
+     static async loadAssignedIngredientsTable(productId){
+        const tbody = document.querySelector("#assignedIngredientsTable tbody");
+        tbody.innerHTML = "";
+        Product.ASSIGNED_INGREDIENTS = [];
+
+        Product.ASSIGNED_INGREDIENTS = await getItem(`products/ingredients/${productId}`);
+
+        if (!productId){
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <p class="muted small">Please select a product to view its assigned ingredients.</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        if (Product.ASSIGNED_INGREDIENTS.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <p class="muted small">No ingredients assigned to this product.</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        Product.ASSIGNED_INGREDIENTS.forEach((ingredient, i) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${i+1}</td>
+                <td>${Utility.toTitleCase(ingredient.ingredient_name)}</td>
+                <td>
+                    <button class="btn btn-xs btn-default" data-action="delete" data-id="${ingredient.id}">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+     }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     static async singleXtraThursdayProductModal(productId) {
         Product.EXTRAS = await getItem("extras");

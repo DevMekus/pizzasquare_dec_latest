@@ -71,6 +71,14 @@ Router::group('v1/admin', function () use (
     Router::add('POST', '/products', [$product, 'store']);
     Router::add('POST', '/products/{id}', [$product, 'update']); 
     Router::add('DELETE', '/products/{id}', [$product, 'delete']);
+   
+   #Ingredients Routes
+    Router::add('GET', '/products/ingredients', [$product, 'getIngredients']);
+    Router::add('POST', '/products/ingredients/create', [$product, 'addIngredient']);
+    Router::add('DELETE', '/products/ingredients/{id}', [$product, 'deleteIngredient']);
+    Router::add('PUT', '/products/ingredients/{id}', [$product, 'updateIngredient']);
+    Router::add('POST', '/products/ingredients/assign', [$product, 'assignIngredientsToProduct']);
+    Router::add('DELETE', '/products/ingredients/unassign/{id}', [$product, 'removeIngredientFromProduct']);
 
     #Product Sizes Routes
     Router::add('POST', '/product-sizes', [$productSizes, 'addSizesBulk']);

@@ -108,6 +108,8 @@ export async function deleteItem(route, message = "Delete item?", showResponse =
                 if (showResponse) {
                     Utility.SweetAlertResponse(response);
                 }
+                console.log(response);
+
                 return response.success
          } else {
              Utility.toast("Action cancelled");

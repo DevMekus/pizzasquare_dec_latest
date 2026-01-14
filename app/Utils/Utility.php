@@ -29,6 +29,8 @@ class Utility
     public static $order_items = 'order_items';
     public static $orders = 'orders';
     public static $order_toppings = 'order_toppings';
+    public static $product_ingredients = 'product_ingredients';
+    public static $ingredients = 'ingredients';
      
 
     public static function debugger()

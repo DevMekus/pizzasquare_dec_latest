@@ -190,4 +190,160 @@ class ProductController
             Response::error(500, "Error deleting product");
         }
     }
+
+    public function getIngredients()
+    {
+        try {
+            $ingredients = ProductService::fetchIngredients();
+
+            if(empty($ingredients)) {
+                Response::error(404, "No ingredients found");
+            }
+
+            Response::success($ingredients, "Ingredients retrieved successfully");
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::getIngredients', [], $th);
+            Response::error(500, "Error fetching ingredients");
+        }
+    }
+
+    public function addIngredient()
+    {
+        try {
+            $required = ['ingredient_name', 'category_id'];
+            $data = RequestValidator::validate($required);
+            $data = RequestValidator::sanitize($data);
+            
+            //check if ingredient exists
+            $existingIngredient = ProductService::fetchIngredientByNameId($data['ingredient_name'], $data['category_id']);
+            
+            if ($existingIngredient) {
+                Response::error(409, "Ingredient with this name already exists");
+            }
+
+            $ingredientId = ProductService::addIngredient($data);
+
+            if ($ingredientId) {
+                Response::success(['id' => $ingredientId], "Ingredient created");
+            } else {
+                Response::error(400, "Failed to create ingredient");
+            }
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::addIngredient', [], $th);
+            Response::error(500, "Error creating ingredient");
+        }
+    }  
+    
+    public function updateIngredient($id)
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+            $required = ['ingredient_name', 'category_id'];
+            $data = RequestValidator::validate($required);       
+            
+            $ingredient = ProductService::fetchIngredientById($id);
+            if (!$ingredient) {
+                Response::error(404, "Ingredient not found");
+            }          
+
+            $updated = ProductService::editIngredient($id, $data, $ingredient);
+
+            if ($updated) {
+                Response::success([], "Ingredient updated");
+            } else {
+                Response::error(400, "Failed to update ingredient");
+            }
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::updateIngredient', [], $th);
+            Response::error(500, "Error updating ingredient");
+        }
+    }
+
+    public function deleteIngredient($id)
+    {
+        try {
+           
+            $id = RequestValidator::parseId($id);            
+           
+            $ingredient = ProductService::fetchIngredientById($id);
+           
+            if (!$ingredient) {
+                Response::error(404, "Ingredient not found");
+            }
+
+            $deleted = ProductService::removeIngredient($id, $ingredient);
+
+            if ($deleted) {
+                Response::success([], "Ingredient deleted");
+            } else {
+                Response::error(400, "Failed to delete ingredient");
+            }
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::deleteIngredient', [], $th);
+            Response::error(500, "Error deleting ingredient");
+        }
+    }
+
+    public function assignIngredientsToProduct()
+    {
+        try {
+            $required = ['product_id', 'ingredient_ids'];
+            $data = RequestValidator::validate($required);
+            $data = RequestValidator::sanitize($data);           
+            
+            $assigned = ProductService::assignIngredients($data['product_id'], $data['ingredient_ids']);
+
+            if ($assigned) {
+                Response::success([], "Ingredients assigned to product");
+            } else {
+                Response::error(400, "Failed to assign ingredients to product");
+            }
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::assignIngredientsToProduct', [], $th);
+            Response::error(500, "Error assigning ingredients to product");
+        }
+    }
+
+    public function getIngredientsByProduct($id)
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+
+            $ingredients = ProductService::fetchIngredientsByProductId($id);
+
+            if(empty($ingredients)) {
+                Response::error(404, "No ingredients found for this product");
+            }
+
+            Response::success($ingredients, "Ingredients for product retrieved successfully");
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::getIngredientsByProduct', [], $th);
+            Response::error(500, "Error fetching ingredients for product");
+        }
+    }
+
+    public function removeIngredientFromProduct($id)
+    {
+        try {
+            $id = RequestValidator::parseId($id);           
+           
+            $removed = ProductService::unassignIngredientFromProduct($id);
+
+            if ($removed) {
+                Response::success([], "Ingredient removed from product");
+            } else {
+                Response::error(400, "Failed to remove ingredient from product");
+            }
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductController::removeIngredientFromProduct', [], $th);
+            Response::error(500, "Error removing ingredient from product");
+        }
+    }
 }

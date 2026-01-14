@@ -9,9 +9,11 @@
                 <button class="btn btn-secondary btn-sm" id="refreshOverview">
                     Refresh Data
                 </button>
-                  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vatModal">
-                    UPDATE VAT: <span id="currentVat">...</span>%
-                </button>
+                <?php if($user['role']=='admin'): ?>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vatModal">
+                        UPDATE VAT: <span id="currentVat">...</span>%
+                    </button>
+                <?php endif; ?>
             </div>
             <div class="controls mt-3 mb-3" data-aos="fade-down">
                 <div class="search">
@@ -152,7 +154,7 @@
                     </form>
                 </div>
             </div>
-            </div>
+        </div>
 
         <?php require "footer.php" ?>
     </section>

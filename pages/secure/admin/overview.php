@@ -3,7 +3,7 @@ require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
-if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
+if($user['role']!=='admin') header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
 
 ?>
 

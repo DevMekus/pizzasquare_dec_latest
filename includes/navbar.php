@@ -5,6 +5,9 @@ use App\Utils\Utility;
 $current = Utility::currentRoute();
 $parts = explode("/", trim($current, "/"));
 
+
+$route = $parts[1] ?? null;
+
 $userid = $_SESSION['userid'] ?? null;
 
 
@@ -28,16 +31,16 @@ $userid = $_SESSION['userid'] ?? null;
 
             <ul class="navbar-nav ms-auto mb-3 mb-lg-0 align-items-lg-center gap-lg-2">
                 <li class="nav-item">
-                    <a class="nav-link <?= $current == 'home' || $current == '' ? 'active' : '' ?>" href="<?= BASE_URL ?>">Home</a>
+                    <a class="nav-link <?= $route == 'home' || $route == '' ? 'active' : '' ?>" href="<?= BASE_URL ?>">Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $current == '#menu' ? 'active' : '' ?>" href="<?= BASE_URL ?>#menu">Menu</a>
+                    <a class="nav-link <?= $route == '#menu' ? 'active' : '' ?>" href="<?= BASE_URL ?>#menu">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $current == 'news-updates' ? 'active' : '' ?>" href="<?= BASE_URL ?>news-updates">News</a>
+                    <a class="nav-link <?= $route == 'news-updates' ? 'active' : '' ?>" href="<?= BASE_URL ?>news-updates">News</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $current == 'track-order' ? 'active' : '' ?>" href="<?= BASE_URL ?>track-order">Track Order</a>
+                    <a class="nav-link <?= $route == 'track-order' ? 'active' : '' ?>" href="<?= BASE_URL ?>track-order">Track Order</a>
                 </li>
 
               

@@ -178,101 +178,6 @@ class ProductService
         }
     }
 
-    // public static function fetchById($id)
-    // {
-    //     $categories = Utility::$categories;
-    //     $products_tbl = Utility::$products;
-    //     $product_sizes = Utility::$product_sizes;
-
-    //     try {
-
-    //         // Fetch the matching products
-    //             $products = Database::joinTables(
-    //             "$products_tbl p",
-    //             [
-    //                 [
-    //                     "type" => "LEFT",
-    //                     "table" => "$categories c",
-    //                     "on"   => "p.category_id = c.id"
-    //                 ],
-    //                 [
-    //                     "type" => "LEFT",
-    //                     "table" => "$product_sizes ps",
-    //                     "on"   => "p.id = ps.product_id"
-    //                 ],
-    //             ],
-    //             [
-    //                 "p.*",
-    //                 "c.id AS category_id",
-    //                 "c.name AS category",
-    //                 "ps.id AS size_id",
-    //                 "ps.price AS size_price",
-    //             ],
-    //             [
-    //                 "OR" => [
-    //                     "p.id"   => $id,
-    //                     "p.name" => $id,
-    //                     "p.sku"  => $id,
-    //                 ]
-    //             ],
-    //             [
-    //                 "order" => "p.name ASC"
-    //             ]
-    //         );
-
-    //         // If nothing found
-    //         if (!$products || count($products) === 0) {
-    //             return [];
-    //         }
-
-    //         // CUSTOM PIZZA ORDER (same as other methods)
-    //         $customPizzaOrder = [
-    //             'Mega Beef',
-    //             'BBQ Chicken',
-    //             'Hotdog',
-    //             'Margherita',
-    //             'Italian Xtra'
-    //         ];
-
-    //         // Split pizzas & non-pizzas
-    //         $pizzas = [];
-    //         $others = [];
-
-    //         foreach ($products as $product) {
-    //             if (strtolower($product['category']) === 'pizza') {
-    //                 $pizzas[] = $product;
-    //             } else {
-    //                 $others[] = $product;
-    //             }
-    //         }
-
-    //         // SORT PIZZAS BY CUSTOM ORDER
-    //         usort($pizzas, function ($a, $b) use ($customPizzaOrder) {
-    //             $posA = false;
-    //             $posB = false;
-
-    //             foreach ($customPizzaOrder as $index => $name) {
-    //                 if (stripos($a['name'], $name) !== false) $posA = $index;
-    //                 if (stripos($b['name'], $name) !== false) $posB = $index;
-    //             }
-
-    //             $posA = ($posA === false ? PHP_INT_MAX : $posA);
-    //             $posB = ($posB === false ? PHP_INT_MAX : $posB);
-
-    //             return $posA <=> $posB;
-    //         });
-
-    //         // Merge pizzas (sorted) + others
-    //         return array_merge($pizzas, $others);
-
-    //     } catch (\Throwable $th) {
-    //         Utility::log($th->getMessage(), 'error', 'ProductService::fetchById', [], $th);
-    //         return false;
-    //     }
-    // }
-
-
-
     /** =========================
      *  FETCH Full Product DETAILS BY ID
      *  =========================*/
@@ -551,5 +456,288 @@ class ProductService
             return false;
         }
     }
+
+    /** =========================
+     *  FETCH INGREDIENTS
+     *  =========================*/ 
+    public static function fetchIngredients()
+    {
+        $ingredients = Utility::$ingredients;
+        $categories = Utility::$categories;
+
+        try {
+
+            // Fetch all ingredients
+            $allIngredients = Database::joinTables(
+                "$ingredients i",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$categories c",
+                        "on"   => "i.category_id = c.id"
+                    ],
+                ],
+                [
+                    "i.*",
+                    "c.name AS category",                  
+                ],
+                [],
+                [
+                    "order" => "i.ingredient_name ASC"
+                ]
+            );
+
+            return $allIngredients;
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductService::fetchIngredients', [], $th);
+            return false;
+        }
+    }
+
+    public  static function fetchIngredientByNameId($name, $categoryId)
+    {
+        $ingredients = Utility::$ingredients;
+
+        try {
+            $ingredient = Database::findWhere($ingredients, [
+                'ingredient_name' => $name,
+                'category_id'     => $categoryId
+            ]);
+            return $ingredient ? $ingredient[0] : null;
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductService::fetchIngredient
+ByNameId', ['name' => $name, 'category_id' => $categoryId], $th);
+            return null;
+        }
+    }
+
+    public static function fetchIngredientById($id)
+    {
+        $ingredients = Utility::$ingredients;
+
+        try {
+            $ingredient = Database::findWhere($ingredients, [
+                'id' => intval($id)
+            ]);
+           
+            return $ingredient ? $ingredient : null;
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductService::fetchIngredientById', ['id' => $id], $th);
+            return null;
+        }
+    }
+
+    /** =========================
+    *  EDIT INGREDIENT
+    *  =========================*/
+
+    public static function editIngredient($id, $data, $ingredient)
+    {
+        try {
+            $ingredients = Utility::$ingredients;
+
+            $uingredient = [
+                'category_id'  => isset($data['category_id']) ? intval($data['category_id']) : intval($ingredient['category_id']),
+                'ingredient_name'=> isset($data['ingredient_name']) ? $data['ingredient_name'] : $ingredient['ingredient_name'],  
+            ];      
+
+            if (Database::update($ingredients, $uingredient, ['id' => $id])) {
+
+                ActivityService::saveActivity([
+                    'userid' => $_SESSION['userid'],
+                    'type'   => 'ingredient',
+                    'title'  => 'ingredient updated'
+                ]);
+
+                return true;
+            }   
+
+            return false;
+
+        } catch (\Throwable $th) {
+          
+            Utility::log(
+                $th->getMessage(),
+                'error',
+                'ProductService::editIngredient',
+                ['ingredient_id' => $id],
+                $th
+            );
+            Response::error(500, "Error updating ingredient");
+        }
+    }
+
+    public static function addIngredient($data)
+    {
+        try {
+            $ingredients = Utility::$ingredients;
+
+            $ingredient = [
+                'category_id'     => intval($data['category_id']),
+                'ingredient_name'=> $data['ingredient_name'],  
+            ];             
+
+            $insertId = Database::insert($ingredients, $ingredient);
+
+            if ($insertId) {
+                ActivityService::saveActivity([
+                    'userid' => $_SESSION['userid'],
+                    'type'   => 'ingredient',
+                    'title'  => 'new ingredient added'
+                ]);
+
+                return $insertId;
+            }
+
+            return false;
+
+        } catch (\Throwable $th) {
+            Utility::log(
+                $th->getMessage(),
+                'error',
+                'ProductService::addIngredient',
+                ['data' => $data],
+                $th
+            );
+            Response::error(500, "Error creating ingredient");
+        }
+    }
+
+    public static function removeIngredient($id){
+          $ingredients = Utility::$ingredients;
+          try {
+            if (Database::delete($ingredients, ['id' => $id])) {
+
+                ActivityService::saveActivity([
+                    'userid' => $_SESSION['userid'],
+                    'type'   => 'ingredient',
+                    'title'  => 'ingredient deleted'
+                ]);
+
+                return true;
+            }   
+
+            return false;
+        } catch (\Throwable $th) {
+            Utility::log(
+                $th->getMessage(),
+                'error',
+                'ProductService::deleteIngredient',
+                ['ingredient_id' => $id],
+                $th
+            );
+            Response::error(500, "Error deleting ingredient");
+        }
+    }
+
+     /** =========================
+     *  FETCH PRODUCT INGREDIENTS
+     *  =========================*/ 
+    public static function fetchIngredientsByProductId($productId)
+    {
+        $product_ingredients = Utility::$product_ingredients;
+        $ingredients = Utility::$ingredients;
+        $products = Utility::$products;
+
+        try {
+
+            // Fetch product ingredients with ingredient details
+            $productIngredients = Database::joinTables(
+                "$product_ingredients pi",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$ingredients i",
+                        "on"   => "pi.ingredient_id = i.id"
+                    ],
+                     [
+                        "type" => "LEFT",
+                        "table" => "$products p",
+                        "on"   => "pi.product_id = p.id"
+                    ],
+                ],
+                [
+                    "pi.*",
+                    "i.ingredient_name AS ingredient_name",
+                    "i.category_id AS ingredient_category_id",
+                    "i.ingredient_name AS ingredient_name",
+                    "p.name AS product_name",
+                ],
+                [
+                    "pi.product_id" => $productId
+                ],
+                [
+                    "order" => "i.ingredient_name ASC"
+                ]
+            );
+
+            return $productIngredients;
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductService::fetchProductIngredients', ['product_id' => $productId], $th);
+            return false;
+        }
+    }  
+
+    public static function assignIngredients($productId, $ingredientIds)
+    {
+        $product_ingredients = Utility::$product_ingredients;
+
+        try {
+
+            foreach ($ingredientIds as $ingredientId) {
+                // Check if the ingredient is already assigned
+                $existing = Database::findWhere($product_ingredients, [
+                    'product_id'   => $productId,
+                    'ingredient_id'=> $ingredientId
+                ]);
+
+                if (!$existing) {
+                    // Assign ingredient to product
+                    Database::insert($product_ingredients, [
+                        'product_id'   => $productId,
+                        'ingredient_id'=> $ingredientId
+                    ]);
+                }
+            }
+
+            return true;
+
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'ProductService::assignIngredients', ['product_id' => $productId, 'ingredient_ids' => $ingredientIds], $th);
+            return false;
+        }
+    }
+
+    public static function unassignIngredientFromProduct($id)
+    {
+        $product_ingredients = Utility::$product_ingredients;
+
+        try {
+            if (Database::delete($product_ingredients, ['id' => $id])) {
+
+                ActivityService::saveActivity([
+                    'userid' => $_SESSION['userid'],
+                    'type'   => 'ingredient_assignment',
+                    'title'  => 'ingredient unassigned from product'
+                ]);
+
+                return true;
+            }   
+
+            return false;
+        } catch (\Throwable $th) {
+            Utility::log(
+                $th->getMessage(),
+                'error',
+                'ProductService::deleteAssignedIngredient',
+                ['assignment_id' => $id],
+                $th
+            );
+            Response::error(500, "Error deleting assigned ingredient");
+        }
+    }
+
 
 }
