@@ -330,7 +330,13 @@ addBtn.addEventListener("click", () => {
         qty: 1,
         image: selectedPizza.image,
         toppings: toppingsSelected, // array of strings ONLY
+        type: "custom",
+        removed_ingredients: []           
     };
+
+    //   removed_ingredients: [
+    //         ...document.querySelectorAll(".topping-btn:not(.active)"),
+    //     ].map((ing) => ing.textContent),
 
     Cart.addToCart(finalPizza);
 

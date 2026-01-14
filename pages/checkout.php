@@ -198,7 +198,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 </div>
                 <div class="modal-body" id="successBody"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary bounce-card" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary bounce-card" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

@@ -350,8 +350,25 @@ export default class Checkout {
             proceed = false;
           }
     }
-    
 
+    //append the removed ingredients item to the order_note
+    const removedItems = Cart.cart.map(item => {
+      let orderNote = '';
+      if (Array.isArray(item.removed_ingredients) && item.removed_ingredients.length > 0) {
+        orderNote = `Removed Ingredients: ${item.removed_ingredients.join(', ')}`;
+      }
+      return {
+        ...item,
+        order_note: orderNote
+      };
+    });
+
+    const OrderNote = removedItems.map(item => item.order_note).filter(note => note !== '').join(' | ');
+
+    //join with the written note
+    const instructions = Utility.el("instructions")?.value || null;
+    const finalOrderNote = [OrderNote, instructions].filter(note => note).join(' | ');
+    
     return {
       order_id: Utility.generateId(),
       total_amount: Cart.GRANDTOTAL,
@@ -363,7 +380,7 @@ export default class Checkout {
       city: Cart.deliveryArea ? Cart.deliveryArea : null,
       delivery_type: !Checkout.isPos ? Cart.method : "pickup",
       customer_phone: Utility.el("phone")?.value  || null,
-      order_note: Utility.el("instructions")?.value || null,
+      order_note: finalOrderNote,
       userid: !Checkout.isPos ? Utility.el("userid")?.value  : null,
       attendant: Utility.el("attendant")?.value || null,
 

@@ -457,19 +457,9 @@ export default class Product {
 
         let isPizza = true;
 
-        const pizzaIngredients = [
-            "Pepperoni",
-            "Mushrooms",
-            "Onions",
-            "Sausage",
-            "Bacon",
-            "Extra cheese",
-            "Black olives",
-            "Green peppers",
-            "Pineapple",
-            "Spinach"
+      
 
-        ]
+        const productIngredients = await getItem(`products/ingredients/${productId}`);
 
         const product = res.product[0];
         const sizesObj = Array.isArray(res.sizes) ? res.sizes : [];
@@ -560,10 +550,10 @@ export default class Product {
                 ? `
             <div class="toppings-section">
                 <h6 class="muted center-mobile">Ingredients</h6>
-                <p class="muted center-mobile">
+                <p class="muted small center-mobile">
                    <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
                 </p>
-                <div id="IngredientsOptions" class="toppings-toggle center-mobile"></div>
+                <div id="IngredientsOptions" class="collectionPit center-mobile"></div>
             </div>
             `:""
 
@@ -655,29 +645,32 @@ export default class Product {
         }
 
         // -------------------------------------------
+        // If There are Ingredients
+        // -------------------------------------------
+        if (productIngredients.length > 0){
+            const IngredientsContainer = Utility.el("IngredientsOptions");
+            const ingredientsElm = productIngredients.map(ing => `<span class="collection-pill active mb-2">${ing.ingredient_name}</span>`).join('');
+            IngredientsContainer.innerHTML = ingredientsElm;
+
+            IngredientsContainer.querySelectorAll('.collection-pill').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');
+                    updateTotalPrice();
+                });
+            });
+        }
+          
+
+
+        // -------------------------------------------
         // TOPPINGS
         // -------------------------------------------
         if (product.category.toLowerCase() === "pizza") {
             const toppingsContainer = Utility.el("toppingsOptions");
             const toppingsList = Product.EXTRAS.filter(
                 (t) => t.category_id == product.category_id
-            );
-
-            // display the ingredients first
-            const IngredientsContainer = Utility.el("IngredientsOptions");
-            pizzaIngredients.forEach((ingredient) => {
-                const item = document.createElement("button");
-                item.className = "topping-btn active";
-                item.dataset.id = ingredient;
-                item.dataset.price = 0;
-                item.type = "button";
-                item.textContent = `${ingredient}`;
-                item.addEventListener("click", () => {
-                    item.classList.toggle("active");
-                    updateTotalPrice();
-                });
-                IngredientsContainer.appendChild(item);
-            });
+            );          
 
 
             toppingsList.forEach((topping) => {
@@ -730,6 +723,11 @@ export default class Product {
                 price: Number(t.dataset.price),
             }));
 
+            const deselectedIngredients = productIngredients.length > 0 ?
+            [
+                ...document.querySelectorAll(".collection-pill:not(.active)"),
+            ].map(t => t.textContent) : [];
+
             Cart.addToCart({
                 product_id: product.id,
                 title: product.name,
@@ -741,6 +739,7 @@ export default class Product {
                 image: imageUrl,
                 toppings: selectedToppings,
                 type: "regular",
+                removed_ingredients: deselectedIngredients,
             });
 
             Product.flyToCartAnimation(".product-image", "#cartCount");

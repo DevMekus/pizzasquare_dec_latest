@@ -152,6 +152,8 @@ export default class Cart {
     qty,
     image,
     toppings,
+    type = "regular",
+    removed_ingredients = [],
   }) {
     const existingIndex = Cart.cart.findIndex(
       (item) => item.id === product_id && item.size === size
@@ -171,6 +173,8 @@ export default class Cart {
         qty,
         image,
         toppings,
+        type,
+        removed_ingredients,
         total: price * qty,
       };
       Cart.cart.push(newItem);

@@ -68,16 +68,16 @@ class IngredientsPage{
         const productSelectDom = Utility.el("productSelectionDom");
         if(productSelectDom){           
             productSelectDom.innerHTML = `
-                <select id="productSelectForIngredients">
+                <select id="productDisplayIngredients">
                     <option value="">-- Select Product --</option>
                     ${Product.PRODUCTS.map(p => `<option value="${p.id}">${Utility.toTitleCase(p.name)}</option>`).join("")}
                 </select>
             `;
              
-            const productSelectForIngredients = document.querySelector("#productSelectForIngredients");
-            await Product.loadAssignedIngredientsTable(productSelectForIngredients.value);
+            const productDisplayIngredients = document.querySelector("#productDisplayIngredients");
+            await Product.loadAssignedIngredientsTable(productDisplayIngredients.value);
 
-            productSelectForIngredients.addEventListener("change", async (e) => {
+            productDisplayIngredients.addEventListener("change", async (e) => {
                 const productId = e.target.value;
                 if(productId){
                    await Product.loadAssignedIngredientsTable(productId);
@@ -91,7 +91,7 @@ class IngredientsPage{
 
 
 
-       IngredientsEventDelegate(){
+    IngredientsEventDelegate(){
        document.querySelector("#ingredientsTable tbody").addEventListener("click", async (e) => {
             const action = e.target.dataset.action
             const id = e.target.dataset.id;

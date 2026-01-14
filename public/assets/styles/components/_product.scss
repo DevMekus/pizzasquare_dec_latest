@@ -444,3 +444,36 @@
   position: relative;
 }
 
+
+.collectionPit {
+  width: 100%;
+  position: relative;
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.collection-pill {
+  border: 1px dashed var(--gray-200);
+  background: rgba(14, 165, 164, 0.08);
+  padding: 4px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.18s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;  
+}
+
+.collection-pill.deselected {
+  opacity: 0.6;
+  text-decoration: line-through;
+  color: var(--primary);
+}
+
+.collection-pill.active {  
+  background-color: var(--secondary);
+  color: var(--text-light);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
