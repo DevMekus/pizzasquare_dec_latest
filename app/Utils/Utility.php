@@ -31,6 +31,7 @@ class Utility
     public static $order_toppings = 'order_toppings';
     public static $product_ingredients = 'product_ingredients';
     public static $ingredients = 'ingredients';
+    public static $order_removed_ingredients = 'order_removed_ingredients';
      
 
     public static function debugger()

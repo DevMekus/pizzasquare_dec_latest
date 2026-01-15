@@ -1847,10 +1847,14 @@ table .avatar {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 10px;
   padding-bottom: 70px; /* space for bottom button */
   position: relative;
+}
+
+.single-layout .add-cart-footer {
+  max-width: 350px;
 }
 
 .add-cart-footer {

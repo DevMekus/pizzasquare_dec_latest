@@ -8,7 +8,7 @@ $parts = explode("/", trim($current, "/"));
 $route = $parts[2] ?? null;
 
 $dayName = date("l"); 
-if ($dayName === 'Wednesday'):  ?>
+if ($dayName === 'Thursday'):  ?>
     <div class="xtra-thursday-card" role="alert">
         <div class="containerw">
             <div class="row">
@@ -20,7 +20,7 @@ if ($dayName === 'Wednesday'):  ?>
                         <?php endif; ?>                
                                          
                         <p class="mb-0 bottom">
-                            <a href="<?=  BASE_URL; ?><?= $route =='pos'?'secure/pos/':'' ?>promo/xtra-thursday" class="alert-link btn btn-light"><?= $route =='pos'?'Place Order':'View Offer and Order Now' ?></a>
+                            <a href="<?=  BASE_URL; ?><?= $route =='pos'?'secure/pos/':'' ?>promo/xtra-thursday" class="alert-link btn btn-secondary"><?= $route =='pos'?'Place Order':'View Offer and Order Now' ?></a>
                         </p>
                     </div>
                 </div>

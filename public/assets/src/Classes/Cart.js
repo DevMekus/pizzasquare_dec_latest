@@ -105,7 +105,16 @@ export default class Cart {
               const extrasList = i.toppings.map((t) => t.extras).join(", ");
               toppingsHtml = ` - Toppings: ${extrasList}`;
             }
-          return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} - ${Utility.fmtNGN(
+
+            let removedHtml = "";
+            if (Array.isArray(i.removed_ingredients) && i.removed_ingredients.length > 0) {
+              const removedList = i.removed_ingredients
+                .map((r) => r.ingredient_name)
+                .join(", ");
+              removedHtml = ` - Removed: ${removedList}`;
+            }
+
+          return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} ${removedHtml} - ${Utility.fmtNGN(
             i.price * i.qty
           )}</li>`;
         }
@@ -113,6 +122,9 @@ export default class Cart {
       .join("");
 
     const summary = `
+      <h3 class="mb-0 text-center">Pizza Square Nigeria</h3>
+      <div class="small text-muted text-center">Website Order Receipt</div>
+      </div>
       <p>Thank you, <strong>${data.name}</strong>! </p>
       <p>Your order has been placed and your order id is <strong>${
         data.id
@@ -129,7 +141,7 @@ export default class Cart {
       <p class="small text-muted">A confirmation has been sent to ${
         data.email || "your email"
       }.</p>
-     
+      
     `;
 
     document.getElementById("successBody").innerHTML = summary;

@@ -62,6 +62,7 @@ class OrderService{
         $order_toppings_tbl = Utility::$order_toppings;
         $products_tbl       = Utility::$products;
         $sizes_tbl          = Utility::$sizes;
+        $order_removed_ingredients_tbl = Utility::$order_removed_ingredients;
 
         try {
 
@@ -73,7 +74,8 @@ class OrderService{
                         "type"  => "LEFT",
                         "table" => "$payments_tbl pay",
                         "on"    => "o.id = pay.order_id"
-                    ]
+                    ],
+                   
                 ],
                 [
                     "o.*",
@@ -153,6 +155,26 @@ class OrderService{
                 $items[$index]['toppings'] = $toppings ?: [];
             }
 
+            //Join the  $order_removed_ingredients_tbl
+            $removedItems = Database::joinTables(
+                "$order_removed_ingredients_tbl ori",
+                 [],
+                 ["ori.*"],
+                [
+                    "ori.order_id"   => $order['id'],
+                    "ori.product_id" => $item['product_id'],
+                    "ori.size_id"    => $item['size_id']
+                ]
+            );
+
+            // Attach removed ingredients to each item
+            foreach ($items as $index => $item) {
+                $itemRemovedIngredients = array_filter($removedItems, function($removedItem) use ($item) {
+                    return $removedItem['product_id'] == $item['product_id'] && $removedItem['size_id'] == $item['size_id'];
+                });
+                $items[$index]['removed_ingredients'] = array_values($itemRemovedIngredients);
+            }
+
 
 
             // 4️⃣ Attach items to the order
@@ -175,6 +197,7 @@ class OrderService{
         $order_toppings_tbl = Utility::$order_toppings;
         $products_tbl       = Utility::$products;
         $sizes_tbl          = Utility::$sizes;
+        $order_removed_ingredients_tbl = Utility::$order_removed_ingredients;
 
         try {
 
@@ -262,6 +285,26 @@ class OrderService{
                     $items[$i]['toppings'] = ($toppings && is_array($toppings)) ? $toppings : [];
                 }
 
+                 //Join the  $order_removed_ingredients_tbl
+            $removedItems = Database::joinTables(
+                "$order_removed_ingredients_tbl ori",
+                 [],
+                 ["ori.*"],
+                [
+                    "ori.order_id"   => $order['id'],
+                    "ori.product_id" => $item['product_id'],
+                    "ori.size_id"    => $item['size_id']
+                ]
+            );
+
+            // Attach removed ingredients to each item
+            foreach ($items as $index => $item) {
+                $itemRemovedIngredients = array_filter($removedItems, function($removedItem) use ($item) {
+                    return $removedItem['product_id'] == $item['product_id'] && $removedItem['size_id'] == $item['size_id'];
+                });
+                $items[$index]['removed_ingredients'] = array_values($itemRemovedIngredients);
+            }
+
                 // Attach items back into each order
                 $orders[$key]['items'] = $items;
             }
@@ -333,6 +376,18 @@ class OrderService{
                             'subtotal' => intval($topping['price']) * intval($item['qty']),
                         ];
                         Database::insert($order_toppings, $toppingData);
+                    }
+                }
+
+                //Removes ingredients from product
+                if (isset($item['removed_ingredients']) && is_array($item['removed_ingredients'])){
+                    foreach ($item['removed_ingredients'] as $ingredient){
+                        Database::insert(Utility::$order_removed_ingredients, [
+                            'order_id' => intval($newOrderId),
+                            'product_id' => intval($item['id']),
+                            'ingredient_name' => $ingredient['ingredient_name'],
+                            'size_id' => intval($item['size_id']),
+                        ]);
                     }
                 }
 

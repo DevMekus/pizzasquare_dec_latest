@@ -120,6 +120,23 @@ export default class Pos {
                   `;
                   }
               }
+
+              //Add the removed ingredients
+            let removedHtml = "";
+              if (Array.isArray(it.removed_ingredients) && it.removed_ingredients.length > 0) {
+                  const removedList = it.removed_ingredients
+                  .map((r) => r.ingredient_name?.trim() || "")
+                  .filter(Boolean)
+                  .join(", ");
+                  if (removedList) {
+                  removedHtml = `
+                      <br/>
+                      <small class="text-danger"><strong>Removed:</strong> ${removedList}</small>
+                  `;
+                  }
+              }
+
+              toppingsHtml += removedHtml;
   
               return `
                   <tr>
@@ -137,7 +154,7 @@ export default class Pos {
   
           const receipt = `
               <div class="text-center mb-3">
-              <h5 class="mb-0">Pizza Square Nigeria</h5>
+              <h3 class="mb-0">Pizza Square Nigeria</h3>
               <div class="small text-muted">Point of Sale Order Receipt</div>
               </div>
   
@@ -203,8 +220,11 @@ export default class Pos {
                   <span>Status:</span>
                   <span>${Utility.toTitleCase(order.status)}</span>
               </div>
-  
+              <div class="mt-3 text-center small muted">
+                <div><em>Thank you for your patronage!</em></div><br/>
+                <div>Order From Website: www.pizzasquare.ng</div>
               </div>
+            </div>
           `;
   
           document.getElementById("receiptBody").innerHTML = receipt;

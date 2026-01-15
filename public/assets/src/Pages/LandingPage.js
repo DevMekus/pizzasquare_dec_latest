@@ -130,6 +130,7 @@ async buildYourPizza() {
     let selectedSize = null;
     let sizeId = null;
     let toppingsSelected = [];
+    let removedIngredients = [];
 
     // --------------------------------------------------
     // LOAD PIZZA SELECTION
@@ -296,14 +297,52 @@ async buildYourPizza() {
     // --------------------------------------------------
     // CHANGE PIZZA
     // --------------------------------------------------
-    pizzaSelect.addEventListener("change", () => {
+    pizzaSelect.addEventListener("change", async () => {
         const pizzaId = pizzaSelect.value;
         selectedPizza = pizzasFull.find(p => p.id == pizzaId);
-
+       
+        loadRemovedIngredients(pizzaId)
         loadSizes(selectedPizza);
         calcTotal();
     });
 
+    async function loadRemovedIngredients(pizzaId) {
+        const removeIngredientsWrap = Utility.el("removeIngredientsWrap");
+        removeIngredientsWrap.innerHTML = "";
+        
+        removedIngredients = await getItem(`products/ingredients/${pizzaId}`);
+
+        if (removedIngredients.length > 0){           
+            const ingredientsElm = removedIngredients.map(ing => `
+                <span 
+                    class="collection-pill active mb-2" 
+                    data-ingredient-name="${ing.ingredient_name}" 
+                    >
+                ${ing.ingredient_name}
+                </span>
+                `).join('');
+            removeIngredientsWrap.innerHTML = ingredientsElm;
+
+            removeIngredientsWrap.querySelectorAll('.collection-pill').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');                  
+                });
+            });
+        }
+    }
+
+     const deselectedIngredients = () => {
+        return [
+            ...document.querySelectorAll("#removeIngredientsWrap .collection-pill.deselected"),
+        ].map((ing) => {
+            return{
+                ingredient_name: ing.dataset.ingredientName
+            }
+        });
+    };
+
+    
     // --------------------------------------------------
     // INITIAL LOAD
     // --------------------------------------------------
@@ -311,6 +350,7 @@ async buildYourPizza() {
     loadSizes(selectedPizza);
     loadExtras();
     calcTotal();
+    loadRemovedIngredients(selectedPizza.id);
 
     // --------------------------------------------------
 // ADD TO CART (UPDATED TO MATCH addToCart())
@@ -331,12 +371,10 @@ addBtn.addEventListener("click", () => {
         image: selectedPizza.image,
         toppings: toppingsSelected, // array of strings ONLY
         type: "custom",
-        removed_ingredients: []           
+        removed_ingredients: deselectedIngredients()           
     };
 
-    //   removed_ingredients: [
-    //         ...document.querySelectorAll(".topping-btn:not(.active)"),
-    //     ].map((ing) => ing.textContent),
+    
 
     Cart.addToCart(finalPizza);
 
