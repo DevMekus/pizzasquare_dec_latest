@@ -1848,7 +1848,7 @@ table .avatar {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  gap: 10px;
+  gap: 20px;
   padding-bottom: 70px; /* space for bottom button */
   position: relative;
 }

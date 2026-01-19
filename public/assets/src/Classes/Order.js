@@ -444,8 +444,9 @@ static renderAdminActions(order) {
             <div class="small">Phone: ${order.customer_phone}</div>
             ${order.attendant ? `<div class="small">Cashier: ${order.attendant ?? ""}</div>` : ""}            
             <div class="small">Address: ${order.delivery_address ?? ""}</div>           
-            <hr/>          
-
+            <hr/> 
+            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+            <hr/>
             <div class="table-responsive mt-3">
                 <table class="table table-sm">
                     <thead>
@@ -459,9 +460,7 @@ static renderAdminActions(order) {
                     <tbody>${itemsHtml}</tbody>
                 </table>
             </div>
-            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
-            <hr/>    
-
+           
             <div class="receipt-totals mt-3">
 
             <div>

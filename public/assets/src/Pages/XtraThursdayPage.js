@@ -1,6 +1,7 @@
-import { deleteItem, getItem, postItem } from "../Utils/CrudRequest.js";
+import {  getItem } from "../Utils/CrudRequest.js";
 import Utility from "../Classes/Utility.js";
 import Product from "../Classes/Product.js";
+import XtraThursdayPromo from "../Classes/XtraThursdayPromo.js";
 
 class XtraThursdayPage{
      constructor() {
@@ -9,13 +10,13 @@ class XtraThursdayPage{
     
     async initialize() {
         Product.PRODUCTS = await getItem('pizzas-with-sizes');  
-        Product.XTRATHURSDAYPRODUCTS = await Product.packageXLandM(Product.PRODUCTS) 
-        console.log(Product.XTRATHURSDAYPRODUCTS['m'])
+        XtraThursdayPromo.XTRATHURSDAYPRODUCTS = await Product.packageXLandM(Product.PRODUCTS) 
+        Product.EXTRAS = await getItem("extras");
         Utility.runClassMethods(this, ["initialize"]);
     }
 
     displayXtraThursdayPromo(){
-        const products = Product.xtraThursdayProducts(Product.XTRATHURSDAYPRODUCTS['xl']);
+        XtraThursdayPromo.xtraThursdayProducts(XtraThursdayPromo.XTRATHURSDAYPRODUCTS['xl']);
     }
 }
 

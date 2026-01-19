@@ -8,7 +8,7 @@ $parts = explode("/", trim($current, "/"));
 $route = $parts[2] ?? null;
 
 $dayName = date("l"); 
-if ($dayName === 'Thursday'):  ?>
+if ($dayName === 'Friday'):  ?>
     <div class="xtra-thursday-card" role="alert">
         <div class="containerw">
             <div class="row">

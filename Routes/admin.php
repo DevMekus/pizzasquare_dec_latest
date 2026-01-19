@@ -15,6 +15,7 @@ use App\Controllers\CouponController;
 use App\Controllers\UserController;
 use App\Controllers\ActivityController;
 use App\Controllers\OrderController;
+use App\Controllers\PromotionsController;
 
 
 $category = new CategoryController();
@@ -31,6 +32,8 @@ $user = new UserController();
 $activity = new ActivityController();
 $order = new OrderController();
 
+$promotion = new PromotionsController();
+
 
 
 Router::group('v1/admin', function () use (  
@@ -46,7 +49,8 @@ Router::group('v1/admin', function () use (
     $coupon,
     $user,
     $activity,
-    $order
+    $order,
+    $promotion
 ) {
 
     #Category Routes   
@@ -130,6 +134,11 @@ Router::group('v1/admin', function () use (
     Router::add('DELETE', '/orders/{id}', [$order, 'deleteOrder']);
     Router::add('GET', '/vat', [$order, 'listVat']);
     Router::add('PATCH', '/vat/{id}', [$order, 'updateVat']);
+
+    #PromotionRoutes   
+    Router::add('POST', '/promotions', [$promotion, 'postPromotion']);
+    Router::add('POST', '/promotions/{id}', [$promotion, 'updatePromotion']);
+    Router::add('DELETE', '/promotions/{id}', [$promotion, 'deletePromotion']);
     
 
 

@@ -378,7 +378,7 @@ addBtn.addEventListener("click", () => {
 
     Cart.addToCart(finalPizza);
 
-    Product.flyToCartAnimation(".product-image", "#cartCount");
+    Utility.flyToCartAnimation(".product-image", "#cartCount");
 
     Utility.toast(
         `Custom ${selectedPizza.name} (${selectedSize}) added to Order`,

@@ -167,6 +167,8 @@ export default class Pos {
               <div class="small">Phone: ${order.customer_phone}</div>
               <div class="small">Attendant: ${order.attendant ?? ""}</div>
               <hr/>
+               <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+              <hr/> 
   
               <div class="table-responsive mb-3 mt-3">
                 <table class="table table-sm">
@@ -181,8 +183,7 @@ export default class Pos {
                     <tbody>${itemsHtml}</tbody>
                 </table>
               </div>
-              <div class="small">Order Note: ${deliveryNote ?? ""}</div>
-              <hr/>  
+              
   
               <div class="receipt-totals mt-3">
   

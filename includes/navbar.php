@@ -42,6 +42,9 @@ $userid = $_SESSION['userid'] ?? null;
                 <li class="nav-item">
                     <a class="nav-link <?= $route == 'track-order' ? 'active' : '' ?>" href="<?= BASE_URL ?>track-order">Track Order</a>
                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link <?= $route == 'deals' ? 'active' : '' ?>" href="<?= BASE_URL ?>deals">Hot Deals</a>
+                </li>
 
               
 

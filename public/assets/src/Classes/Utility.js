@@ -1072,4 +1072,39 @@ export default class Utility {
       w.document.close();
     });
   }
+
+   static flyToCartAnimation(productImgSelector, cartIconSelector) {
+        const productImg = document.querySelector(productImgSelector);
+        const cartIcon = document.querySelector(cartIconSelector);
+
+        if (!productImg || !cartIcon) {
+        console.warn("❌ Fly-to-cart elements not found.");
+        return;
+        }
+
+        const imgRect = productImg.getBoundingClientRect();
+        const cartRect = cartIcon.getBoundingClientRect();
+
+        const clone = productImg.cloneNode(true);
+        clone.style.position = "fixed";
+        clone.style.top = imgRect.top + "px";
+        clone.style.left = imgRect.left + "px";
+        clone.style.width = imgRect.width + "px";
+        clone.style.height = imgRect.height + "px";
+        clone.style.zIndex = "9999";
+        clone.style.transition = "all 0.8s ease";
+        document.body.appendChild(clone);
+
+        requestAnimationFrame(() => {
+            clone.style.top = cartRect.top + "px";
+            clone.style.left = cartRect.left + "px";
+            clone.style.width = "30px";
+            clone.style.height = "30px";
+            clone.style.opacity = "0.4";
+        });
+
+        clone.addEventListener("transitionend", () => {
+            clone.remove();
+        });
+  }
 }
