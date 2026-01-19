@@ -83,6 +83,13 @@
                     <span class="label">Coupons</span>
                 </a>
             </div>
+            <div class="link-wrap <?= $route == "promotions" ? 'active' : '' ?>">
+                <a href="<?= BASE_URL; ?>secure/admin/promotions" class="">
+                    <span class="icon">🏷️</span>
+                    <span class="label">Promotions</span>
+                </a>
+            </div>
+            <hr class="primary_horizontal"/>
             <div class="link-wrap <?= $route == "activities" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/activities" class="">
                     <span class="icon">🕒</span>

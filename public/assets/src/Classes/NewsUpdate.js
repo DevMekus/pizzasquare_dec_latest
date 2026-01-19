@@ -193,7 +193,7 @@ export default class NewsUpdate {
 
                       <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea name="description" id="description" maxlength="100" placeholder="Write briefly about promo"></textarea>
+                          <textarea name="description" id="description" maxlength="100" placeholder="Write briefly about this update / news"></textarea>
                           <small id="charCount">0 / 100</small>
                       </div>
                   </div>

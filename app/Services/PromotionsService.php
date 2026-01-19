@@ -76,7 +76,7 @@ class PromotionsService
                 'title' => $data['title'],
                 'banner' => $banner,
                 'description' => $data['description'],               
-                'active_day' => $data['active_day'],               
+                'active_day' => strtolower($data['active_day']),               
                 'created_at' => date('y-m-d', time()),
             ];
 
@@ -106,7 +106,7 @@ class PromotionsService
             $promotion = [ 
                 'title' => $data['title'] ?? $previous['title'],            
                 'description' => $data['description'] ?? $previous['description'],               
-                'active_day' => $data['active_day'] ?? $previous['active_day'],               
+                'active_day' => strtolower($data['active_day']) ?? $previous['active_day'],               
                 'created_at' => date('y-m-d', time()),
             ];
 

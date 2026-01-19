@@ -71,6 +71,11 @@ tbody tr:hover {
   color: #721c24;
 }
 
+.muted {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 .pizzasquare-table {  
   background: #fff; 
   // background: var(--surface); 

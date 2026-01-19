@@ -91,7 +91,7 @@ class PromotionsController
             if (empty($promotion))
                 Response::error(404, "promotion not found");
 
-            if (PromotionsService::deletePromotion($id, $promotion))
+            if (PromotionsService::deletePromotion($id, $promotion[0]))
                 Response::success([], "promotion deleted");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'PromotionsController::deletePromotion', [], $e);
