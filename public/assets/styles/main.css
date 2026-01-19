@@ -641,6 +641,10 @@ header h1 {
   border: 1px solid var(--secondary) !important;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .btn, input[type=submit],
 input[type=reset] {
   --btn-radius: 0.5rem;

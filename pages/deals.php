@@ -21,7 +21,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </div>
     <?php require_once ROOT_PATH . '/includes/footer-links.php'; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <!-- <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/DealPage.js"></script> -->
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/PromotionsPage.js"></script>
 
 </body>
 

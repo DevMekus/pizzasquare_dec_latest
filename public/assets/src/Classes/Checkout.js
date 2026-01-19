@@ -154,11 +154,11 @@ export default class Checkout {
           toppingsHtml = `
           <br/>
           <small>
-            <strong>Toppings:</strong> ${extrasList}
+            ${extrasList}
           </small>`;
           }       
         return `
-                <tr>
+                <tr class="align-middle ${item.promo_product ?  "table-success":""}" ${item.promo_product ? "disabled" : ""}>
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <img class="cart-thumb" 
@@ -175,10 +175,10 @@ export default class Checkout {
                   <td class="text-center">
                     <div class="d-inline-flex align-items-center gap-1">
                       <button class="qty-btn" 
-                      data-id="${item.id}" data-op="dec">-</button>
+                      data-id="${item.id}" data-op="dec" ${item.promo_product ? "disabled" : ""}>-</button>
                       <span class="px-2">${item.qty}</span>
                       <button class="qty-btn" 
-                      data-id="${item.id}" data-op="inc">+</button>
+                      data-id="${item.id}" data-op="inc" ${item.promo_product ? "disabled" : ""}>+</button>
                     </div>
                   </td>
                   <td class="text-end">${Utility.fmtNGN(item.price)}</td>
@@ -187,7 +187,7 @@ export default class Checkout {
                   <button class="btn btn-xs btn-outline-error" 
                   data-id="${
                     item.id
-                  }" data-op="remove"><i class="bi bi-x"></i></button></td>
+                  }" data-op="remove" ${item.promo_product ? "disabled" : ""}><i class="bi bi-x"></i></button></td>
                 </tr>
               `;
       })

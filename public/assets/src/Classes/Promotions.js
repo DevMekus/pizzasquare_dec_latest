@@ -3,6 +3,7 @@ import Pagination from './Pagination.js';
 import Utility from './Utility.js';
 import Category from './Category.js';
 import Cart from './Cart.js';
+import { CONFIG } from '../Utils/config.js';
 
 export default class Promotions {
     static XTRATHURSDAYPRODUCTS = [] 
@@ -163,6 +164,13 @@ export default class Promotions {
                                 <label for="title">Active Day</label>
                                 <input type="text" id="title" name="active_day" placeholder="eg: Monday, Tuesday..." value="${promotion.active_day}">
                             </div>
+                             <div class="form-group">
+                                <label for="title">Status</label>
+                                <select name="status" id="status">
+                                    <option value="active" ${promotion.status === 'active' ? 'selected' : ''}>Active</option>
+                                    <option value="inactive" ${promotion.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="image-box" id="preview"><img src="${promotion.banner}" style="width: 100%; height: 250px; object-fit: cover;"></div>   
@@ -197,6 +205,84 @@ export default class Promotions {
             reader.readAsDataURL(file);
         }
         });
+    }
+
+    static promotionCards(promotions){
+        const dealsCardContainer = document.querySelector('#pizzaSquareDealsRow');
+        if (!dealsCardContainer) return;
+
+        dealsCardContainer.innerHTML = '';
+        promotions.forEach((promo, i) => {
+            dealsCardContainer.innerHTML += `
+                <div class="col-md-4 mb-4 cursor-pointer"
+                 aos="fade-up" data-aos-delay="${i * 100}"
+                 data-aos-duration="800"
+                 data-aos-easing="ease-in-out"
+                 data-title="${promo.title}"
+                 data-active_day="${promo.active_day}"
+                 data-status="${promo.status}"
+                 data-description="${promo.description}"
+                 data-id="${promo.id}"
+                 data-code="${promo.code}"
+                 >
+                    <div class="card">
+                        <img src="${promo.banner}" class="card-img-top" alt="${promo.title}">                       
+                    </div>
+                </div>
+            `;
+        });
+
+        //Event delegation for deal cards
+        dealsCardContainer.addEventListener('click', (e) => {
+            const dealCard = e.target.closest('.card');
+            if (dealCard) {
+                const isActive = dealCard.parentElement.dataset.status === 'active' ? true : false;
+                const today = new Date().toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+ 
+                const activeDay = dealCard.parentElement.dataset.active_day.toLowerCase();
+                const isActiveToday = activeDay.includes(today);
+                const promoCode = dealCard.parentElement.dataset.code
+
+                if(!isActiveToday){
+                        Swal.fire({
+                        title: "Promotion Not Active Today",
+                        text: `This promotion is only active on ${Utility.toTitleCase(activeDay)}.`,
+                        icon:  "info",
+                        confirmButtonColor: "#d51d28",
+                    });                                   
+                    return;
+                }
+
+                if(!isActive){
+                     Swal.fire({
+                        title: "Promotion Unavailable",
+                        text: "This promotion is currently unavailable at the moment.",
+                        icon:  "error",
+                        confirmButtonColor: "#d51d28",
+                    });                                   
+                    return;
+                }
+
+                
+
+                window.location.href = `${CONFIG.BASE_URL}/promo/promo-day?id=${promoCode}`
+
+                // Promotions.runPromotionFunction(dealCard.parentElement.dataset.code);
+                
+                
+            }
+        });
+    }
+
+    static runPromotionFunction(promoCode){
+        switch(promoCode){
+            case 'xtra_thursday_offer':           
+            window.location.href = `${CONFIG.BASE_URL}/promo/promo-day?id=${promoCode}`
+            break;
+            default:
+                Utility.toast("No promotion function found");
+            break;
+        }
     }
     
 }

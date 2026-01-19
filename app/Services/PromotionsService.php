@@ -22,7 +22,8 @@ class PromotionsService
                 [
                     "OR" => [
                         "p.id" => $id, 
-                        "p.title" => $id
+                        "p.title" => $id,
+                        "p.code" => $id
                     ]
                 ],
                 ["p.id" => $id]
@@ -71,8 +72,12 @@ class PromotionsService
                 $banner = $promo_banner['files'][0];
             }
 
+            //use the title to form the code by stripping of space and making small letters
+            $code = strtolower(str_replace(' ', '_', $data['title']));
+
         try {
             $promotion = [                
+                'code' =>  $code,
                 'title' => $data['title'],
                 'banner' => $banner,
                 'description' => $data['description'],               
@@ -103,9 +108,17 @@ class PromotionsService
 
         try {
 
+        if (isset($data['title'])){
+            //use the title to form the code by stripping of space and making small letters
+            $data['code'] = strtolower(str_replace(' ', '_', $data['title']));
+        }
+
+
             $promotion = [ 
+                'code' => isset($data['title']) ? $data['code'] : $previous['code'],            
                 'title' => $data['title'] ?? $previous['title'],            
                 'description' => $data['description'] ?? $previous['description'],               
+                'status' => strtolower($data['status']) ?? $previous['status'],               
                 'active_day' => strtolower($data['active_day']) ?? $previous['active_day'],               
                 'created_at' => date('y-m-d', time()),
             ];

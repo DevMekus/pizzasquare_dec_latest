@@ -48,7 +48,7 @@
                      <span class="badge bg-danger position-absolute order-badge" id="orderAlert">0</span>
                  </a>
 
-                 <button class="btn btn-error btn-sm logout" data-id="<?= $userid; ?>">
+                 <button class="btn btn-primary btn-xs logout" data-id="<?= $userid; ?>">
                      <i class="fa-solid fa-right-from-bracket"></i>
                      Logout
                  </button>

@@ -54,9 +54,7 @@ export default class Cart {
 
   static async placeOrder() {
     try {
-      const transaction = await Checkout.packageOrder();
-
-      console.log(transaction);    
+      const transaction = await Checkout.packageOrder();   
      
       if (transaction.proceed) {        
         const makePayment = await PaymentChannel.payWithPaystack(transaction);
@@ -166,6 +164,7 @@ export default class Cart {
     toppings,
     type = "regular",
     removed_ingredients = [],
+    promo_product = false,
   }) {
     const existingIndex = Cart.cart.findIndex(
       (item) => item.id === product_id && item.size === size
@@ -188,6 +187,7 @@ export default class Cart {
         type,
         removed_ingredients,
         total: price * qty,
+        promo_product,
       };
       Cart.cart.push(newItem);
       Utility.toast(`${title} added to your cart.`);
@@ -200,6 +200,26 @@ export default class Cart {
     Checkout.updateCart();
     Checkout.countCartItem();
     $("#displayDetails").modal("hide");
+  }
+
+  static BUYNOW({
+    product_id,
+    title,
+    size,
+    size_id,
+    barbecueSauce = null,
+    price,
+    qty,
+    image,
+    toppings,
+    type = "regular",
+    removed_ingredients = [],
+  }){
+    //Send payment modal.
+    //packageOrder();
+    //submit oder after payment and show order summary.
+    Cart.placeOrder();
+    Cart.cart = []; // Clear existing cart
   }
 
   static async handleHomeDelivery() {

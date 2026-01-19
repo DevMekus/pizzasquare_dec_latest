@@ -27,6 +27,12 @@ class PromotionsPage {
         });
     }
 
+    displayDealsCard(){
+        const dealsCardContainer = document.querySelector('#pizzaSquareDealsRow');
+        if (!dealsCardContainer) return;
+        Promotions.promotionCards(Promotions.PROMOTIONS);
+    }
+
 
 
 
