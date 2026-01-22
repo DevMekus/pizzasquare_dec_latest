@@ -1,4 +1,4 @@
-import Promotions from "../Classes/Promotions";
+
 import Utility from "../Classes/Utility";
 import XtraThursdayPromo from "../Classes/XtraThursdayPromo";
 import { getItem } from "../Utils/CrudRequest.js";

@@ -108,7 +108,7 @@ export default class Checkout {
       Checkout.cartBody.innerHTML = Cart.cart
         .map((it) => {
           return `         
-              <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+              <div class="d-flex align-items-center justify-content-between py-2 border-bottom ${it.promo_product ? 'bg-light p-2' : ''}">
                 <div>
                   <div>
                     <span class="fw-semibold text">${it.title}</span>
@@ -122,15 +122,15 @@ export default class Checkout {
                   ${it.qty}</div>
                 </div>
                 <div class="d-flex align-items-center gap-1">
-                    <button class="qty-btn" 
-                      data-id="${it.id}" data-op="dec">-</button>
+                    <button class="qty-btn btn btn-xs btn-outline-primary" 
+                      data-id="${it.id}" data-op="dec" ${it.promo_product ? "disabled" : ""}>-</button>
                       <span class="px-2">${it.qty}</span>
-                    <button class="qty-btn" 
+                    <button class="qty-btn btn btn-xs btn-outline-primary" 
                       data-id="${
                         it.id
-                      }" data-op="inc">+</button>                  
-                  <button class="btn btn-sm btn-outline-error" 
-                  data-id="${it.id}" data-op="remove"><i class="bi bi-x"></i>
+                      }" data-op="inc" ${it.promo_product ? "disabled" : ""}>+</button>                  
+                  <button class="btn btn-xs btn-outline-error" 
+                  data-id="${it.id}" data-op="remove" ${it.promo_product ? "disabled" : ""}><i class="bi bi-x"></i>
                   </button>
                 </div>
               </div>

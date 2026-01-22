@@ -273,26 +273,22 @@ export default class Promotions {
                     return;
                 }
 
-                
+                //check if the url contains pos or not
+                const isPos = window.location.href.includes('/pos/');
 
-                window.location.href = `${CONFIG.BASE_URL}/promo/promo-day?id=${promoCode}`
+                if(isPos){
+                    window.location.href = `${CONFIG.BASE_URL}/secure/pos/promo/promo-day?id=${promoCode}`;
+                } else {
+                    window.location.href = `${CONFIG.BASE_URL}/promo/promo-day?id=${promoCode}`;
+                }
 
-                // Promotions.runPromotionFunction(dealCard.parentElement.dataset.code);
+             
                 
                 
             }
         });
     }
 
-    static runPromotionFunction(promoCode){
-        switch(promoCode){
-            case 'xtra_thursday_offer':           
-            window.location.href = `${CONFIG.BASE_URL}/promo/promo-day?id=${promoCode}`
-            break;
-            default:
-                Utility.toast("No promotion function found");
-            break;
-        }
-    }
+    
     
 }

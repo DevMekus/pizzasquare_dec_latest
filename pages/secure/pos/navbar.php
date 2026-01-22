@@ -5,6 +5,7 @@
 
     $current = Utility::currentRoute();
     $parts = explode("/", trim($current, "/"));
+    $route = $parts[3] ?? null;
     ?>
 
  <nav class="navbar navbar-expand-lg pos-header sticky-top shadow-sm">
@@ -23,7 +24,7 @@
          <div class="collapse navbar-collapse" id="navbars">
              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
              </ul>
-             <div class="d-flex flex-wrap flex-md-nowrap gap-3 justify-content-between align-items-end mb-3">
+             <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-3 justify-content-between align-items-end mb-3 text-center text-md-start">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="enableBtn" >
                     <label class="form-check-label" for="enableBtn">
@@ -31,10 +32,13 @@
                     </label>
                 </div>
                 
-                 <a href="<?= BASE_URL ?>secure/pos/overview" class="icon-btn" aria-label="Notifications">
-                    <i class="bi bi-home"></i> Sales
+                 <a href="<?= BASE_URL ?>secure/pos/overview" class="icon-btn nav-link <?= $route === 'overview' ? ' active p-2' : '' ?>" aria-label="Notifications">
+                    <i class="bi bi-home"></i> Sales 
                  </a>
-                 <a href="<?= BASE_URL ?>secure/pos/orders" class="icon-btn" aria-label="Notifications">
+                <a href="<?= BASE_URL ?>secure/pos/deals" class="icon-btn nav-link <?= $route === 'deals' ? ' active p-2' : '' ?>" aria-label="Notifications">
+                    <i class="bi bi-home"></i> Deals
+                 </a>
+                 <a href="<?= BASE_URL ?>secure/pos/orders" class="icon-btn nav-link <?= $route === 'orders' ? ' active p-2' : '' ?>" aria-label="Notifications">
                      <div class="me-2 position-relative">
                          <i class="bi bi-cart"></i> Orders
                          <span

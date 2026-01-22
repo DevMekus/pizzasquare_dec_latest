@@ -94,63 +94,7 @@ export default class Cart {
     }
   }
 
-  // static transactionSummary(data) {
-  //   const itemsHtml = data.items
-  //     .map(
-  //       (i) => {
-  //           let toppingsHtml = "";
-  //           if (Array.isArray(i.toppings) && i.toppings.length > 0) {
-  //             const extrasList = i.toppings.map((t) => t.extras).join(", ");
-  //             toppingsHtml = ` - Toppings: ${extrasList}`;
-  //           }
-
-  //           let removedHtml = "";
-  //           if (Array.isArray(i.removed_ingredients) && i.removed_ingredients.length > 0) {
-  //             const removedList = i.removed_ingredients
-  //               .map((r) => r.ingredient_name)
-  //               .join(", ");
-  //             removedHtml = ` - Removed: ${removedList}`;
-  //           }
-
-  //         return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} ${removedHtml} - ${Utility.fmtNGN(
-  //           i.price * i.qty
-  //         )}</li>`;
-  //       }
-  //     )
-  //     .join("");
-
-  //   const summary = `
-  //     <h3 class="mb-0 text-center">Pizza Square Nigeria</h3>
-  //     <div class="small text-muted text-center">Website Order Receipt</div>
-  //     </div>
-  //     <p>Thank you, <strong>${data.name}</strong>! </p>
-  //     <p>Your order has been placed and your order id is <strong>${
-  //       data.id
-  //     }</strong>.</p>
-  //     <ul class="list-unstyled">
-  //       <li><strong>Item(s) ordered:</strong>
-  //         <ul class="ms-3">
-  //           ${itemsHtml}
-  //         </ul>
-  //       </li>
-  //       <li><strong>Total:</strong> ${Utility.fmtNGN(data.total)}</li>
-  //       <li><strong>Method:</strong> ${Cart.method}</li>
-  //     </ul>
-  //     <p class="small text-muted">A confirmation has been sent to ${
-  //       data.email || "your email"
-  //     }.</p>
-      
-  //   `;
-
-  //   document.getElementById("successBody").innerHTML = summary;
-  //   new bootstrap.Modal(document.getElementById("successModal")).show();
-
-  //   // Reset
-  //   Cart.cart = [];
-  //   Checkout.updateCart();
-  //   Utility.toast("Cart cleared");
-  //   Checkout.renderCart();
-  // }
+  
   static transactionSummary(data) {
   const itemsRows = data.items
     .map((i) => {

@@ -4,9 +4,6 @@
 require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/header.php';
 require_once ROOT_PATH . '/includes/navbar.php';
-
-$dayName = date("l"); 
-
 ?>
 
 <body class="theme-light" id="dealsPage">

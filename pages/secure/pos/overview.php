@@ -59,7 +59,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                         <div class="col text-end"><span id="subtotal">0</span></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col">Tax <span id="tax_val"></span></div>
+                        <div class="col">Vat <span id="tax_val"></span></div>
                         <div class="col text-end"><span id="tax">0</span></div>
                     </div>
                     <div class="row mb-2">

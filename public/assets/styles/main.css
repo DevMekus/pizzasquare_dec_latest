@@ -3764,6 +3764,14 @@ body {
 #POS_SYSTEM .nav-link {
   color: var(--text);
 }
+#POS_SYSTEM .nav-link.active,
+#POS_SYSTEM .nav-link:hover {
+  background: var(--primary) !important;
+  color: var(--text-light) !important;
+  padding: 8px 12px !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
 #POS_SYSTEM .brand {
   display: flex;
   align-items: center;

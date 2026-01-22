@@ -12,9 +12,9 @@ class PosPage{
         this.initialize();
     }
 
-    async initialize() {
-        Pos.setTax();
+    async initialize() {       
         await Checkout.getAndSetVAT();
+        Pos.setTax();
         Category.CATEGORIES = await getItem("categories") || [];
         Product.PRODUCTS = await getItem("products") || [];
         Product.EXTRAS = await getItem("extras") || [];

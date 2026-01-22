@@ -23,7 +23,7 @@ export default class Pos {
   static setTax() {
     const domEl = Utility.el("tax_val");
     if (!domEl) return;
-    Pos.tax_val = Utility.el("tax_val").textContent = `(${Cart.TAX_RATE})`;
+    Pos.tax_val = Utility.el("tax_val").textContent = `(${Number(Cart.TAX_RATE) * 100}%)`;
   }
 
   static filterCat = "pizza";
