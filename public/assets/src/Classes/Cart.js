@@ -94,63 +94,152 @@ export default class Cart {
     }
   }
 
+  // static transactionSummary(data) {
+  //   const itemsHtml = data.items
+  //     .map(
+  //       (i) => {
+  //           let toppingsHtml = "";
+  //           if (Array.isArray(i.toppings) && i.toppings.length > 0) {
+  //             const extrasList = i.toppings.map((t) => t.extras).join(", ");
+  //             toppingsHtml = ` - Toppings: ${extrasList}`;
+  //           }
+
+  //           let removedHtml = "";
+  //           if (Array.isArray(i.removed_ingredients) && i.removed_ingredients.length > 0) {
+  //             const removedList = i.removed_ingredients
+  //               .map((r) => r.ingredient_name)
+  //               .join(", ");
+  //             removedHtml = ` - Removed: ${removedList}`;
+  //           }
+
+  //         return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} ${removedHtml} - ${Utility.fmtNGN(
+  //           i.price * i.qty
+  //         )}</li>`;
+  //       }
+  //     )
+  //     .join("");
+
+  //   const summary = `
+  //     <h3 class="mb-0 text-center">Pizza Square Nigeria</h3>
+  //     <div class="small text-muted text-center">Website Order Receipt</div>
+  //     </div>
+  //     <p>Thank you, <strong>${data.name}</strong>! </p>
+  //     <p>Your order has been placed and your order id is <strong>${
+  //       data.id
+  //     }</strong>.</p>
+  //     <ul class="list-unstyled">
+  //       <li><strong>Item(s) ordered:</strong>
+  //         <ul class="ms-3">
+  //           ${itemsHtml}
+  //         </ul>
+  //       </li>
+  //       <li><strong>Total:</strong> ${Utility.fmtNGN(data.total)}</li>
+  //       <li><strong>Method:</strong> ${Cart.method}</li>
+  //     </ul>
+  //     <p class="small text-muted">A confirmation has been sent to ${
+  //       data.email || "your email"
+  //     }.</p>
+      
+  //   `;
+
+  //   document.getElementById("successBody").innerHTML = summary;
+  //   new bootstrap.Modal(document.getElementById("successModal")).show();
+
+  //   // Reset
+  //   Cart.cart = [];
+  //   Checkout.updateCart();
+  //   Utility.toast("Cart cleared");
+  //   Checkout.renderCart();
+  // }
   static transactionSummary(data) {
-    const itemsHtml = data.items
-      .map(
-        (i) => {
-            let toppingsHtml = "";
-            if (Array.isArray(i.toppings) && i.toppings.length > 0) {
-              const extrasList = i.toppings.map((t) => t.extras).join(", ");
-              toppingsHtml = ` - Toppings: ${extrasList}`;
-            }
+  const itemsRows = data.items
+    .map((i) => {
+      const toppings =
+        Array.isArray(i.toppings) && i.toppings.length
+          ? `<div class="text-success small">
+               <strong>+ Toppings:</strong> ${i.toppings
+                 .map((t) => t.extras)
+                 .join(", ")}
+             </div>`
+          : "";
 
-            let removedHtml = "";
-            if (Array.isArray(i.removed_ingredients) && i.removed_ingredients.length > 0) {
-              const removedList = i.removed_ingredients
-                .map((r) => r.ingredient_name)
-                .join(", ");
-              removedHtml = ` - Removed: ${removedList}`;
-            }
+      const removed =
+        Array.isArray(i.removed_ingredients) && i.removed_ingredients.length
+          ? `<div class="text-danger small">
+               <strong>− Removed:</strong> ${i.removed_ingredients
+                 .map((r) => r.ingredient_name)
+                 .join(", ")}
+             </div>`
+          : "";
 
-          return `<li>${i.qty} x ${i.title} ${i.size && i.size !== "null" ? `(${i.size})` : ""} ${toppingsHtml} ${removedHtml} - ${Utility.fmtNGN(
-            i.price * i.qty
-          )}</li>`;
-        }
-      )
-      .join("");
+      return `
+        <tr>
+          <td>${i.qty}</td>
+          <td>
+            <strong>${i.title}</strong>
+            ${i.size && i.size !== "null" ? `<div class="small text-muted">Size: ${i.size}</div>` : ""}
+            ${toppings}
+            ${removed}
+          </td>
+          <td class="text-end">${Utility.fmtNGN(i.price * i.qty)}</td>
+        </tr>
+      `;
+    })
+    .join("");
 
     const summary = `
-      <h3 class="mb-0 text-center">Pizza Square Nigeria</h3>
-      <div class="small text-muted text-center">Website Order Receipt</div>
-      </div>
-      <p>Thank you, <strong>${data.name}</strong>! </p>
-      <p>Your order has been placed and your order id is <strong>${
-        data.id
-      }</strong>.</p>
-      <ul class="list-unstyled">
-        <li><strong>Item(s) ordered:</strong>
-          <ul class="ms-3">
-            ${itemsHtml}
-          </ul>
-        </li>
-        <li><strong>Total:</strong> ${Utility.fmtNGN(data.total)}</li>
-        <li><strong>Method:</strong> ${Cart.method}</li>
-      </ul>
-      <p class="small text-muted">A confirmation has been sent to ${
-        data.email || "your email"
-      }.</p>
-      
-    `;
+  <div class="receipt">
 
-    document.getElementById("successBody").innerHTML = summary;
-    new bootstrap.Modal(document.getElementById("successModal")).show();
+    <h4 class="text-center mb-0">Pizza Square Nigeria</h4>
+    <div class="text-center small text-muted mb-3">
+      Website Order Receipt
+    </div>
 
-    // Reset
-    Cart.cart = [];
-    Checkout.updateCart();
-    Utility.toast("Cart cleared");
-    Checkout.renderCart();
-  }
+    <p class="mb-1">Thank you, <strong>${data.name}</strong></p>
+    <p class="small text-muted mb-3">
+      Order ID: <strong>${data.id}</strong>
+    </p>
+
+    <table class="table table-sm">
+      <thead class="table-light">
+        <tr>
+          <th>Qty</th>
+          <th>Item</th>
+          <th class="text-end">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsRows}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="2">Total</th>
+          <th class="text-end">${Utility.fmtNGN(data.total)}</th>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="small">
+      <strong>Service Method:</strong> ${Cart.method}
+    </div>
+
+    <p class="small text-muted mt-2">
+      A confirmation has been sent to ${data.email || "your email"}.
+    </p>
+
+  </div>
+`;
+
+document.getElementById("successBody").innerHTML = summary;
+new bootstrap.Modal(document.getElementById("successModal")).show();
+
+// Reset
+  Cart.cart = [];
+  Checkout.updateCart();
+  Utility.toast("Cart cleared");
+  Checkout.renderCart();
+
+}
 
   static addToCart({
     product_id,

@@ -162,17 +162,22 @@ class OrderService{
                  ["ori.*"],
                 [
                     "ori.order_id"   => $order['id'],
-                    "ori.product_id" => $item['product_id'],
-                    "ori.size_id"    => $item['size_id']
+                  
                 ]
             );
 
+            $removedGrouped = [];
+
+            foreach ($removedItems as $ri) {
+                $key = $ri['product_id'] . '_' . $ri['size_id'];
+                $removedGrouped[$key][] = $ri;
+            }
+
+
             // Attach removed ingredients to each item
             foreach ($items as $index => $item) {
-                $itemRemovedIngredients = array_filter($removedItems, function($removedItem) use ($item) {
-                    return $removedItem['product_id'] == $item['product_id'] && $removedItem['size_id'] == $item['size_id'];
-                });
-                $items[$index]['removed_ingredients'] = array_values($itemRemovedIngredients);
+                $key = $item['product_id'] . '_' . $item['size_id'];
+                $items[$index]['removed_ingredients'] = $removedGrouped[$key] ?? [];
             }
 
 
@@ -189,134 +194,282 @@ class OrderService{
         }
     }
 
+    // public static function fetchAllOrders()
+    // {
+    //     $orders_tbl         = Utility::$orders;
+    //     $payments_tbl       = Utility::$payments;
+    //     $order_items_tbl    = Utility::$order_items;
+    //     $order_toppings_tbl = Utility::$order_toppings;
+    //     $products_tbl       = Utility::$products;
+    //     $sizes_tbl          = Utility::$sizes;
+    //     $order_removed_ingredients_tbl = Utility::$order_removed_ingredients;
+
+    //     try {
+
+    //         // 1️⃣ Fetch all orders + payment info
+    //         $orders = Database::joinTables(
+    //             "$orders_tbl o",
+    //             [
+    //                 [
+    //                     "type"  => "LEFT",
+    //                     "table" => "$payments_tbl pay",
+    //                     "on"    => "o.id = pay.order_id"
+    //                 ]
+    //             ],
+    //             [
+    //                 "o.*",
+    //                 "pay.payment_type",
+    //                 "pay.total_paid",
+    //                 "pay.cash",
+    //                 "pay.card",
+    //                 "pay.transfer",
+    //                 "pay.online",
+    //                 "pay.delivery_fee",
+    //                 "pay.vat",
+    //                 "pay.discount",
+    //                 "pay.item_amount"
+    //             ],
+    //             [], // no filter = fetch ALL
+    //             ["order" => 'o.id DESC']
+    //         );
+
+    //         if (!$orders) return [];
+
+    //         // 2️⃣ Loop through each order and fetch its items
+    //         foreach ($orders as $key => $order) {
+
+    //             $items = Database::joinTables(
+    //                 "$order_items_tbl oi",
+    //                 [
+    //                     [
+    //                         "type"  => "LEFT",
+    //                         "table" => "$products_tbl p",
+    //                         "on"    => "oi.product_id = p.id"
+    //                     ],
+    //                     [
+    //                         "type"  => "LEFT",
+    //                         "table" => "$sizes_tbl s",
+    //                         "on"    => "oi.size_id = s.id"
+    //                     ]
+    //                 ],
+    //                 [
+    //                     "oi.*",
+    //                     "p.name AS product_name",
+    //                     "p.sku",
+    //                     "p.image",
+    //                     "p.description",
+    //                     "p.category_id",
+    //                     "s.label AS size_name",
+    //                     "p.is_active AS product_active"
+    //                 ],
+    //                 [
+    //                     "oi.order_id" => $order['id']
+    //                 ]
+    //             );
+
+    //             // ensure $items is an array
+    //             if (!$items || !is_array($items)) {
+    //                 $items = [];
+    //             }
+
+    //             // 3️⃣ For each item get ALL toppings (always as array)
+    //             foreach ($items as $i => $item) {
+
+    //                 $toppings = Database::joinTables(
+    //                     "$order_toppings_tbl ot",
+    //                     [],
+    //                     ["ot.*"],
+    //                     [
+    //                         "ot.order_id"   => $order['id'],
+    //                         "ot.product_id" => $item['product_id'],
+    //                         "ot.size_id"    => $item['size_id']
+    //                     ]
+    //                 );
+
+    //                 // ensure toppings is an array (empty array if none)
+    //                 $items[$i]['toppings'] = ($toppings && is_array($toppings)) ? $toppings : [];
+    //             }
+
+    //              //Join the  $order_removed_ingredients_tbl
+    //         $removedItems = Database::joinTables(
+    //             "$order_removed_ingredients_tbl ori",
+    //              [],
+    //              ["ori.*"],
+    //             [
+    //                 "ori.order_id"   => $order['id'],
+                   
+    //             ]
+    //         );
+
+    //         $removedGrouped = [];
+
+    //         foreach ($removedItems as $ri) {
+    //             $groupKey = $ri['product_id'] . '_' . $ri['size_id'];
+    //             $removedGrouped[$groupKey][] = $ri;
+    //         }
+
+
+    //         // Attach removed ingredients to each item
+    //         foreach ($items as $index => $item) {
+    //             $itemRemovedIngredients = array_filter($removedItems, function($removedItem) use ($item) {
+    //                 return $removedItem['product_id'] == $item['product_id'] && $removedItem['size_id'] == $item['size_id'];
+    //             });
+    //             $items[$index]['removed_ingredients'] = array_values($itemRemovedIngredients);
+    //         }
+
+    //             // Attach items back into each order
+    //             $orders[$key]['items'] = $items;
+    //         }
+
+    //         // 4️⃣ Return final structured array
+    //         return $orders;
+
+    //     } catch (\Throwable $th) {
+    //         Utility::log($th->getMessage(), 'error', 'OrderService::fetchAllOrders', [], $th);
+    //         Response::error(500, "An error occurred while fetching orders");
+    //     }
+    // }
+
     public static function fetchAllOrders()
-    {
-        $orders_tbl         = Utility::$orders;
-        $payments_tbl       = Utility::$payments;
-        $order_items_tbl    = Utility::$order_items;
-        $order_toppings_tbl = Utility::$order_toppings;
-        $products_tbl       = Utility::$products;
-        $sizes_tbl          = Utility::$sizes;
-        $order_removed_ingredients_tbl = Utility::$order_removed_ingredients;
+{
+    $orders_tbl         = Utility::$orders;
+    $payments_tbl       = Utility::$payments;
+    $order_items_tbl    = Utility::$order_items;
+    $order_toppings_tbl = Utility::$order_toppings;
+    $products_tbl       = Utility::$products;
+    $sizes_tbl          = Utility::$sizes;
+    $order_removed_ingredients_tbl = Utility::$order_removed_ingredients;
 
-        try {
+    try {
 
-            // 1️⃣ Fetch all orders + payment info
-            $orders = Database::joinTables(
-                "$orders_tbl o",
+        // 1️⃣ Fetch ALL orders + payment info
+        $orders = Database::joinTables(
+            "$orders_tbl o",
+            [
+                [
+                    "type"  => "LEFT",
+                    "table" => "$payments_tbl pay",
+                    "on"    => "o.id = pay.order_id"
+                ]
+            ],
+            [
+                "o.*",
+                "pay.payment_type",
+                "pay.total_paid",
+                "pay.cash",
+                "pay.card",
+                "pay.transfer",
+                "pay.online",
+                "pay.delivery_fee",
+                "pay.vat",
+                "pay.discount",
+                "pay.item_amount"
+            ],
+            [],
+            ["order" => "o.id DESC"]
+        );
+
+        if (!$orders) return [];
+
+        // 2️⃣ Process each order
+        foreach ($orders as $key => $order) {
+
+            // Fetch items
+            $items = Database::joinTables(
+                "$order_items_tbl oi",
                 [
                     [
                         "type"  => "LEFT",
-                        "table" => "$payments_tbl pay",
-                        "on"    => "o.id = pay.order_id"
+                        "table" => "$products_tbl p",
+                        "on"    => "oi.product_id = p.id"
+                    ],
+                    [
+                        "type"  => "LEFT",
+                        "table" => "$sizes_tbl s",
+                        "on"    => "oi.size_id = s.id"
                     ]
                 ],
                 [
-                    "o.*",
-                    "pay.payment_type",
-                    "pay.total_paid",
-                    "pay.cash",
-                    "pay.card",
-                    "pay.transfer",
-                    "pay.online",
-                    "pay.delivery_fee",
-                    "pay.vat",
-                    "pay.discount",
-                    "pay.item_amount"
+                    "oi.*",
+                    "p.name AS product_name",
+                    "p.sku",
+                    "p.image",
+                    "p.description",
+                    "p.category_id",
+                    "s.label AS size_name",
+                    "p.is_active AS product_active"
                 ],
-                [], // no filter = fetch ALL
-                ["order" => 'o.id DESC']
-            );
-
-            if (!$orders) return [];
-
-            // 2️⃣ Loop through each order and fetch its items
-            foreach ($orders as $key => $order) {
-
-                $items = Database::joinTables(
-                    "$order_items_tbl oi",
-                    [
-                        [
-                            "type"  => "LEFT",
-                            "table" => "$products_tbl p",
-                            "on"    => "oi.product_id = p.id"
-                        ],
-                        [
-                            "type"  => "LEFT",
-                            "table" => "$sizes_tbl s",
-                            "on"    => "oi.size_id = s.id"
-                        ]
-                    ],
-                    [
-                        "oi.*",
-                        "p.name AS product_name",
-                        "p.sku",
-                        "p.image",
-                        "p.description",
-                        "p.category_id",
-                        "s.label AS size_name",
-                        "p.is_active AS product_active"
-                    ],
-                    [
-                        "oi.order_id" => $order['id']
-                    ]
-                );
-
-                // ensure $items is an array
-                if (!$items || !is_array($items)) {
-                    $items = [];
-                }
-
-                // 3️⃣ For each item get ALL toppings (always as array)
-                foreach ($items as $i => $item) {
-
-                    $toppings = Database::joinTables(
-                        "$order_toppings_tbl ot",
-                        [],
-                        ["ot.*"],
-                        [
-                            "ot.order_id"   => $order['id'],
-                            "ot.product_id" => $item['product_id'],
-                            "ot.size_id"    => $item['size_id']
-                        ]
-                    );
-
-                    // ensure toppings is an array (empty array if none)
-                    $items[$i]['toppings'] = ($toppings && is_array($toppings)) ? $toppings : [];
-                }
-
-                 //Join the  $order_removed_ingredients_tbl
-            $removedItems = Database::joinTables(
-                "$order_removed_ingredients_tbl ori",
-                 [],
-                 ["ori.*"],
                 [
-                    "ori.order_id"   => $order['id'],
-                    "ori.product_id" => $item['product_id'],
-                    "ori.size_id"    => $item['size_id']
+                    "oi.order_id" => $order['id']
                 ]
-            );
+            ) ?: [];
 
-            // Attach removed ingredients to each item
-            foreach ($items as $index => $item) {
-                $itemRemovedIngredients = array_filter($removedItems, function($removedItem) use ($item) {
-                    return $removedItem['product_id'] == $item['product_id'] && $removedItem['size_id'] == $item['size_id'];
-                });
-                $items[$index]['removed_ingredients'] = array_values($itemRemovedIngredients);
+            // 🔹 If no items, attach empty and continue
+            if (!$items) {
+                $orders[$key]['items'] = [];
+                continue;
             }
 
-                // Attach items back into each order
-                $orders[$key]['items'] = $items;
+            // 3️⃣ Fetch ALL toppings for this order (ONCE)
+            $toppingsAll = Database::joinTables(
+                "$order_toppings_tbl ot",
+                [],
+                ["ot.*"],
+                [
+                    "ot.order_id" => $order['id']
+                ]
+            ) ?: [];
+
+            // Group toppings by product_id + size_id
+            $toppingsGrouped = [];
+            foreach ($toppingsAll as $top) {
+                $gk = $top['product_id'] . '_' . $top['size_id'];
+                $toppingsGrouped[$gk][] = $top;
             }
 
-            // 4️⃣ Return final structured array
-            return $orders;
+            // 4️⃣ Fetch ALL removed ingredients for this order (ONCE)
+            $removedAll = Database::joinTables(
+                "$order_removed_ingredients_tbl ori",
+                [],
+                ["ori.*"],
+                [
+                    "ori.order_id" => $order['id']
+                ]
+            ) ?: [];
 
-        } catch (\Throwable $th) {
-            Utility::log($th->getMessage(), 'error', 'OrderService::fetchAllOrders', [], $th);
-            Response::error(500, "An error occurred while fetching orders");
+            // Group removed ingredients by product_id + size_id
+            $removedGrouped = [];
+            foreach ($removedAll as $ri) {
+                $gk = $ri['product_id'] . '_' . $ri['size_id'];
+                $removedGrouped[$gk][] = $ri;
+            }
+
+            // 5️⃣ Attach toppings & removed ingredients to each item
+            foreach ($items as $i => $item) {
+                $gk = $item['product_id'] . '_' . $item['size_id'];
+
+                $items[$i]['toppings'] = $toppingsGrouped[$gk] ?? [];
+                $items[$i]['removed_ingredients'] = $removedGrouped[$gk] ?? [];
+            }
+
+            // 6️⃣ Attach items back to order
+            $orders[$key]['items'] = $items;
         }
+
+        return $orders;
+
+    } catch (\Throwable $th) {
+        Utility::log(
+            $th->getMessage(),
+            'error',
+            'OrderService::fetchAllOrders',
+            [],
+            $th
+        );
+        Response::error(500, "An error occurred while fetching orders");
     }
+}
+
 
 
 

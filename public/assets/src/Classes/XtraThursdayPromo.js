@@ -10,6 +10,7 @@ export default class XtraThursdayPromo{
 
 
     static async packageXLandM(products){
+        
         const result = {
             xl: [],
             m: []
@@ -25,7 +26,8 @@ export default class XtraThursdayPromo{
                         product_description: product.description,
                         size: size.size_label,
                         stock_qty: size.category_stock_quantity,
-                        price: parseFloat(size.price)
+                        price: parseFloat(size.price),
+                        size_id: size.size_id
                     })
                 }
 
@@ -37,7 +39,8 @@ export default class XtraThursdayPromo{
                         product_description: product.description,
                         size: size.size_label,
                         stock_qty: size.category_stock_quantity,
-                        price: parseFloat(size.price)
+                        price: parseFloat(size.price),
+                        size_id: size.size_id
                     })
                 }
             })
@@ -195,7 +198,7 @@ export default class XtraThursdayPromo{
             const giftQty = Number(Utility.el("giftqtyValue").textContent);
             const giftProductId = document.querySelector(".gift-pack-option").dataset.product;  
             const giftSize = document.querySelector(".gift-pack-option").dataset.size;  
-            const giftSizeId = document.querySelector(".gift-pack-option").dataset.sizeId;
+            const giftSizeId = document.querySelector(".gift-pack-option").dataset.sizeid;
             
             const giftSelectedToppings = [
                 ...document.querySelectorAll(".gift-product-toppings .topping-btn.active"),
@@ -230,6 +233,7 @@ export default class XtraThursdayPromo{
 
             //Adding Gift product to cart
             const giftProduct = XtraThursdayPromo.XTRATHURSDAYPRODUCTS['m'].find(p => p.product_id == giftProductId);
+            
             if (giftProduct){
                 Cart.addToCart({
                     product_id: giftProductId,
@@ -283,6 +287,8 @@ export default class XtraThursdayPromo{
         const imageUrl = product.image?.replace(/"/g, "") || "";
         const hasSizes = sizesObj.length > 0;
 
+       
+
         let defaultPrice =  0;
         let defaultSize =  null;
         let defaultSizeId =  null;
@@ -298,13 +304,14 @@ export default class XtraThursdayPromo{
                     <div class="toggle-group slide-in mt-2">
                     ${sizesObj
                         .map((sz, i) => {
+                             
                             const available = Number(sz.category_stock_quantity) > 0 && sz.size_label.toLowerCase() == 'xl';
                            
                             if (available) {
                                 defaultAvailable = true;
                                 defaultPrice = parseFloat(sz.price);
                                 defaultSize = sz.size_label;
-                                defaultSizeId = sz.id;
+                                defaultSizeId = sz.size_id;                              
                             }
                             return `
                             <label class="toggle-item mb-3 ${!available ? "disabled" : ""}">
@@ -324,12 +331,11 @@ export default class XtraThursdayPromo{
 
         const toppingsSectionHtml =`<div class="toppings-section mt-3 w-100 center-mobile main-product-toppings">
                                         <h6 class="muted center-mobile">Toppings</h6>
-                                        <div id="toppingsOptions" class="toppings-toggle center-mobile d-flex justify-content-center align-items-center w-100"></div>
+                                        <div id="toppingsOptions" class="toppings-toggle center-mobile d-flex justify-content-center align-items-center w-100 gap-2"></div>
                                     </div>`;
     
         const ingredientsSectionHtml = `
-                    <div class="ingredients-section mt-3 center-mobil">
-                        <h6 class="muted center-mobile">Product Ingredients</h6>
+                    <div class="ingredients-section mt-3 center-mobil">                       
                         <p class="muted small center-mobile">
                             <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
                         </p>
@@ -356,6 +362,7 @@ export default class XtraThursdayPromo{
                         </div>
                         ${sizeSectionHtml}
                         ${toppingsSectionHtml}
+                        <hr/>
                         ${ingredientsSectionHtml}
                         <div class="add-cart-footer">
                             <button id="addToCartBtn" 
@@ -367,7 +374,7 @@ export default class XtraThursdayPromo{
                                 ${!defaultAvailable ? "disabled" : ""}>
                                 ${
                                     defaultAvailable
-                                        ? `BUY NOW • ₦<span id="cartPriceValue">${defaultPrice.toLocaleString()}</span>`
+                                        ? `Add to Cart • ₦<span id="cartPriceValue">${defaultPrice.toLocaleString()}</span>`
                                         : "Unavailable"
                                 }
                             </button>
@@ -384,25 +391,24 @@ export default class XtraThursdayPromo{
         const giftToppingHtml = `<div class="mt-3 ingredients-list-container center-mobile gift-product-toppings">
                                     <div class="ingredients-list">
                                         <h6 class="text-center">Choose Toppings</h6>
-                                        <div class="d-flex flex-wrap w-100 center-mobile" id="gifttoppingsContainer">                                
+                                        <div class="d-flex flex-wrap w-100 center-mobile gap-2" id="gifttoppingsContainer">                                
                                     </div>                      
                                 </div>
                     `
         const giftIngredientsHtml = `<div class="mt-3 ingredients-list-container center-mobile">
                                     <div class="ingredients-list">
-                                        <h6 class="text-center">Ingredients</h6>
+                                      
                                          <p class="muted small center-mobile">
                                             <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
                                         </p>
-                                        <div class="d-flex flex-wrap w-100 center-mobile" id="ingredientsContainer">                                
+                                        <div class="d-flex flex-wrap w-100 center-mobile gap-2" id="ingredientsContainer">                                
                                     </div>                      
                                 </div>
                     `
 
   
         const giftHtml = giftProduct.map((product) => {
-            if (product.product_name.toLowerCase().includes('margherita classic')){
-                console.log(product);
+            if (product.product_name.toLowerCase().includes('margherita classic')){          
                 return `
                    <div class="gift-pack-item mb-3 p-2 border rounded d-flex flex-column bg-light">
                         <div>
@@ -412,9 +418,7 @@ export default class XtraThursdayPromo{
                             style="cursor:pointer;" 
                             data-product="${product.product_id}"
                             data-size="${product.size}"
-                            data-size-id="${product.size_id}">
-                            
-
+                            data-sizeid="${product.size_id}"> 
                             <img loading="lazy"
                             src="${product.product_image}"
                             alt="${product.product_name}"
@@ -424,6 +428,7 @@ export default class XtraThursdayPromo{
                    
 
                      ${giftToppingHtml}
+                     <hr/>
                      ${giftIngredientsHtml}
 
                         

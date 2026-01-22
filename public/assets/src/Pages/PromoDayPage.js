@@ -50,6 +50,7 @@ class PromoDayPage{
                  await
                 this.loadXtraThursdayDeals();
             break;
+           
             default:
                 console.error("No promo day deals found for the given promo code");
             break;

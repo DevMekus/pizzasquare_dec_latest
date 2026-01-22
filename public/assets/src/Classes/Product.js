@@ -294,7 +294,7 @@ export default class Product {
 
             const ingredientsSectionHtml = productIngredients.length > 0 ? `
             <div class="toppings-section">
-                 <h6 class="muted center-mobile">Product Ingredients</h6>
+                
                  ${productIngredients.length > 0 
                  
                  ? `
@@ -331,6 +331,7 @@ export default class Product {
 
                 <div class="product-right">                                
                     ${toppingsSectionHtml}
+                    <hr/>
                     ${ingredientsSectionHtml}
 
                     <div class="add-cart-footer">

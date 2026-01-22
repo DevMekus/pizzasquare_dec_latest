@@ -57,7 +57,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                                 <div class="input-group coupon-input">
                                     <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                     <input type="text" id="coupon" class="form-control" placeholder="Promo code (e.g. PIZZA10)">
-                                    <button class="btn  btn-outline" id="applyCoupon">Apply</button>
+                                    <button class="btn  btn-primary" id="applyCoupon">Apply</button>
                                 </div>
                             </div>
                             <div class="col-md-6 text-md-end small text-muted">

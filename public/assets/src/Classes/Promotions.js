@@ -71,11 +71,13 @@ export default class Promotions {
         domBody.innerHTML = `
             <form class="row"  id="newPromotionForm" enctype="multipart/form-data">
                 <div class="container">
+              
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" id="title" name="title" placeholder="eg: October Splash">
+                                <small class="text-danger">Enter exact promotion name from the developer!</small>
                             </div>
     
                             <div class="form-group">
@@ -179,7 +181,7 @@ export default class Promotions {
                                 <input type="file" id="promoBanner" name="promoBanner" accepts="image/*" placeholder="Upload Images">
                             </div>
                             <p class="muted mt-2">By clicking on the submit button, you will make upload this information.</p>
-                            <button class="btn btn-md btn-primary mt-2" type="submit">Create Deal</button>
+                            <button class="btn btn-md btn-primary mt-2" type="submit">Edit Deal</button>
                         </div>
                     </div>
                 </div>
@@ -217,16 +219,24 @@ export default class Promotions {
                 <div class="col-md-4 mb-4 cursor-pointer"
                  aos="fade-up" data-aos-delay="${i * 100}"
                  data-aos-duration="800"
-                 data-aos-easing="ease-in-out"
-                 data-title="${promo.title}"
-                 data-active_day="${promo.active_day}"
-                 data-status="${promo.status}"
-                 data-description="${promo.description}"
-                 data-id="${promo.id}"
-                 data-code="${promo.code}"
+                 data-aos-easing="ease-in-out"                
                  >
                     <div class="card">
-                        <img src="${promo.banner}" class="card-img-top" alt="${promo.title}">                       
+                        <img src="${promo.banner}" class="card-img-top" alt="${promo.title}"> 
+                        <div class="card-body">
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                <button type="button" 
+                                    data-title="${promo.title}"
+                                    data-active_day="${promo.active_day}"
+                                    data-status="${promo.status}"
+                                    data-description="${promo.description}"
+                                    data-id="${promo.id}"
+                                    data-code="${promo.code}" 
+                                    class="btn btn-sm btn-primary mt-2 center-mobile w-50">
+                                    View Deal
+                                </button>
+                            </div>
+                        </div>                      
                     </div>
                 </div>
             `;
@@ -234,14 +244,14 @@ export default class Promotions {
 
         //Event delegation for deal cards
         dealsCardContainer.addEventListener('click', (e) => {
-            const dealCard = e.target.closest('.card');
-            if (dealCard) {
-                const isActive = dealCard.parentElement.dataset.status === 'active' ? true : false;
+            const dealButton = e.target.closest('button');
+            if (dealButton) {
+                const isActive = dealButton.dataset.status === 'active' ? true : false;
                 const today = new Date().toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
  
-                const activeDay = dealCard.parentElement.dataset.active_day.toLowerCase();
+                const activeDay = dealButton.dataset.active_day.toLowerCase();
                 const isActiveToday = activeDay.includes(today);
-                const promoCode = dealCard.parentElement.dataset.code
+                const promoCode = dealButton.dataset.code
 
                 if(!isActiveToday){
                         Swal.fire({

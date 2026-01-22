@@ -139,6 +139,7 @@ export default class Checkout {
         .join("");
     }
   }
+
   static renderCartWeb() {
     if (!Cart.cart || Cart.cart.length === 0) {
       Cart.cartBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Your cart is empty</td></tr>`;
@@ -158,7 +159,7 @@ export default class Checkout {
           </small>`;
           }       
         return `
-                <tr class="align-middle ${item.promo_product ?  "table-success":""}" ${item.promo_product ? "disabled" : ""}>
+                <tr class="${item.promo_product ? 'table-light' : ''}">
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <img class="cart-thumb" 

@@ -114,8 +114,7 @@ class PromotionsService
         }
 
 
-            $promotion = [ 
-                'code' => isset($data['title']) ? $data['code'] : $previous['code'],            
+            $promotion = [                         
                 'title' => $data['title'] ?? $previous['title'],            
                 'description' => $data['description'] ?? $previous['description'],               
                 'status' => strtolower($data['status']) ?? $previous['status'],               

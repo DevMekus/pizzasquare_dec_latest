@@ -37,14 +37,15 @@ $userid = $_SESSION['userid'] ?? null;
                     <a class="nav-link <?= $route == '#menu' ? 'active' : '' ?>" href="<?= BASE_URL ?>#menu">Menu</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?= $route == 'deals' ? 'active' : '' ?>" href="<?= BASE_URL ?>deals">Deals</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?= $route == 'news-updates' ? 'active' : '' ?>" href="<?= BASE_URL ?>news-updates">News</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= $route == 'track-order' ? 'active' : '' ?>" href="<?= BASE_URL ?>track-order">Track Order</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link <?= $route == 'deals' ? 'active' : '' ?>" href="<?= BASE_URL ?>deals">Hot Deals</a>
-                </li>
+              
 
               
 

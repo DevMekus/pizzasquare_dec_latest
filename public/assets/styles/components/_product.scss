@@ -453,7 +453,7 @@
   width: 100%;
   position: relative;
   display: flex;
-  gap: 2px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
@@ -474,10 +474,17 @@
   opacity: 0.6;
   text-decoration: line-through;
   color: var(--primary);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid #dadada;
 }
 
 .collection-pill.active {  
-  background-color: var(--secondary);
-  color: var(--text-light);
+  background-color: var(--gray-100);
+  color: var(--text);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--gray-100);
+}
+
+.table-light{
+  background-color: var(--gray-200) !important;
 }
