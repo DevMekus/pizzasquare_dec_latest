@@ -129,7 +129,7 @@ export default class Checkout {
                       data-id="${
                         it.id
                       }" data-op="inc" ${it.promo_product ? "disabled" : ""}>+</button>                  
-                  <button class="btn btn-xs btn-outline-error" 
+                  <button class="btn btn-primary btn-xs" 
                   data-id="${it.id}" data-op="remove" ${it.promo_product ? "disabled" : ""}><i class="bi bi-x"></i>
                   </button>
                 </div>
@@ -185,7 +185,7 @@ export default class Checkout {
                   <td class="text-end">${Utility.fmtNGN(item.price)}</td>
                   <td class="text-end">${Utility.fmtNGN(lineTotal)}</td>
                   <td class="text-end">
-                  <button class="btn btn-xs btn-outline-error" 
+                  <button class="btn btn-primary btn-xs" 
                   data-id="${
                     item.id
                   }" data-op="remove" ${item.promo_product ? "disabled" : ""}><i class="bi bi-x"></i></button></td>

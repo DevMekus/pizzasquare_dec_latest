@@ -43,7 +43,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                                 0
                             </span></sup></h5>
 
-                    <button class="btn btn-sm btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
+                    <button class="btn btn-primary btn-xs" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
                 </div>
                 <div id="cartItems">
                     <div class="text-center text-muted py-4" id="cartBody">Your cart is empty</div>

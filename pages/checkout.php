@@ -33,7 +33,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <div class="cart-card p-3" data-aos="fade-up">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h5 class="mb-0">Your Cart</h5>
-                            <button class="btn btn-xs btn-outline-error" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
+                            <button class="btn btn-primary btn-xs" id="clearCart"><i class="bi bi-trash-fill"></i> Clear</button>
                         </div>
                         <div class="table-responsive">
                           

@@ -53,7 +53,7 @@
                  <span class="muted motto small" id="clock"></span>
                  <button id="themeToggle" class="btn btn-outline-primary btn-sm" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
 
-                 <button class="btn btn-outline-error btn-sm logout" data-id="<?= $userid; ?>"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                 <button class="btn btn-primary btn-xs logout" data-id="<?= $userid; ?>"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
              </div>
 
 
