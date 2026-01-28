@@ -51,6 +51,10 @@ Future versions will follow /api/v2/, /api/v3/, etc.
 - [Geocoding](#geocoding)
 - [Payments](#payments)
 - [Profile](#users)
+- [Promotion](#promotions)
+- [BestSellers](#BestSellers)
+- [ContactUs](#ContactUs)
+- [ProductIngredients](#ProductIngredients)
 
 ---
 
@@ -408,7 +412,7 @@ Retrieve all active news update.
       "title": "Weekend Special",
       "description": "Buy 2 Get 1 Free",
       "image": "https://pizzasquare.ng/public/UPLOADS/news_updates/weekend.jpg",
-      "status": "active",
+      "status": "active", // or inactive
       "created_at": "2024-01-15"
     }
   ]
@@ -436,7 +440,7 @@ Retrieve a specific deal.
     "title": "Weekend Special",
     "description": "Buy 2 Get 1 Free",
     "image": "https://pizzasquare.ng/public/UPLOADS/news_updates/weekend.jpg",
-    "status": "active"
+    "status": "active" // or inactive
   }
 }
 ```
@@ -570,6 +574,7 @@ Create a new order.
     {
       "id": 1,
       "size_id": 2,
+      "size":"M", // Product size label
       "price": 4500.00,
       "qty": 2,
       "barbecueSauce": "yes",// or NULL
@@ -578,7 +583,14 @@ Create a new order.
           "extras": "Extra Cheese",
           "price": 500
         }
-      ]
+      ],
+      "removed_ingredients": [  // or [] for empty item
+         {
+          "ingredient_name": "",
+        }
+      ],
+      "type":"" // Regular(normal order), custom(customized order) or the name of the promo for promo order 
+
     }
   ],
   "payment": {
@@ -592,6 +604,8 @@ Create a new order.
     "delivery_fee": 1000.00, 
     "vat": 100,  //The amount calculated from vat
     "discount": 100,  //The amount calculated from the discount if coupon applies
+     "vat": 0, // The calculated vat for this order
+    "discount": 0, // the promo code discounted amount if valid 
     
   }
 }
@@ -784,6 +798,156 @@ Get customer profile information.
 }
 ```
 ---
+
+## Promotions
+
+### Get All Promotions
+Retrieve all available promotional activities
+
+**Endpoint:** `GET /promotions`
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "promotion found",
+  "data": [
+    {
+      "id": "4",
+      "code": "xtra_thursday_offer",
+      "title": "Xtra Thursday Offer",
+      "banner": "http://localhost/pizzasq/public/UPLOADS/promotions/696e02a9516741.95376765.png",
+      "description": "Order any Xtra Large (XL) Pizza and get a Medium (M) Pizza Free!! Added automatically to your order",
+      "status": "active",
+      "active_day": "thursday",
+      "created_at": "2026-01-22"
+    }
+  ]
+}
+```
+
+---
+
+### Get Promotion by ID
+Retrieve a specific promotion.
+
+**Endpoint:** `GET /promotions/{id}` 
+
+**Parameters:**
+- `id`  - Promo ID or CODE
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "promotion found",
+  "data": [
+    {
+      "id": "4",
+      "code": "xtra_thursday_offer",
+      "title": "Xtra Thursday Offer",
+      "banner": "http://localhost/pizzasq/public/UPLOADS/promotions/696e02a9516741.95376765.png",
+      "description": "Order any Xtra Large (XL) Pizza and get a Medium (M) Pizza Free!! Added automatically to your order",
+      "status": "active",
+      "active_day": "thursday",
+      "created_at": "2026-01-22"
+    }
+  ]
+}
+```
+
+## ProductIngredients
+---
+### Get Ingredients by Product ID
+Retrieve a specific promotion.
+
+**Endpoint:** `GET /products/ingredients/{id}` 
+
+**Parameters:**
+- `id`  - Product ID
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "Ingredients for product retrieved successfully",
+  "data": [
+    {
+      "id": "1",
+      "product_id": "1",
+      "ingredient_id": "1",
+      "ingredient_name": "Barbecue sauce",
+      "ingredient_category_id": "1",
+      "product_name": "Mega Beef Deluxe"
+    },
+   
+  ]
+}
+```
+## Error Responses
+{
+  "success": false,
+  "status": 404,
+  "message": "No ingredients found for this product",
+  "data": null
+}
+
+
+## BestSellers contact
+
+### Get All Best Selling Products
+Retrieve a list of best selling products
+
+**Endpoint:** `GET /analytics/top-dishes`
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "Top dishes retrieved successfully",
+  "data": [
+    {
+      "product_id": "5",
+      "name": "Italian Xtra Special",
+      "image_url": "http://localhost/pizzasq/public/UPLOADS/products/69355f0b1e58b9.74587175.png",
+      "total_qty": 207
+    },
+    
+  ]
+}
+```
+
+## ContactUs 
+
+### Contact us
+Send a contact us message to the server
+
+**Endpoint:** `POST /contact`
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "subject": "subject_of_the_message",
+  "message": "", // message
+ 
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "Message Sent",
+  "data": []
+}
+```
 
 ## Error Responses
 

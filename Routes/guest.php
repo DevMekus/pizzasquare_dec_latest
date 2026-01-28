@@ -60,7 +60,7 @@ Router::group('v1', function () use (
     Router::add('POST', '/auth/logout', [$user, 'logout']); 
     Router::add('POST', '/auth/recover', [$user, 'recoverAccount']); 
     Router::add('POST', '/auth/reset', [$user, 'resetPassword']); 
-     Router::add('POST',  '/contact', [$user, 'guestMessaging']);
+    Router::add('POST',  '/contact', [$user, 'guestMessaging']);
  
 
     #Category Routes

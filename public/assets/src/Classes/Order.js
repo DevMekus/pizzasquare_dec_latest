@@ -431,21 +431,21 @@ static renderAdminActions(order) {
 
         const receipt = `
             <div class="text-center mb-3">          
-            <h3 class="mb-0">Pizza Square Nigeria</h3>
-            <div class="small text-muted">Online Order Re-print Receipt</div>
+                <h3 class="mb-0">Pizza Square Nigeria</h3>
+                <p class="small text-muted">Online Order Re-print Receipt</p>
             </div>
 
-            <div class="d-flex justify-content-between small">
-            <div>Order: <strong>${order.order_id}</strong></div>
-            <div>${order.created_at}</div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <p>Order: <strong>${order.order_id}</strong></p>
+                <p>${order.created_at}</p>
             </div>
 
-            <div class="small">Customer: ${order.customer_name}</div>
-            <div class="small">Phone: ${order.customer_phone}</div>
-            ${order.attendant ? `<div class="small">Cashier: ${order.attendant ?? ""}</div>` : ""}            
-            <div class="small">Address: ${order.delivery_address ?? ""}</div>           
+            <p class="small">Customer: ${order.customer_name}</p>
+            <p class="small">Phone: ${order.customer_phone}</p>
+            ${order.attendant ? `<p class="small">Cashier: ${order.attendant ?? ""}</p>` : ""}            
+            <p class="small">Address: ${order.delivery_address ?? ""}</p>           
             <hr/> 
-            <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+            <p class="small">Order Note: ${deliveryNote ?? ""}</p>
             <hr/>
             <div class="table-responsive mt-3">
                 <table class="table table-sm">
@@ -464,32 +464,32 @@ static renderAdminActions(order) {
             <div class="receipt-totals mt-3">
 
             <div>
-                <span>Subtotal:</span>
-                <span><strong>${Utility.fmtNGN(subtotal)}</strong></span>
+                <p>Subtotal:</p>
+                <p><strong>${Utility.fmtNGN(subtotal)}</strong></p>
             </div>
 
             <div>
-                <span>Delivery Fee:</span>
-                <span><strong>${Utility.fmtNGN(deliveryFee)}</strong></span>
+                <p>Delivery Fee:</p>
+                <p><strong>${Utility.fmtNGN(deliveryFee)}</strong></p>
             </div>
 
             <div>
-                <span>Tax:</span>
-                <span><strong>${Utility.fmtNGN(tax)}</strong></span>
+                <p>Tax:</p>
+                <p><strong>${Utility.fmtNGN(tax)}</strong></p>
             </div>
 
             <div>
-                <span>Discount:</span>
-                <span><strong>${Utility.fmtNGN(discount)}</strong></span>
+                <p>Discount:</p>
+                <p><strong>${Utility.fmtNGN(discount)}</strong></p>
             </div>
 
             <div class="grand">
-                <span>Grand Total:</span>
-                <span><strong>${Utility.fmtNGN(grandTotal)}</strong></span>
+                <p>Grand Total:</p>
+                <p><strong>${Utility.fmtNGN(grandTotal)}</strong></p>
             </div>        
-            <div class="mt-3 text-center small muted">
-                <span><em>Thank you for your patronage!</em></span><br/>
-                <span> Order From Website: www.pizzasquare.ng</span>
+            <div class="mt-3 text-center small muted d-flex flex-column align-items-center gap-1">
+                <p><em>Thank you for your patronage!</em></p>
+                <p> Order From Website: www.pizzasquare.ng</p>
             </div>
 
         </div>

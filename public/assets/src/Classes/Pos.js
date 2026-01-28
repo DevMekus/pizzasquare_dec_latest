@@ -140,13 +140,13 @@ export default class Pos {
   
               return `
                   <tr>
-                  <td>
-                      ${Utility.toTitleCase(it.product_name)}
-                      ${toppingsHtml}
-                  </td>
-                  <td class="text-end">${it.qty}</td>
-                  <td class="text-end">${Utility.fmtNGN(Number(it.unit_price))}</td>
-                  <td class="text-end">${Utility.fmtNGN(Number(it.subtotal))}</td>
+                    <td>
+                        ${Utility.toTitleCase(it.product_name)}
+                        ${toppingsHtml}
+                    </td>
+                    <td class="text-end">${it.qty}</td>
+                    <td class="text-end">${Utility.fmtNGN(Number(it.unit_price))}</td>
+                    <td class="text-end">${Utility.fmtNGN(Number(it.subtotal))}</td>
                   </tr>
               `;
               })
@@ -154,20 +154,20 @@ export default class Pos {
   
           const receipt = `
               <div class="text-center mb-3">
-              <h3 class="mb-0">Pizza Square Nigeria</h3>
-              <div class="small text-muted">Point of Sale Order Receipt</div>
+                <h3 class="mb-0">Pizza Square Nigeria</h3>
+                <p class="small text-muted text-center">Point of Sale Order Receipt</p>
               </div>
   
-              <div class="d-flex justify-content-between small">
-              <div>Order: <strong>${order.order_id}</strong></div>
-              <div>${order.created_at}</div>
+              <div class="w-100 d-flex justify-content-between align-items-center mb-2">
+                <p>Order: <strong>${order.order_id}</strong></p>
+                <p>${order.created_at}</p>
               </div>
   
-              <div class="small">Customer: ${order.customer_name}</div>
-              <div class="small">Phone: ${order.customer_phone}</div>
-              <div class="small">Attendant: ${order.attendant ?? ""}</div>
+              <p class="small">Customer: ${order.customer_name}</p>
+              <p class="small">Phone: ${order.customer_phone}</p>
+              <p class="small">Attendant: ${order.attendant ?? ""}</p>
               <hr/>
-               <div class="small">Order Note: ${deliveryNote ?? ""}</div>
+              <p class="small">Order Note: ${deliveryNote ?? ""}</p>
               <hr/> 
   
               <div class="table-responsive mb-3 mt-3">
@@ -185,45 +185,44 @@ export default class Pos {
               </div>
               
   
-              <div class="receipt-totals mt-3">
-  
+              <div class="receipt-totals mt-3">  
               <div>
-                  <span>Subtotal:</span>
+                  <p>Subtotal:</p>
                   <span><strong>${Utility.fmtNGN(subtotal)}</strong></span>
               </div>
   
               <div>
-                  <span>Delivery Fee:</span>
+                  <p>Delivery Fee:</p>
                   <span><strong>${Utility.fmtNGN(deliveryFee)}</strong></span>
               </div>
   
               <div>
-                  <span>Tax:</span>
+                  <p>Tax:</p>
                   <span><strong>${Utility.fmtNGN(tax)}</strong></span>
               </div>
   
               <div>
-                  <span>Discount:</span>
+                  <p>Discount:</p>
                   <span><strong>${Utility.fmtNGN(discount)}</strong></span>
               </div>
   
               <div class="grand">
-                  <span>Grand Total:</span>
+                  <p>Grand Total:</p>
                   <span><strong>${Utility.fmtNGN(grandTotal)}</strong></span>
               </div>
   
               <div class="small">
-                  <span>Payment:</span>
+                  <p>Payment:</p>
                   <span>${Utility.toTitleCase(paymentType)}</span>
               </div>
   
               <div class="small">
-                  <span>Status:</span>
+                  <p>Status:</p>
                   <span>${Utility.toTitleCase(order.status)}</span>
               </div>
-              <div class="mt-3 text-center small muted">
-                <div><em>Thank you for your patronage!</em></div><br/>
-                <div>Order From Website: www.pizzasquare.ng</div>
+              <div class="mt-3 text-center small muted d-flex flex-column align-items-center gap-1">
+                <p><em>Thank you for your patronage!</em></p>
+                <p>Order From Website: www.pizzasquare.ng</p>
               </div>
             </div>
           `;
