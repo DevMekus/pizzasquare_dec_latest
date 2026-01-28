@@ -96,7 +96,7 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="ordersTbody"></tbody>
+                                <tbody id="ordersTbody" class="loading"></tbody>
                             </table>
                             <button id="moreOrdersBtn" class="btn btn-ghost" style="display:none;" onclick="window.location.href='orders'">
                                 See All Orders
@@ -108,7 +108,7 @@
                       <!-- Analytics -->
                     <div class="kpi-card-n analytics bounce-card" data-aos="fade-left">
                         <h5 style="margin-top:0">All Time Best Sellers</h5>
-                        <div id="topDishes" class="list"></div>
+                        <div id="topDishes" class="list loading"></div>
                     </div>
                 </div>
             </div>
@@ -118,15 +118,15 @@
                       <!-- Inventory -->
                     <div class="kpi-card-n half bounce-card" data-aos="fade-up">
                         <h5 style="margin-top:0">Inventory Snapshot</h5>
-                        <div id="inventoryList" class="list"></div>
+                        <div id="inventoryList" class="list loading"></div>
                         <div id="pagination" class="pagination p3"></div>
                         <div id="no-data"></div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="kpi-card-n half bounce-card" data-aos="fade-up">
-                        <h5 style="margin-top:0">News 7 Update</h5>
-                        <div id="promos" class="list"></div>
+                        <h5 style="margin-top:0">News Update</h5>
+                        <div id="promos" class="list loading"></div>
                     </div>
                 </div>
              </div>

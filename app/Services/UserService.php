@@ -5,6 +5,7 @@ use App\Middleware\AuthMiddleware;
 use App\Utils\Response;
 use App\Utils\Utility;
 use configs\Database;
+use App\Utils\MailClient;
 
 class UserService{
 
@@ -454,5 +455,10 @@ class UserService{
             Utility::log($th->getMessage(), 'error', 'AccountService::deleteUserAccount', ['userid' => $id], $th);
             Response::error(500, "An error occurred while deleting user account");
         }
+    }
+
+    public static function sendGuestMessage($data)
+    {
+         return EmailServices::sendContactusMessageToAdmin($data);
     }
 }

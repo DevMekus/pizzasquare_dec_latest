@@ -105,288 +105,336 @@ class LandingPage {
     } 
 
 
-async buildYourPizza() {
-    const domEl = document.getElementById("buildYourPizza");
-    if (!domEl) return;
+    async buildYourPizza() {
+        const domEl = document.getElementById("buildYourPizza");
+        if (!domEl) return;
 
-    // ======================================================================
-    // LOAD DATA
-    // ======================================================================
-    Product.EXTRAS = await getItem("extras");
-    const pizzasFull = await getItem("pizzas-with-sizes");
+        // ======================================================================
+        // LOAD DATA
+        // ======================================================================
+        Product.EXTRAS = await getItem("extras");
+        const pizzasFull = await getItem("pizzas-with-sizes");
 
-    if (!pizzasFull || !pizzasFull.length) {
-        domEl.innerHTML = `<p class="text-danger fw-bold mt-2">No pizzas found</p>`;
-        return;
-    }
-
-    const pizzaSelect = Utility.el("pizzaSelect");
-    const crustSelect = Utility.el("crustSelect");
-    const toppingsWrap = Utility.el("toppingsWrap");
-    const builderTotal = Utility.el("builderTotal");
-    const addBtn = Utility.el("builderAddToCart");
-
-    let selectedPizza = null;
-    let selectedSize = null;
-    let sizeId = null;
-    let toppingsSelected = [];
-    let removedIngredients = [];
-
-    // --------------------------------------------------
-    // LOAD PIZZA SELECTION
-    // --------------------------------------------------
-    pizzaSelect.innerHTML = pizzasFull
-        .map(
-            (p, i) => `
-        <option value="${p.id}" ${i === 0 ? "selected" : ""}>
-            ${Utility.toTitleCase(p.name)}
-        </option>`
-        )
-        .join("");
-
-    // --------------------------------------------------
-    // GET REAL QUANTITY
-    // --------------------------------------------------
-    function getRealQty(size) {
-        const shared = Number(size.shared_stock);
-        const productQty = Number(size.product_stock_quantity);
-        const categoryQty = Number(size.category_stock_quantity);
-
-        if (shared === 1) {
-            return categoryQty > 0 ? categoryQty : 0;
-        } else {
-            return productQty > 0 ? productQty : 0;
-        }
-    }
-
-    // --------------------------------------------------
-    // LOAD SIZES WITH STOCK LOGIC
-    // --------------------------------------------------
-    function loadSizes(pizza) {
-        const sizesBox = document.getElementById("sizesBox");
-        sizesBox.innerHTML = "";
-
-        const sizesData = pizza.sizes || [];
-
-        if (!sizesData.length) {
-            sizesBox.innerHTML = `<p class="text-danger fw-bold mt-2">No sizes found</p>`;
+        if (!pizzasFull || !pizzasFull.length) {
+            domEl.innerHTML = `<p class="text-danger fw-bold mt-2">No pizzas found</p>`;
             return;
         }
 
-        sizesData.forEach(sz => {
-            sz.realQty = getRealQty(sz);
-            sz.available = sz.realQty > 0;
-        });
+        const pizzaSelect = Utility.el("pizzaSelect");
+        const crustSelect = Utility.el("crustSelect");
+        const toppingsWrap = Utility.el("toppingsWrap");
+        const builderTotal = Utility.el("builderTotal");
+        const addBtn = Utility.el("builderAddToCart");
 
-        const firstAvailable = sizesData.find(sz => sz.available);
-        const allUnavailable = sizesData.every(sz => !sz.available);
+        let selectedPizza = null;
+        let selectedSize = null;
+        let sizeId = null;
+        let toppingsSelected = [];
+        let removedIngredients = [];
 
-        sizesBox.innerHTML = `
-            <label class="form-label fw-bold mt-2">Sizes</label>
-            <div class="d-flex gap-2 flex-wrap">
-                ${sizesData
-                    .map(
-                        sz => `
-                    <button 
-                        type="button"
-                        class="btn btn-sm btn-outline-dark size-btn ${sz.available ? "" : "disabled"}"
-                        data-size="${sz.size_label}"
-                        data-size-id="${sz.size_id}"
-                        data-price="${sz.price}"
-                        data-qty="${sz.realQty}"
-                        ${sz.available ? "" : "disabled"}
-                    >
-                        ${sz.size_label} - ${Utility.fmtNGN(sz.price)}
-                        ${sz.available ? "" : ""}
-                    </button>`
-                    )
-                    .join("")}
-            </div>
-        `;
+        // --------------------------------------------------
+        // LOAD PIZZA SELECTION
+        // --------------------------------------------------
+        pizzaSelect.innerHTML = pizzasFull
+            .map(
+                (p, i) => `
+            <option value="${p.id}" ${i === 0 ? "selected" : ""}>
+                ${Utility.toTitleCase(p.name)}
+            </option>`
+            )
+            .join("");
 
-        if (allUnavailable) {
-            selectedSize = null;
-            sizeId = null;
-            addBtn.disabled = true;
-            builderTotal.textContent = "₦0";
-            addBtn.textContent = "UNAVAILABLE";
-            return;
+        // --------------------------------------------------
+        // GET REAL QUANTITY
+        // --------------------------------------------------
+        function getRealQty(size) {
+            const shared = Number(size.shared_stock);
+            const productQty = Number(size.product_stock_quantity);
+            const categoryQty = Number(size.category_stock_quantity);
+
+            if (shared === 1) {
+                return categoryQty > 0 ? categoryQty : 0;
+            } else {
+                return productQty > 0 ? productQty : 0;
+            }
         }
 
-        // Default size
-        selectedSize = firstAvailable.size_label;
-        sizeId = firstAvailable.size_id;
+        // --------------------------------------------------
+        // LOAD SIZES WITH STOCK LOGIC
+        // --------------------------------------------------
+        function loadSizes(pizza) {
+            const sizesBox = document.getElementById("sizesBox");
+            sizesBox.innerHTML = "";
 
-        // Highlight active size
-        document.querySelectorAll(".size-btn").forEach(btn => {
-            btn.classList.toggle("active", btn.dataset.size === selectedSize);
-        });
+            const sizesData = pizza.sizes || [];
 
-        calcTotal();
+            if (!sizesData.length) {
+                sizesBox.innerHTML = `<p class="text-danger fw-bold mt-2">No sizes found</p>`;
+                return;
+            }
 
-        // Add click listeners to sizes
-        document.querySelectorAll(".size-btn").forEach(btn => {
-            if (btn.disabled) return;
-
-            btn.addEventListener("click", () => {
-                document.querySelectorAll(".size-btn").forEach(b =>
-                    b.classList.remove("active")
-                );
-                btn.classList.add("active");
-                selectedSize = btn.dataset.size;
-                sizeId = btn.dataset.sizeId;
-                calcTotal();
-            });
-        });
-    }
-
-    // --------------------------------------------------
-    // CALCULATE TOTAL
-    // --------------------------------------------------
-    function calcTotal() {
-        if (!selectedPizza || !selectedSize) return;
-
-        const sizeInfo = selectedPizza.sizes.find(
-            s => s.size_label === selectedSize
-        );
-
-        const base = Number(sizeInfo?.price || 0);
-        const crustCost = Number(crustSelect.selectedOptions[0].dataset.price || 0);
-        const extrasTotal = toppingsSelected.reduce((sum, e) => sum + Number(e.price), 0);
-        const total = base + crustCost + extrasTotal;
-
-        builderTotal.textContent = Utility.fmtNGN(total);
-        addBtn.disabled = false;
-        addBtn.textContent = "Add to Cart";
-
-        return total;
-    }
-
-    // --------------------------------------------------
-    // LOAD TOPPINGS
-    // --------------------------------------------------
-    function loadExtras() {
-        toppingsWrap.innerHTML = "";
-        toppingsSelected = [];
-
-        Product.EXTRAS.forEach(t => {
-            const chip = document.createElement("span");
-            chip.className = "topping-btn";
-            chip.textContent = `${t.extras} (+${Utility.fmtNGN(t.extras_price)})`;
-
-           chip.addEventListener("click", () => {
-                chip.classList.toggle("active");
-                if (chip.classList.contains("active")) {
-                    // Push the full object with id, extras, and price
-                    toppingsSelected.push({
-                        id: t.id,         // make sure your extras data has an id
-                        extras: t.extras,
-                        price: t.extras_price
-                    });
-                } else {
-                    toppingsSelected = toppingsSelected.filter(x => x.id !== t.id);
-                }
-                calcTotal();
+            sizesData.forEach(sz => {
+                sz.realQty = getRealQty(sz);
+                sz.available = sz.realQty > 0;
             });
 
+            const firstAvailable = sizesData.find(sz => sz.available);
+            const allUnavailable = sizesData.every(sz => !sz.available);
 
-            toppingsWrap.appendChild(chip);
-        });
-    }
+            sizesBox.innerHTML = `
+                <label class="form-label fw-bold mt-2">Sizes</label>
+                <div class="d-flex gap-2 flex-wrap">
+                    ${sizesData
+                        .map(
+                            sz => `
+                        <button 
+                            type="button"
+                            class="btn btn-sm btn-outline-dark size-btn ${sz.available ? "" : "disabled"}"
+                            data-size="${sz.size_label}"
+                            data-size-id="${sz.size_id}"
+                            data-price="${sz.price}"
+                            data-qty="${sz.realQty}"
+                            ${sz.available ? "" : "disabled"}
+                        >
+                            ${sz.size_label} - ${Utility.fmtNGN(sz.price)}
+                            ${sz.available ? "" : ""}
+                        </button>`
+                        )
+                        .join("")}
+                </div>
+            `;
 
-    // --------------------------------------------------
-    // CHANGE PIZZA
-    // --------------------------------------------------
-    pizzaSelect.addEventListener("change", async () => {
-        const pizzaId = pizzaSelect.value;
-        selectedPizza = pizzasFull.find(p => p.id == pizzaId);
-       
-        loadRemovedIngredients(pizzaId)
-        loadSizes(selectedPizza);
-        calcTotal();
-    });
+            if (allUnavailable) {
+                selectedSize = null;
+                sizeId = null;
+                addBtn.disabled = true;
+                builderTotal.textContent = "₦0";
+                addBtn.textContent = "UNAVAILABLE";
+                return;
+            }
 
-    async function loadRemovedIngredients(pizzaId) {
-        const removeIngredientsWrap = Utility.el("removeIngredientsWrap");
-        removeIngredientsWrap.innerHTML = "";
-        
-        removedIngredients = await getItem(`products/ingredients/${pizzaId}`);
+            // Default size
+            selectedSize = firstAvailable.size_label;
+            sizeId = firstAvailable.size_id;
 
-        if (removedIngredients.length > 0){           
-            const ingredientsElm = removedIngredients.map(ing => `
-                <span 
-                    class="collection-pill active mb-2" 
-                    data-ingredient-name="${ing.ingredient_name}" 
-                    >
-                ${ing.ingredient_name}
-                </span>
-                `).join('');
-            removeIngredientsWrap.innerHTML = ingredientsElm;
+            // Highlight active size
+            document.querySelectorAll(".size-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.size === selectedSize);
+            });
 
-            removeIngredientsWrap.querySelectorAll('.collection-pill').forEach(item => {
-                item.addEventListener('click', () => {
-                    item.classList.toggle('active');
-                    item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');                  
+            calcTotal();
+
+            // Add click listeners to sizes
+            document.querySelectorAll(".size-btn").forEach(btn => {
+                if (btn.disabled) return;
+
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".size-btn").forEach(b =>
+                        b.classList.remove("active")
+                    );
+                    btn.classList.add("active");
+                    selectedSize = btn.dataset.size;
+                    sizeId = btn.dataset.sizeId;
+                    calcTotal();
                 });
             });
         }
+
+        // --------------------------------------------------
+        // CALCULATE TOTAL
+        // --------------------------------------------------
+        function calcTotal() {
+            if (!selectedPizza || !selectedSize) return;
+
+            const sizeInfo = selectedPizza.sizes.find(
+                s => s.size_label === selectedSize
+            );
+
+            const base = Number(sizeInfo?.price || 0);
+            const crustCost = Number(crustSelect.selectedOptions[0].dataset.price || 0);
+            const extrasTotal = toppingsSelected.reduce((sum, e) => sum + Number(e.price), 0);
+            const total = base + crustCost + extrasTotal;
+
+            builderTotal.textContent = Utility.fmtNGN(total);
+            addBtn.disabled = false;
+            addBtn.textContent = "Add to Cart";
+
+            return total;
+        }
+
+        // --------------------------------------------------
+        // LOAD TOPPINGS
+        // --------------------------------------------------
+        function loadExtras() {
+            toppingsWrap.innerHTML = "";
+            toppingsSelected = [];
+
+            Product.EXTRAS.forEach(t => {
+                const chip = document.createElement("span");
+                chip.className = "topping-btn";
+                chip.textContent = `${t.extras} (+${Utility.fmtNGN(t.extras_price)})`;
+
+            chip.addEventListener("click", () => {
+                    chip.classList.toggle("active");
+                    if (chip.classList.contains("active")) {
+                        // Push the full object with id, extras, and price
+                        toppingsSelected.push({
+                            id: t.id,         // make sure your extras data has an id
+                            extras: t.extras,
+                            price: t.extras_price
+                        });
+                    } else {
+                        toppingsSelected = toppingsSelected.filter(x => x.id !== t.id);
+                    }
+                    calcTotal();
+                });
+
+
+                toppingsWrap.appendChild(chip);
+            });
+        }
+
+        // --------------------------------------------------
+        // CHANGE PIZZA
+        // --------------------------------------------------
+        pizzaSelect.addEventListener("change", async () => {
+            const pizzaId = pizzaSelect.value;
+            selectedPizza = pizzasFull.find(p => p.id == pizzaId);
+        
+            loadRemovedIngredients(pizzaId)
+            loadSizes(selectedPizza);
+            calcTotal();
+        });
+
+        async function loadRemovedIngredients(pizzaId) {
+            const removeIngredientsWrap = Utility.el("removeIngredientsWrap");
+            removeIngredientsWrap.innerHTML = "";
+            
+            removedIngredients = await getItem(`products/ingredients/${pizzaId}`);
+
+            if (removedIngredients.length > 0){           
+                const ingredientsElm = removedIngredients.map(ing => `
+                    <span 
+                        class="collection-pill active mb-2" 
+                        data-ingredient-name="${ing.ingredient_name}" 
+                        >
+                    ${ing.ingredient_name}
+                    </span>
+                    `).join('');
+                removeIngredientsWrap.innerHTML = ingredientsElm;
+
+                removeIngredientsWrap.querySelectorAll('.collection-pill').forEach(item => {
+                    item.addEventListener('click', () => {
+                        item.classList.toggle('active');
+                        item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');                  
+                    });
+                });
+            }
+        }
+
+        const deselectedIngredients = () => {
+            return [
+                ...document.querySelectorAll("#removeIngredientsWrap .collection-pill.deselected"),
+            ].map((ing) => {
+                return{
+                    ingredient_name: ing.dataset.ingredientName
+                }
+            });
+        };
+
+        
+        // --------------------------------------------------
+        // INITIAL LOAD
+        // --------------------------------------------------
+        selectedPizza = pizzasFull.find(p => p.id == pizzaSelect.value);
+        loadSizes(selectedPizza);
+        loadExtras();
+        calcTotal();
+        loadRemovedIngredients(selectedPizza.id);
+
+        // --------------------------------------------------
+    // ADD TO CART (UPDATED TO MATCH addToCart())
+    // --------------------------------------------------
+    addBtn.addEventListener("click", () => {
+        if (!selectedSize) return;
+
+        const total = calcTotal(); // get final total
+
+        const finalPizza = {
+            product_id: selectedPizza.id,
+            title: selectedPizza.name,
+            size: selectedSize,
+            size_id: sizeId,
+            barbecueSauce: crustSelect.value, // REQUIRED NAME
+            price: total,                     // REQUIRED NAME
+            qty: 1,
+            image: selectedPizza.image,
+            toppings: toppingsSelected, // array of strings ONLY
+            type: "custom",
+            removed_ingredients: deselectedIngredients()           
+        };
+
+        
+
+        Cart.addToCart(finalPizza);
+
+        Utility.flyToCartAnimation(".product-image", "#cartCount");
+
+        Utility.toast(
+            `Custom ${selectedPizza.name} (${selectedSize}) added to Order`,
+            "success"
+        );
+    });
+
     }
 
-     const deselectedIngredients = () => {
-        return [
-            ...document.querySelectorAll("#removeIngredientsWrap .collection-pill.deselected"),
-        ].map((ing) => {
-            return{
-                ingredient_name: ing.dataset.ingredientName
-            }
-        });
-    };
+    async bestSellers(){
+        const domEl = Utility.el("bestSellersGrid");
+       
+        if (!domEl) return;
+        
+        const bestsellers = await getItem("analytics/top-dishes");
 
-    
-    // --------------------------------------------------
-    // INITIAL LOAD
-    // --------------------------------------------------
-    selectedPizza = pizzasFull.find(p => p.id == pizzaSelect.value);
-    loadSizes(selectedPizza);
-    loadExtras();
-    calcTotal();
-    loadRemovedIngredients(selectedPizza.id);
+        if (!bestsellers || !bestsellers.length) {
+            domEl.innerHTML = `<p class="text-danger fw-bold mt-2">No best sellers found</p>`;
+            return;
+        }
 
-    // --------------------------------------------------
-// ADD TO CART (UPDATED TO MATCH addToCart())
-// --------------------------------------------------
-addBtn.addEventListener("click", () => {
-    if (!selectedSize) return;
+        const max = Math.max(...bestsellers.map(d => d.total_qty));      
+      
+        domEl.innerHTML = bestsellers
+        .map(
+            (item, index) => `
+            <div class="col-6 col-md-2" data-aos="fade-up" 
+                            data-aos-delay="${index * 50}">
+                <div class="menu-card bounce-card position-relative h-100" 
+                        data-product="${item.product_id}">
+                    <span class="badge text-bg-danger">
+                        #${index + 1}</span>
+                    <div style="display:flex; justify-content:center; align-items:center;">
+                    <img loading="lazy"
+                        src="${item.image_url}"
+                        alt="${item.name}"
+                        style="max-width:100%; height:auto; object-fit:cover; max-height:170px;" />
+                    </div>
+                    <div class="p-3 w-100 d-flex flex-column justify-content-between h-100">
+                        <div class="w-100 d-flex justify-content-between align-items-center flex-wrap flex-lg-nowrap">
+                            <h6 class="mb-0 product-title center-mobile text-center">${item.name}</h6>                          
+                        </div>
+                         <div class="bar mt-2" style="width:100%;height:10px; background:#e0e0e0; border-radius:.375rem; overflow:hidden;">
+                            <i style="display:block;height:100%;width:${(item.total_qty / max) * 100}%;background:#00b034;border-radius:.375rem"></i>
+                        </div>                        
+                    </div>
+                </div>                    
+            </div>
+            
+        `
+        )
+        .join("");
 
-    const total = calcTotal(); // get final total
+        
+    }
 
-    const finalPizza = {
-        product_id: selectedPizza.id,
-        title: selectedPizza.name,
-        size: selectedSize,
-        size_id: sizeId,
-        barbecueSauce: crustSelect.value, // REQUIRED NAME
-        price: total,                     // REQUIRED NAME
-        qty: 1,
-        image: selectedPizza.image,
-        toppings: toppingsSelected, // array of strings ONLY
-        type: "custom",
-        removed_ingredients: deselectedIngredients()           
-    };
-
-    
-
-    Cart.addToCart(finalPizza);
-
-    Utility.flyToCartAnimation(".product-image", "#cartCount");
-
-    Utility.toast(
-        `Custom ${selectedPizza.name} (${selectedSize}) added to Order`,
-        "success"
-    );
-});
-
-}
 
 
 

@@ -50,6 +50,18 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <div class="no-data" id="no-data"></div>
         </div>
     </section>
+    <section class="best-sellers py-5">
+        <div class="container">
+            <div class="text-centera mb-4" data-aos="fade-up">
+                <h2 class="section-title" data-aos="fade-right">🔥 Best Sellers</h2>
+                <p class="section-sub" data-aos="fade-right" data-aos-delay="100">Our most loved products, chosen by customers</p>            
+            </div>
+            <div class="row">
+               <div id="bestSellersGrid" class="loading row"></div>         
+            </div>
+        </div>
+    </section>
+
     <section class="bg-light">
         <!-- Build Your Pizza (Interactive) -->
         <section class="section-pad" id="buildYourPizza">
@@ -206,14 +218,15 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         <h2 class="section-title">Our Story</h2>
                         <div style="text-align: justify;">
                             <p class="mb-3 text-white-100">
-                                Pizza Square Nigeria brand launched in 2020 as a proudly Nigerian pizza brand.
+                                Pizza Square Nigeria is a proudly indigenous company formed to bring the timeless charm of Italian pizza and craftsmanship to Nigeria, while staying true to the classic recipe, style, standards, and taste. Each pizza is crafted with expertise —honoring traditional techniques and high-quality ingredients—while weaving in a distinctly Nigerian market and offeringsthat resonates with our customers.
                             </p>
-                            <p class="mb-3 text-white-100">
+                            <a href="<?= BASE_URL ?>/about-us" class="btn btn-outline mt-3">Learn More</a>
+                            <!-- <p class="mb-3 text-white-100">
                                 From a modest kitchen, the company developed a distinctive square crust and an Italian curated and inspired menu, incorporating regional and intensely flavors, recipes and standards to reflect Africa's diversity and global presence.
                             </p>
                             <p class="mb-3 text-white-100">
                                 The brand’s mission is to serve over 100,000 pizzas annually, delivering consistent quality, community engagement, and a dependable, nationwide experience that embodies Nigerian pride.
-                            </p>
+                            </p> -->
                         </div>
 
                     </div>

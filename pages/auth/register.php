@@ -87,7 +87,9 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div id="pwError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                     </div>
                     <input name="role" type="hidden" value="1" />
-
+                        <p class="muted" style="font-size:13px;margin-top:8px;margin-bottom:8px">
+                            By signing up, you agree to our <a href="<?= BASE_URL ?>/terms_conditions" aria-label="Terms of Service">Terms of Service</a> and <a href="<?= BASE_URL ?>/privacy_policy" aria-label="Privacy Policy">Privacy Policy</a>.
+                        </p>
                     <!-- Submit -->
                     <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
                         <button id="submitBtn" class="btn btn-primary" type="submit" aria-live="polite">

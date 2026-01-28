@@ -8,10 +8,7 @@ class OverviewPage {
     this.initialize();
   }
 
-  async initialize() {
-    document.querySelectorAll(".loading").forEach((el) => {   
-        el.innerHTML = Utility.inlineLoader();
-    }); 
+  async initialize() {  
     
     Order.ORDERS = await getItem("orders");   
     Utility.runClassMethods(this, ["initialize"]);
@@ -24,7 +21,7 @@ class OverviewPage {
       Order.getTodayRevenue(Order.ORDERS)
     );
 
-    const newCustomerCount = Order.getNewCustomers(Order.ORDERS);
+    // const newCustomerCount = Order.getNewCustomers(Order.ORDERS);
     // document.getElementById("kpiNewCustomersNum").textContent = newCustomerCount;
 
     //Low stock products
@@ -93,25 +90,28 @@ class OverviewPage {
     Order.renderRecentOrders();
   }
 
-    renderTopDishes() {
+    async renderTopDishes() {
         const el = document.getElementById("topDishes");
-        const topDishes = Order.calculateTopDishes(3); // compute top 3
+        // const topDishes = Order.calculateTopDishes(5); // compute top 3
+
+        const topDishes = await getItem('analytics/top-dishes')
 
         if (!topDishes.length) {
             el.innerHTML = "<p>No orders yet.</p>";
             return;
         }
 
-        const max = Math.max(...topDishes.map(d => d.count));
+        const max = Math.max(...topDishes.map(d => d.total_qty));
 
         el.innerHTML = topDishes
             .map(d => `
-            <div class="dish-bar" style="display:flex;align-items:center;margin-bottom:6px">
-                <strong style="width:120px">${d.name}</strong>
-                <div class="bar" style="flex:1;height:12px;background:#e5e7eb;border-radius:6px;margin:0 8px;overflow:hidden">
-                    <i style="display:block;height:100%;width:${(d.count / max) * 100}%;background:#00b034;border-radius:6px"></i>
+            <div class="dish-bar" style="display:flex;align-items:center;margin-bottom:.375rem">
+            <img src="${d.image_url}" alt="${d.name}" style="width:2rem;height:2rem;object-fit:cover;border-radius:.25rem;margin-right:.5rem"/>            
+                <strong style="width:7.5rem">${d.name}</strong>
+                <div class="bar" style="flex:1;height:.75rem;background:#e5e7eb;border-radius:.375rem;margin:0 .5rem;overflow:hidden">
+                    <i style="display:block;height:100%;width:${(d.total_qty / max) * 100}%;background:#00b034;border-radius:.375rem"></i>
                 </div>
-                <div style="width:48px;text-align:right;color:var(--muted)">${d.count}</div>
+                <div style="width:3rem;text-align:right;color:var(--muted)">${d.total_qty}</div>
             </div>
         `)
             .join("");
@@ -142,7 +142,7 @@ class OverviewPage {
       ) => `<div style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <strong>${p.title}</strong>
-          <div style="color:var(--muted);font-size:13px">
+          <div style="color:var(--muted);font-size:.8125rem">
           ${p.created_at} </div>        
         </div>
         <div>${

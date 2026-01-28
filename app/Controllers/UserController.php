@@ -185,4 +185,22 @@ class UserController{
             Response::error(500, "Error deleting users profile");
         }
     }
+
+    public function guestMessaging()
+    {
+        try {
+            $data = RequestValidator::validate([
+                'name'  => 'required|min:3',
+                'email' => 'required|email',
+                'subject' => 'required',
+                'message' => 'required',
+            ]);
+            $data = RequestValidator::sanitize($data);
+            if (UserService::sendGuestMessage($data))
+                Response::success([], "Message Sent");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserController::guestMessaging', [], $e);
+            Response::error(500, "Error sending contact message");
+        }
+    }
 }

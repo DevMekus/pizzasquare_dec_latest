@@ -6,15 +6,19 @@
                 <p><?= TAG ?></p>
             </div>
             <div class="col-md-4">
-                <h6>Quick Links</h6>
+                <h4>Quick Links</h4>
                 <ul class="list-unstyled">
-                    <li><a href="<?= BASE_URL ?>#featured">Menu</a></li>
-                    <li><a href="<?= BASE_URL ?>hot-deals">Deals</a></li>
-                    <li><a href="<?= BASE_URL ?>track-order">Track Order</a></li>
+                    <li><a href="<?= BASE_URL ?>contact-us">Contact us</a></li>
+                    <li><a href="<?= BASE_URL ?>faq">FAQ</a></li>
+                    <li><a href="<?= BASE_URL ?>about-us">About Us</a></li>
+                     <li><a href="<?= BASE_URL ?>privacy_policy">Privacy Policy</a></li>
+                    <li><a href="<?= BASE_URL ?>terms_conditions">Terms & Conditions</a></li>
+                   
+                   
                 </ul>
             </div>
             <div class="col-md-4">
-                <h6>Contact Us</h6>
+                <h4>Contact Us</h4>
                 <ul class="list-unstyled mb-4">
                     <li>
                         <a href="tel:<?= BRAND_PHONE ?>" class="text-decoration-none">
@@ -32,7 +36,7 @@
                 </ul>
 
                 <h6>Lets Be Social</h6>
-                <div class="right">
+                <div class="right social-links">
                     <a href="https://web.facebook.com/pizzasquareng/" target="_blank">
                         <i class="fa-brands fa-facebook"></i></a>
                     <a href="https://www.instagram.com/pizzasquareng" target="_blank">

@@ -8,6 +8,9 @@ class AllRoutes {
   }
 
   initialize() {
+    document.querySelectorAll(".loading").forEach((el) => {   
+        el.innerHTML = Utility.inlineLoader();
+    }); 
     Utility.runClassMethods(this, ["initialize"]);
   }
 

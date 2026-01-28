@@ -283,21 +283,21 @@ class Utility
      *
      * @return string
      */
-    public static function currentRoute(): string
-    {
-        $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
-        $baseFolder = '/pizzasquare_v2';
+        public static function currentRoute(): string
+        {
+            $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+            $baseFolder = '/';
 
 
 
-        if (strpos($requestUri, $baseFolder) === 0) {
-            $requestUri = substr($requestUri, strlen($baseFolder));
+            if (strpos($requestUri, $baseFolder) === 0) {
+                $requestUri = substr($requestUri, strlen($baseFolder));
+            }
+
+
+
+            return trim(parse_url($requestUri, PHP_URL_PATH) ?? '', '/');
         }
-
-
-
-        return trim(parse_url($requestUri, PHP_URL_PATH) ?? '', '/');
-    }
     /**
      * Get the current route relative to the base folder.
      *

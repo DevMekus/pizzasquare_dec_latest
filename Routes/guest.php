@@ -16,6 +16,7 @@ use App\Controllers\CouponController;
 use App\Controllers\Geocode;
 use App\Controllers\PaymentController;
 use App\Controllers\PromotionsController;
+use App\Controllers\SalesAnalyticsController;
 
 $user = new UserController();
 $category = new CategoryController();
@@ -31,6 +32,8 @@ $coupon = new CouponController();
 $geolocation = new Geocode();
 $payment = new PaymentController();
 $promotion = new PromotionsController();
+
+$salesAnalytics = new SalesAnalyticsController();
 
 
 
@@ -48,7 +51,8 @@ Router::group('v1', function () use (
     $coupon,
     $geolocation,
     $payment,
-    $promotion
+    $promotion,
+    $salesAnalytics
 ) {
     #User Routes
     Router::add('POST', '/auth/login', [$user, 'login']); 
@@ -56,6 +60,7 @@ Router::group('v1', function () use (
     Router::add('POST', '/auth/logout', [$user, 'logout']); 
     Router::add('POST', '/auth/recover', [$user, 'recoverAccount']); 
     Router::add('POST', '/auth/reset', [$user, 'resetPassword']); 
+     Router::add('POST',  '/contact', [$user, 'guestMessaging']);
  
 
     #Category Routes
@@ -106,6 +111,9 @@ Router::group('v1', function () use (
     #PromotionRoutes
     Router::add('GET', '/promotions', [$promotion, 'listPromotions']);
     Router::add('GET', '/promotions/{id}', [$promotion, 'getPromotionById']);
+
+    #Sales Analytics Routes
+    Router::add('GET', '/analytics/top-dishes', [$salesAnalytics, 'getTopDishes']);
 
    
 

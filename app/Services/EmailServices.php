@@ -179,5 +179,26 @@ class EmailServices{
                     $data['customer_name'] ?? "Customer"
                 );
     }
+
+    static function sendContactusMessageToAdmin($data){
+        $templateData = [
+            '{{logo_url}}' => BASE_URL . 'assets/images/logo_white.png',
+            '{{site_name}}' => BRAND_NAME,
+            '{{sender_name}}' => $data['name'],
+            '{{sender_email}}' => $data['email'],
+            '{{sender_subject}}' => $data['subject'],
+            '{{sender_message}}' => nl2br($data['message']),
+            '{{year}}' => date('Y'),
+            '{{company_address}}' => COMPANY_ADDRESS,               
+        ];
+
+        return  MailClient::sendMail(
+            ADMIN_EMAIL,
+            'New Contact Message: ' . $data['subject'],
+            ROOT_PATH . '/app/Services/templates/contact_us.html',
+            $templateData,
+            $data['name']
+        );
+    }
     
 }
