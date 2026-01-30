@@ -1,6 +1,6 @@
 
-import Utility from "../Classes/Utility";
-import XtraThursdayPromo from "../Classes/XtraThursdayPromo";
+import Utility from "../Classes/Utility.js";
+import XtraThursdayPromo from "../Classes/XtraThursdayPromo.js";
 import { getItem } from "../Utils/CrudRequest.js";
 
 class PromoDayPage{

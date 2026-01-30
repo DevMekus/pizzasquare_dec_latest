@@ -267,7 +267,8 @@ export default class Product {
                         <label class="toggle-item mb-3 ${!available ? "disabled" : ""}">
                             <input type="radio" 
                                 name="size" 
-                                value="${i}" 
+                                value="${i}"
+                                class="size-radio btn btn-sm btn-toggle" 
                                 ${available && !defaultAvailable && i === 0 ? "checked" : ""}
                                 ${available && defaultAvailable && sz.size_label === defaultAvailable.size_label ? "checked" : ""}
                                 ${!available ? "disabled" : ""}>
@@ -322,9 +323,9 @@ export default class Product {
                      <p class="text-center muted">${product.description || ""}</p>
                       ${sizeSectionHtml}
                     <div class="qty-box center-mobile">
-                        <button id="qtyMinus" class="qty-btn btn btn-sm"><i class="fa fa-minus"></i></button>
+                        <button id="qtyMinus" class="qty-btn btn btn-xs"><i class="fa fa-minus"></i></button>
                         <span id="qtyValue">1</span>
-                        <button id="qtyPlus" class="qty-btn btn btn-sm primary"><i class="fa fa-plus"></i></button>
+                        <button id="qtyPlus" class="qty-btn btn btn-xs primary"><i class="fa fa-plus"></i></button>
                     </div>
                     
                 </div>
@@ -434,7 +435,7 @@ export default class Product {
 
             toppingsList.forEach((topping) => {
                 const item = document.createElement("button");
-                item.className = "topping-btn";
+                item.className = "topping-btn btn btn-sm m-1";
                 item.dataset.id = topping.id;
                 item.dataset.price = topping.extras_price;
                 item.type = "button";

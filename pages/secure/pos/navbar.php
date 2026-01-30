@@ -5,7 +5,7 @@
 
     $current = Utility::currentRoute();
     $parts = explode("/", trim($current, "/"));
-    $route = $parts[3] ?? null;
+    $route = $parts[2] ?? null;
     ?>
 
  <nav class="navbar navbar-expand-lg pos-header sticky-top shadow-sm">

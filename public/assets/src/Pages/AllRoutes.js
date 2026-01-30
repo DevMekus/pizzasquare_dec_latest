@@ -191,6 +191,9 @@ class AllRoutes {
     const domEl = Utility.el("orderAlert");
     if (!domEl) return;
     Order.orderNotification();
+    // document.addEventListener("click", (e) => {
+    //   Order.orderNotification();
+    // });
   }
 }
 

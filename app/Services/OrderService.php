@@ -569,7 +569,11 @@ class OrderService{
             Utility::log($th->getMessage(), 'error', 'OrderService::deleteOrder', ['OrderID' => $id], $th);
             return false;
         }
-    }  
+    } 
+    
+    public static function pendingOrders(){
+        
+    }
 
       
     

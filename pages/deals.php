@@ -8,15 +8,14 @@ require_once ROOT_PATH . '/includes/navbar.php';
 <body class="theme-light" id="dealsPage">
     <div class="container dealsWrapper">
         <div class="deals-header" data-aos="fade-down">
-            <h2>Hot Deals 🔥</h2>
+            <h2>Deals and Limited Offers 🔥</h2>
             <p>Deals, Promotions, Combos and more!</p>
         </div>
 
       
 
         <div class="row" id="pizzaSquareDealsRow">
-            <!-- Deals will be injected here -->
-             <p class="text-center">Coming Soon...</p>
+            <!-- Deals will be injected here -->            
         </div>
     </div>
     <?php require_once ROOT_PATH . '/includes/footer-links.php'; ?>

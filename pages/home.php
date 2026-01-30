@@ -45,7 +45,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 </div>
             </div>
 
-            <section class="menu-grid row g-3 d-flex" id="menuGrid"></section>
+            <section class="menu-grid row g-3 d-flex loading" id="menuGrid"></section>
             <div class="pagination" id="pagination"></div>
             <div class="no-data" id="no-data"></div>
         </div>

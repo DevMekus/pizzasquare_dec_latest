@@ -24,11 +24,11 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                     </span>
                     <input id="searchInput" type="search" class="form-control" placeholder="Search items (BBQ Chicken Xtra, Chicken Shawarma, Hollandia)…" />
                 </div>
-                <div class="d-flex flex-wrap gap-2" id="categoryChips">
+                <div class="d-flex flex-wrap gap-2 loading" id="categoryChips">
                 </div>
             </div>
 
-            <div class="row g-3" id="catalogGrid">
+            <div class="row g-3 loading" id="catalogGrid">
             </div>
 
         </section>

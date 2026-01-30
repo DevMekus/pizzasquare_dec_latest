@@ -1370,6 +1370,51 @@ input[type=reset] {
   margin-top: 20px;
 }
 
+.xtra-thursday-card .btn, .xtra-thursday-card input[type=submit],
+.xtra-thursday-card input[type=reset] {
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+@media (max-width: 880px) {
+  .xtra-thursday-card {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+  }
+  .xtrathursday-img {
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  .xtrathursday-img img {
+    width: 30%;
+    height: auto;
+  }
+  .xtrathursday-img h1 {
+    font-size: 60px;
+  }
+  .xtra-thursday-card .center-div {
+    margin-top: 0px;
+    width: 100%;
+  }
+  .xtrathursday-img .smaller {
+    width: 30%;
+    height: auto;
+  }
+  .xtra-thursday-card .alert-heading {
+    font-size: 25px;
+  }
+  .xtra-thursday-card .btn, .xtra-thursday-card input[type=submit],
+  .xtra-thursday-card input[type=reset] {
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+}
 .filters input,
 .filters select {
   padding: 8px 14px;

@@ -1,7 +1,7 @@
-import {getItem, postItem} from '../Utils/CrudRequest.js'
+import { getItem } from '../Utils/CrudRequest.js'
 import Utility from './Utility.js';
 import Cart from './Cart.js';
-import PaymentChannel from "./PaymentChannel.js";
+
 
 export default class XtraThursdayPromo{
     static XTRATHURSDAYPRODUCTS = []
@@ -299,7 +299,7 @@ export default class XtraThursdayPromo{
             // -------------------------------------------
             const sizeSectionHtml = hasSizes
                 ? `
-                <div class="size-toggle">
+                <div class="size-toggle mt-3 w-100 d-flex flex-column align-items-center">
                     <label class="section-title">Select Size</label>
                     <div class="toggle-group slide-in mt-2">
                     ${sizesObj
@@ -329,13 +329,13 @@ export default class XtraThursdayPromo{
                 </div>`
                 : "";
 
-        const toppingsSectionHtml =`<div class="toppings-section mt-3 w-100 center-mobile main-product-toppings">
+        const toppingsSectionHtml =`<div class="toppings-section mt-3 w-100 main-product-toppings d-flex justify-content-center align-items-center flex-column">
                                         <h6 class="muted center-mobile">Toppings</h6>
                                         <div id="toppingsOptions" class="toppings-toggle center-mobile d-flex justify-content-center align-items-center w-100 gap-2"></div>
                                     </div>`;
     
         const ingredientsSectionHtml = `
-                    <div class="ingredients-section mt-3 center-mobil">                       
+                    <div class="ingredients-section center-mobile mt-3 w-100 d-flex flex-column align-items-center mb-2">                       
                         <p class="muted small center-mobile">
                             <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
                         </p>
@@ -351,20 +351,21 @@ export default class XtraThursdayPromo{
                             <img loading="lazy"
                             src="${imageUrl}"
                             alt="${product.name}"
-                            class="main-product-image"
+                            class="main-product-image spin"
                             style="max-width:100%; height:auto; object-fit:cover; max-height:250px;" />
                             <div class="muted small text-center mt-2">${product.name}</div>
                         </div>
-                        <div class="qty-box w-100 d-flex justify-content-center align-items-center mt-3">
-                            <button id="qtyMinus" class="qty-btn btn btn-sm"><i class="fa fa-minus"></i></button>
-                            <span id="qtyValue">1</span>
-                            <button id="qtyPlus" class="qty-btn btn btn-sm primary"><i class="fa fa-plus"></i></button>
-                        </div>
                         ${sizeSectionHtml}
+                        <div class="qty-box w-100 d-flex justify-content-center align-items-center qty-container">
+                            <button id="qtyMinus" class="qty-btn btn btn-xs bg-white"><i class="fa fa-minus"></i></button>
+                            <span id="qtyValue">1</span>
+                            <button id="qtyPlus" class="qty-btn btn btn-xs primary"><i class="fa fa-plus"></i></button>
+                        </div>
+                       
                         ${toppingsSectionHtml}
                         <hr/>
                         ${ingredientsSectionHtml}
-                        <div class="add-cart-footer">
+                        <div class="add-cart-footer mt-3 d-flex justify-content-center align-items-center">
                             <button id="addToCartBtn" 
                                 class="btn-add-cart ${defaultAvailable ? "" : "btn-disabled"}"
                                 data-size="${defaultSize || ""}"
@@ -388,14 +389,14 @@ export default class XtraThursdayPromo{
         if (!giftProduct) return ``;
 
 
-        const giftToppingHtml = `<div class="mt-3 ingredients-list-container center-mobile gift-product-toppings">
+        const giftToppingHtml = `<div class="mt-3 ingredients-list-container gift-product-toppings">
                                     <div class="ingredients-list">
                                         <h6 class="text-center">Choose Toppings</h6>
                                         <div class="d-flex flex-wrap w-100 center-mobile gap-2" id="gifttoppingsContainer">                                
                                     </div>                      
                                 </div>
                     `
-        const giftIngredientsHtml = `<div class="mt-3 ingredients-list-container center-mobile">
+        const giftIngredientsHtml = `<div class="mt-3 ingredients-list-container mb-2">
                                     <div class="ingredients-list">
                                       
                                          <p class="muted small center-mobile">
@@ -410,9 +411,9 @@ export default class XtraThursdayPromo{
         const giftHtml = giftProduct.map((product) => {
             if (product.product_name.toLowerCase().includes('margherita classic')){          
                 return `
-                   <div class="gift-pack-item mb-3 p-2 border rounded d-flex flex-column bg-light">
+                   <div class="gift-pack-item mb-3 p-2 rounded d-flex flex-column bg-light">
                         <div>
-                            <p class="muted small text-center">Customize your Gift packs</p>
+                            <p class="muted small text-center">Customize your Free Pizza</p>
                         </div>
                         <div class="gift-pack-option d-flex flex-column align-items-center" 
                             style="cursor:pointer;" 
@@ -531,42 +532,5 @@ export default class XtraThursdayPromo{
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
 }

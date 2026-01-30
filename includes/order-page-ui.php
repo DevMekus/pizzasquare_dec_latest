@@ -3,29 +3,29 @@
                             <div class="icon-box bg-default">
                                 <i class="bi bi-cart-plus fs-2"></i>
                             </div>
-                            <h2 id="newOrders"></h2>
+                            <h2 id="newOrders" class="loading"></h2>
                             <p>New Orders Today</p>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-default"><i class="bi bi-egg-fried fs-2"></i></div>
-                            <h2 id="preparingOrders"></h2>
+                            <h2 id="preparingOrders" class="loading"></h2>
                             <p>Preparing</p>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-default"><i class="bi bi-truck fs-2"></i></div>
-                            <h2 id="outOrders"></h2>
+                            <h2 id="outOrders" class="loading"></h2>
                             <p>Out for Delivery</p>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-success"><i class="bi bi-check-lg fs-2"></i></div>
-                            <h2 id="deliveredOrders"></h2>
+                            <h2 id="deliveredOrders" class="loading"></h2>
                             <p>Completed</p>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-primary">
                                 <i class="bi bi-x-lg fs-2"></i>
                             </div>
-                            <h2 id="cancelledOrders"></h2>
+                            <h2 id="cancelledOrders" class="loading"></h2>
                             <p>Cancelled</p>
                         </div>
                     </section>
@@ -41,29 +41,29 @@
                                                 <strong>TRANSFERS:</strong> <span id="transferOrderAmt">N 0.00</span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>CASH:</strong> <span id="cashOrderAmt">N 0.00</span>
+                                                <strong>CASH:</strong> <span id="cashOrderAmt" class="loading">N 0.00</span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>CARD:</strong> <span id="cardOrderAmt">N 0.00</span>
+                                                <strong>CARD:</strong> <span id="cardOrderAmt" class="loading">N 0.00</span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>ONLINE:</strong> <span id="onlineOrderAmt">N 0.00</span>
+                                                <strong>ONLINE:</strong> <span id="onlineOrderAmt" class="loading">N 0.00</span>
                                             </li>
                                           
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong class="color-danger">Subtotal:</strong> <span id="Subtotal" class="color-danger fw-bold"></span>
+                                                <strong class="color-danger">Subtotal:</strong> <span id="Subtotal" class="color-danger loading fw-bold"></span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong><em>(+) Delivery fees</em>:</strong> <span id="deliveryFeeAmt"></span>
+                                                <strong><em>(+) Delivery fees</em>:</strong> <span id="deliveryFeeAmt" class="loading"></span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>(+)  <em>Discount</em>:</strong> <span id="discountAmt"></span>
+                                                <strong>(+)  <em>Discount</em>:</strong> <span id="discountAmt" class="loading"></span>
                                             </li>
                                             <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong>(+)  <em>Vat</em>:</strong> <span id="vatAmt"></span>
+                                                <strong>(+)  <em>Vat</em>:</strong> <span id="vatAmt" class="loading"></span>
                                             </li>
                                              <li class="d-flex justify-content-between border-bottom py-1">
-                                                <strong class="color-success">Grand Total:</strong> <span id="totalAmtToday" class="color-success fw-bold"></span>
+                                                <strong class="color-success">Grand Total:</strong> <span id="totalAmtToday" class="color-success loading fw-bold"></span>
                                             </li>
                                             
                                         </ul>
@@ -109,7 +109,7 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody class="loading"></tbody>
                                         </table>
                                     </div>
                                     <div id="pagination" class="p-4 pagination"></div>
