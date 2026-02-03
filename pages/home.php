@@ -53,8 +53,8 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <section class="best-sellers py-5">
         <div class="container">
             <div class="text-centera mb-4" data-aos="fade-up">
-                <h2 class="section-title" data-aos="fade-right">🔥 Best Sellers</h2>
-                <p class="section-sub" data-aos="fade-right" data-aos-delay="100">Our most loved products, chosen by customers</p>            
+                <h2 class="section-title" data-aos="fade-right">Best Sellers 🛒</h2>
+                <p class="section-sub" data-aos="fade-right" data-aos-delay="100">Top-rated by Customers</p>            
             </div>
             <div class="row">
                <div id="bestSellersGrid" class="loading row"></div>         
@@ -218,7 +218,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         <h2 class="section-title">Our Story</h2>
                         <div style="text-align: justify;">
                             <p class="mb-3 text-white-100">
-                                Pizza Square Nigeria is a proudly indigenous company formed to bring the timeless charm of Italian pizza and craftsmanship to Nigeria, while staying true to the classic recipe, style, standards, and taste. Each pizza is crafted with expertise —honoring traditional techniques and high-quality ingredients—while weaving in a distinctly Nigerian market and offeringsthat resonates with our customers.
+                                Pizza Square Nigeria is a proudly indigenous company formed to bring the timeless charm of Italian pizza and craftsmanship to Nigeria, while staying true to the classic recipe, style, standards, and taste. Each pizza is crafted with expertise —honoring traditional techniques and high-quality ingredients—while weaving in a distinctly Nigerian market and offerings that resonates with our customers.
                             </p>
                             <a href="<?= BASE_URL ?>/about-us" class="btn btn-outline mt-3">Learn More</a>
                             <!-- <p class="mb-3 text-white-100">

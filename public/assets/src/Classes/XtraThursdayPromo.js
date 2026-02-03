@@ -399,7 +399,7 @@ export default class XtraThursdayPromo{
         const giftIngredientsHtml = `<div class="mt-3 ingredients-list-container mb-2">
                                     <div class="ingredients-list">
                                       
-                                         <p class="muted small center-mobile">
+                                         <p class="muted small">
                                             <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
                                         </p>
                                         <div class="d-flex flex-wrap w-100 center-mobile gap-2" id="ingredientsContainer">                                

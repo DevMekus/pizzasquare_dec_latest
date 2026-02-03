@@ -299,8 +299,8 @@ export default class Product {
                  ${productIngredients.length > 0 
                  
                  ? `
-                    <p class="muted small center-mobile">
-                        <i class="fa fa-info-circle"></i> Click to remove unwanted ingredients
+                    <p class="muted small">
+                        <i class="fa fa-info-circle hideOnMobile"></i> Click to remove unwanted ingredients
                     </p>
                      <div id="IngredientsOptions" class="collectionPit center-mobile"></div>
                     ` :

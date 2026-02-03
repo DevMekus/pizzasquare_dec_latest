@@ -13,7 +13,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <!-- Credibility Badge -->
     <div class="since-badge mb-4" data-aos="zoom-in">
       <span>Serving Quality Since</span>
-      <strong>2018</strong>
+      <strong>2020</strong>
     </div>
 
     <svg class="pizza-steam" width="120" height="120" viewBox="0 0 120 120" fill="none"

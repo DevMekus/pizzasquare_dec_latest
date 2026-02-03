@@ -435,7 +435,7 @@ static renderAdminActions(order) {
                 <p class="small text-muted">Online Order Re-print Receipt</p>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-2 w-100">
                 <p>Order: <strong>${order.order_id}</strong></p>
                 <p>${order.created_at}</p>
             </div>
@@ -489,7 +489,7 @@ static renderAdminActions(order) {
             </div>        
             <div class="mt-3 text-center small muted d-flex flex-column align-items-center gap-1">
                 <p><em>Thank you for your patronage!</em></p>
-                <p> Order From Website: www.pizzasquare.ng</p>
+                <p>Order From Website: www.pizzasquare.ng</p>
             </div>
 
         </div>

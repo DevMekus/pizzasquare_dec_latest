@@ -12,7 +12,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         <div class="container text-center" data-aos="fade-up">
             <h1 class="fw-bold display-5">Terms & Conditions</h1>
             <p class="lead mt-3">
-            Please read these terms carefully before using PizzaSquare.
+            Please read these terms carefully before using <?= BRAND_NAME; ?>.
             </p>
         </div>
         </section>
@@ -24,7 +24,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <!-- INTRO -->
     <div class="terms-block" data-aos="fade-up">
       <p>
-        Welcome to Pizza Square Nigeria (“we”, “us”, “our”). <br/>These Terms and Conditions (“Terms”) govern your access to and use of our website <span>www.pizzasquare.ng</span> (the “Site”) and the services we provide, including online ordering, delivery, and related features (collectively, the “Services”). By accessing or using the Site and/or Services, you agree to be bound by these Terms. If you do not agree, please do not use the Site or Services.
+        Welcome to Pizza Square Nigeria (“we”, “us”, “our”). These Terms and Conditions (“Terms”) govern your access to and use of our website <span>www.pizzasquare.ng</span> (the “Site”) and the services we provide, including online ordering, delivery, and related features (collectively, the “Services”). By accessing or using the Site and/or Services, you agree to be bound by these Terms. If you do not agree, please do not use the Site or Services.
       </p>
     </div>
 

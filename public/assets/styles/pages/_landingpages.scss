@@ -713,28 +713,7 @@ body {
     opacity: 1;
   }
 
-  // .deal-card {
-  //   position: relative;
-  //   width: 100%;
-  //   height: auto;
-  //   max-height: 400px;
-  //   background: var(--bg);
-  //   border-radius: 16px;
-  //   overflow: hidden;
-  //   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  //   transition: transform 0.2s ease;
-  // }
-
-  // .deal-card:hover {
-  //   transform: translateY(-5px);
-  // }
-
-  // .deal-card img {
-  //   width: 100%;
-  //   height: auto;
-  //   max-height: 400px;
-  //   object-fit: cover;
-  // }
+  
 }
 
 @media (max-width: 768px) {
@@ -1402,7 +1381,7 @@ body {
   display: block;
 }
 
-/* THIS IS THE KEY FIX */
+
 .overlay_s {
   position: absolute;
   inset: 0;
@@ -1410,6 +1389,14 @@ body {
   pointer-events: none;
  
   z-index: 100;
+}
+
+@media (max-width: 880px) {
+  .image-overlay {
+    width: 100%;
+  }
+
+  
 }
 
 
@@ -1556,9 +1543,6 @@ body {
 
 .best-seller-card {
   position: relative;
-  // background: #fff;
-  // border-radius: 16px;
-  // overflow: hidden;
   box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }

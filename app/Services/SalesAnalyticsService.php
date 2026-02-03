@@ -1,5 +1,7 @@
 <?php
 namespace App\Services;
+use App\Services\ProductService;
+use App\Services\ProductSizesService;
 
 
 class SalesAnalyticsService{
@@ -29,7 +31,23 @@ class SalesAnalyticsService{
 
         usort($dishSales, fn($a, $b) =>$b['total_qty'] <=> $a['total_qty'] );
 
-        return array_slice($dishSales, 0, $limit);
+    
+
+        $limitedProducts =  array_slice($dishSales, 0, $limit);
+
+        $productsWithDetails = [];
+
+        foreach ($limitedProducts as &$product){
+            $productDetails = ProductService::fetchById($product['product_id']);
+            $sizes = ProductSizesService::fetchByProductId($product['product_id']);
+            if ($productDetails){
+                $product['details'] = $productDetails;
+                $product['sizes'] = $sizes;
+                $productsWithDetails[] = $product;
+            }
+        }
+
+        return $productsWithDetails;
     }
 
 }

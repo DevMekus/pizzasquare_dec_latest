@@ -138,7 +138,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
 
         <!-- CTA -->
         <div class="faq-cta text-center mt-5" data-aos="zoom-in">
-          <h4 class="fw-bold mb-3">Still Hungry?</h4>
+          <h4 class="fw-bold mb-3">Still Craving?</h4>
           <p>Order now and let us handle the rest.</p>
           <a href="<?= BASE_URL ?>#menu" class="btn btn-primary btn-lg">Order Now</a>
         </div>

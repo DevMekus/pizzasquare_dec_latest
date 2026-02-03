@@ -966,6 +966,7 @@ export default class Utility {
      document.getElementById("printReceipt").addEventListener("click", () => {
       const receiptContent = document.getElementById("receiptBody").innerHTML;
       const w = window.open("", "PRINT", "height=600,width=380");
+        //  font-family: 'Courier New', monospace;
 
       w.document.write(`
       <html>
@@ -981,9 +982,8 @@ export default class Utility {
             /* Reset margins and padding */
             body {
               margin: 0;
-              padding: 0;
-              font-family: 'Courier New', monospace;
-              font-size: 12px;
+              padding: 0;           
+              font-size: 14px;
               line-height: 1.3;
             }
 
@@ -1012,7 +1012,7 @@ export default class Utility {
             td, th {
               padding: 2px 0;
               text-align: left;
-              font-size: 12px;
+              font-size: 14px;
             }
 
             hr {

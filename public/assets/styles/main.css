@@ -3613,7 +3613,6 @@ body {
   display: block;
 }
 
-/* THIS IS THE KEY FIX */
 .overlay_s {
   position: absolute;
   inset: 0;
@@ -3622,6 +3621,11 @@ body {
   z-index: 100;
 }
 
+@media (max-width: 880px) {
+  .image-overlay {
+    width: 100%;
+  }
+}
 .about-hero {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../assets/images/about_2.jpeg");
   background-size: cover;

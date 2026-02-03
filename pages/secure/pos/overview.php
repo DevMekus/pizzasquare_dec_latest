@@ -28,7 +28,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                 </div>
             </div>
 
-            <div class="row g-3 loading" id="catalogGrid">
+            <div class="row g-3" id="catalogGrid">
             </div>
 
         </section>
