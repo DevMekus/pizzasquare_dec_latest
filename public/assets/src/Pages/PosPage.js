@@ -32,10 +32,10 @@ class PosPage{
         }, 1000);
     }
 
-    async setDeliveryData(){
-        await Cart.getAndSetDeliveryAreas();
-        Cart.renderManualLocation()
-        Cart.handleManualLocation()
+    
+
+    displayDeliverySystem(){
+        Checkout.manualLocationService();
     }
 
     loadPOSMenuCategories() {

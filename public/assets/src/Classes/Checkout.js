@@ -360,7 +360,8 @@ export default class Checkout {
 
     //join with the written note
     const instructions = Utility.el("instructions")?.value || null;
-  
+
+     
     
     return {
       order_id: Utility.generateId(),

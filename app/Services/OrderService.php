@@ -581,7 +581,7 @@ class OrderService{
             
             Database::insert($payments, $paymentData);
           
-            if ($orderData['customer_type'] !=='walk_in'){
+            if ($orderData['customer_type'] !== 'walk_in'){
                
                 EmailServices::sendOrderConfirmationEmail([
                     'order_id' => $orderData['order_id'],

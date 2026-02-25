@@ -186,37 +186,37 @@ export default class Pos {
               
   
               <div class="receipt-totals mt-3">  
-              <div>
+              <div class="d-flex justify-content-between">
                   <p>Subtotal:</p>
                   <span><strong>${Utility.fmtNGN(subtotal)}</strong></span>
               </div>
   
-              <div>
+              <div class="d-flex justify-content-between">
                   <p>Delivery Fee:</p>
                   <span><strong>${Utility.fmtNGN(deliveryFee)}</strong></span>
               </div>
   
-              <div>
+              <div class="d-flex justify-content-between">
                   <p>Tax:</p>
                   <span><strong>${Utility.fmtNGN(tax)}</strong></span>
               </div>
   
-              <div>
+              <div class="d-flex justify-content-between">
                   <p>Discount:</p>
                   <span><strong>${Utility.fmtNGN(discount)}</strong></span>
               </div>
   
-              <div class="grand">
+              <div class="grand d-flex justify-content-between">
                   <p>Grand Total:</p>
                   <span><strong>${Utility.fmtNGN(grandTotal)}</strong></span>
               </div>
   
-              <div class="small">
+              <div class="small d-flex justify-content-between">
                   <p>Payment:</p>
                   <span>${Utility.toTitleCase(paymentType)}</span>
               </div>
   
-              <div class="small">
+              <div class="small d-flex justify-content-between">
                   <p>Status:</p>
                   <span>${Utility.toTitleCase(order.status)}</span>
               </div>

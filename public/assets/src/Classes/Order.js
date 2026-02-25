@@ -463,27 +463,27 @@ static renderAdminActions(order) {
            
             <div class="receipt-totals mt-3">
 
-            <div>
+            <div class="d-flex justify-content-between">
                 <p>Subtotal:</p>
                 <p><strong>${Utility.fmtNGN(subtotal)}</strong></p>
             </div>
 
-            <div>
+            <div class="d-flex justify-content-between">
                 <p>Delivery Fee:</p>
                 <p><strong>${Utility.fmtNGN(deliveryFee)}</strong></p>
             </div>
 
-            <div>
+            <div class="d-flex justify-content-between">
                 <p>Tax:</p>
                 <p><strong>${Utility.fmtNGN(tax)}</strong></p>
             </div>
 
-            <div>
+            <div class="d-flex justify-content-between">
                 <p>Discount:</p>
                 <p><strong>${Utility.fmtNGN(discount)}</strong></p>
             </div>
 
-            <div class="grand">
+            <div class="grand d-flex justify-content-between">
                 <p>Grand Total:</p>
                 <p><strong>${Utility.fmtNGN(grandTotal)}</strong></p>
             </div>        

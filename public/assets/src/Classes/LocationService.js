@@ -89,6 +89,13 @@ export default class LocationService {
                 Cart.DELIVERY_BASE = Number(area.delivery_price);
                 Cart.deliveryArea = area.city;
             } else {
+                if (currentArea == '') {
+                    Cart.deliveryFeedback.innerHTML = `<div class="p-2">Please select a delivery area to see the delivery fee.</div>`;
+                    Cart.DELIVERY_BASE = 0;
+                    Cart.deliveryArea = null;
+                    Checkout.renderCart();
+                    return;
+                }
                 Cart.deliveryFeedback.innerHTML = `<div>An error has occurred. Please Call or chat the Administrator to queue your order.</div>`;
                 Cart.ORDERBTN ? Cart.ORDERBTN.disabled = true : null;
                 return;
