@@ -45,6 +45,7 @@ class OrderController{
 
     public function getOrder($order_id){
         try {
+            $order_id = RequestValidator::parseId($order_id);
             $order = OrderService::fetchOrderById($order_id);
             if (empty($order))
                 Response::error(404, "Order not found");
@@ -54,6 +55,19 @@ class OrderController{
             Response::error(500, "Error fetching order");
         }
        
+    }
+
+    public function getOrdersByUser($user_id){
+        try {
+            $user_id = RequestValidator::parseId($user_id);
+            $orders = OrderService::fetchOrdersByUser($user_id);
+            if (empty($orders))
+                Response::error(404, "No orders found for this user");
+            Response::success($orders, "Orders retrieved successfully");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'OrderController::getOrdersByUser', ['UserID' => $user_id], $e);
+            Response::error(500, "Error fetching orders for user");
+        }
     }
 
     

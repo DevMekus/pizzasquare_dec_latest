@@ -674,6 +674,59 @@ Retrieve order details.
 }
 ```
 
+### Get Order by USERID
+Retrieve order details.
+
+**Endpoint:** `GET /orders/users/{userid}`
+Authorization: Bearer <token>
+
+**Parameters:**
+- `userid` (string) - userid
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "message": "Order found",
+  "data": [
+    {
+    "id": 1,
+    "order_id": "ORD_20240115_001",
+    "customer_name": "John Doe",
+    "customer_phone": "08012345678",
+    "customer_email": "john@example.com",
+    "delivery": "delivery",
+    "delivery_address": "123 Main Street, Enugu",
+    "status": "pending",
+    "total": 15000.00,
+    "payment_type": "single",
+    "total_paid": 15000.00,
+    "delivery_fee": 1000.00,
+    "item_amount": 14000.00,
+    "items": [
+      {
+        "product_id": 1,
+        "product_name": "Mega Beef Pizza",
+        "size_id": 2,
+        "unit_price": 4500.00,
+        "qty": 2,
+        "subtotal": 9000.00,
+        "barbecue_sauce": "yes",
+        "toppings": [
+          {
+            "topping": "Extra Cheese",
+            "unit_price": 500,
+            "qty": 2,
+            "subtotal": 1000
+          }
+        ]
+      }
+    ]
+  }
+  ]
+}
+```
+
 ---
 
 ### Get VAT

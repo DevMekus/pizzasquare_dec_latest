@@ -9,7 +9,7 @@ $route = $parts[1] ?? null;
 
 $dayName = date("l"); 
 if ($dayName === 'Thursday'):  ?>
-    <div class="xtra-thursday-card" role="alert">
+    <div class="xtra-thursday-card mt-4" role="alert">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">

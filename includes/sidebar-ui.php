@@ -67,13 +67,13 @@
             </div>
             <div class="link-wrap <?= $route == "news-updates" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/news-updates" class="">
-                    <span class="icon">🎉</span>
-                    <span class="label">News & Updates</span>
+                    <span class="icon">🔈</span>
+                    <span class="label">News</span>
                 </a>
             </div>
             <div class="link-wrap <?= $route == "zones" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/zones" class="">
-                    <span class="icon">🚚</span>
+                    <span class="icon">🛵</span>
                     <span class="label">Delivery Manager</span>
                 </a>
             </div>
@@ -85,8 +85,8 @@
             </div>
             <div class="link-wrap <?= $route == "promotions" ? 'active' : '' ?>">
                 <a href="<?= BASE_URL; ?>secure/admin/promotions" class="">
-                    <span class="icon">🏷️</span>
-                    <span class="label">Promotions</span>
+                    <span class="icon">🔖</span>
+                    <span class="label">Deals</span>
                 </a>
             </div>
             <hr class="primary_horizontal"/>

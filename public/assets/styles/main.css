@@ -1918,7 +1918,6 @@ table .avatar {
   right: 0;
   padding: 12px;
   background: rgba(255, 255, 255, 0.7);
-  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -2072,7 +2071,6 @@ table .avatar {
   border-radius: 50px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.3);
-  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   transition: transform 0.2s ease, background 0.3s;
 }
@@ -2776,14 +2774,14 @@ body {
      object-fit: cover;
 }
 
-#aboutSection {
-  /* ---------- About Parallax ---------- */
-}
 #aboutSection .container {
   width: var(--container-max);
   position: relative;
   margin: auto;
   max-width: 100%;
+}
+#aboutSection {
+  /* ---------- About Parallax ---------- */
 }
 #aboutSection .about {
   position: relative;
@@ -2924,9 +2922,6 @@ body {
 
 #dealsPage {
   max-width: 100%;
-  /* Overlay setup */
-  /* Text styling */
-  /* Hover effect */
 }
 #dealsPage .dealsWrapper {
   width: var(--container-max);
@@ -2986,6 +2981,9 @@ body {
 #dealsPage .deal-card:hover .deal-img {
   transform: scale(1.05);
 }
+#dealsPage {
+  /* Overlay setup */
+}
 #dealsPage .overlay {
   position: absolute;
   top: 0;
@@ -3000,10 +2998,16 @@ body {
   align-items: center;
   justify-content: center;
 }
+#dealsPage {
+  /* Text styling */
+}
 #dealsPage .d_details {
   transform: translateY(20px);
   opacity: 0;
   transition: all 0.3s ease;
+}
+#dealsPage {
+  /* Hover effect */
 }
 #dealsPage .deal-card:hover .overlay {
   opacity: 1;
@@ -3028,7 +3032,6 @@ body {
 }
 #track-page {
   background-color: var(--bg);
-  /* Animations */
 }
 #track-page .tracking-section {
   width: var(--container-max);
@@ -3166,6 +3169,9 @@ body {
   font-size: 16px;
   transition: background-color 0.3s ease;
 }
+#track-page {
+  /* Animations */
+}
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -3269,8 +3275,6 @@ body {
 }
 #checkout {
   background: var(--neutral-100);
-  /* Order summary */
-  /* Sticky mobile bar */
 }
 #checkout .checkoutContainer {
   width: var(--container-max);
@@ -3304,6 +3308,9 @@ body {
 #checkout .qty-btn:hover {
   background: var(--neutral-200);
 }
+#checkout {
+  /* Order summary */
+}
 #checkout .summary {
   position: sticky;
   top: 90px;
@@ -3313,6 +3320,9 @@ body {
 }
 #checkout .summary .row .col:last-child {
   text-align: right;
+}
+#checkout {
+  /* Sticky mobile bar */
 }
 #checkout .mobile-summary {
   position: fixed;
@@ -4098,14 +4108,6 @@ body {
   width: 100%;
   position: relative;
   /* Header */
-  /* Layout */
-  /* ✅ Mobile First Responsive Enhancements */
-  /* Make POS wrap fully fluid on mobile */
-  /* Search input + filter chips width fix */
-  /* Catalog grid responsive spacing */
-  /* Improve layout of payment group on mobile */
-  /* Prevent sticky filter from covering content */
-  /* Make modal full width on small screens */
 }
 #POS_SYSTEM .pos-header {
   background: var(--bg);
@@ -4151,6 +4153,9 @@ body {
   position: relative;
   width: 100%;
   text-align: center;
+}
+#POS_SYSTEM {
+  /* Layout */
 }
 #POS_SYSTEM .pos-wrap {
   display: grid;
@@ -4244,6 +4249,10 @@ body {
 #POS_SYSTEM .totals .row strong {
   font-size: 1.05rem;
 }
+#POS_SYSTEM {
+  /* ✅ Mobile First Responsive Enhancements */
+  /* Make POS wrap fully fluid on mobile */
+}
 @media (max-width: 768px) {
   #POS_SYSTEM .pos-wrap {
     display: flex;
@@ -4259,6 +4268,9 @@ body {
     margin-top: 10px;
   }
 }
+#POS_SYSTEM {
+  /* Search input + filter chips width fix */
+}
 @media (max-width: 576px) {
   #POS_SYSTEM #topFilter {
     flex-direction: column !important;
@@ -4273,9 +4285,15 @@ body {
     justify-content: space-evenly !important;
   }
 }
+#POS_SYSTEM {
+  /* Catalog grid responsive spacing */
+}
 #POS_SYSTEM #catalogGrid .col,
 #POS_SYSTEM #catalogGrid > div {
   min-width: 150px;
+}
+#POS_SYSTEM {
+  /* Improve layout of payment group on mobile */
 }
 @media (max-width: 480px) {
   #POS_SYSTEM .btn-group label {
@@ -4283,12 +4301,18 @@ body {
     padding: 6px;
   }
 }
+#POS_SYSTEM {
+  /* Prevent sticky filter from covering content */
+}
 @media (max-width: 768px) {
   #POS_SYSTEM #topFilter {
     top: 65px !important;
     padding: 6px 8px;
     border-radius: 10px;
   }
+}
+#POS_SYSTEM {
+  /* Make modal full width on small screens */
 }
 @media (max-width: 576px) {
   #POS_SYSTEM .modal-dialog {
@@ -4300,10 +4324,6 @@ body {
 
 #ADMIN_SYSTEM {
   /* Header */
-  /* Layout */
-  /* ✅ Tablets: 2 per row */
-  /* ✅ Mobile: 1 per row */
-  /* small components */
 }
 #ADMIN_SYSTEM .admin-nav {
   background: var(--bg);
@@ -4334,6 +4354,9 @@ body {
   color: var(--text);
   cursor: pointer;
   font-weight: 700;
+}
+#ADMIN_SYSTEM {
+  /* Layout */
 }
 #ADMIN_SYSTEM .admin-wrap {
   width: 100%;
@@ -4398,10 +4421,16 @@ body {
   gap: 8px;
   color: var(--text);
 }
+#ADMIN_SYSTEM {
+  /* ✅ Tablets: 2 per row */
+}
 @media (max-width: 992px) {
   #ADMIN_SYSTEM .kpi {
     grid-column: span 6;
   }
+}
+#ADMIN_SYSTEM {
+  /* ✅ Mobile: 1 per row */
 }
 @media (max-width: 576px) {
   #ADMIN_SYSTEM .grid {
@@ -4439,6 +4468,9 @@ body {
   border-radius: 8px;
   font-weight: 600;
   font-size: 13px;
+}
+#ADMIN_SYSTEM {
+  /* small components */
 }
 #ADMIN_SYSTEM .list {
   display: flex;
@@ -4860,13 +4892,6 @@ body {
     line-height: 25px;
   }
 }
-.reports-page {
-  /* Filter buttons wrap nicely */
-  /* Date inputs and button grouped */
-  /* ✅ Mobile responsiveness */
-  /* Chart radio control group */
-  /* ✅ On mobile */
-}
 .reports-page .controls {
   display: flex;
   flex-wrap: wrap;
@@ -4875,11 +4900,17 @@ body {
   gap: 10px;
   margin-bottom: 1rem;
 }
+.reports-page {
+  /* Filter buttons wrap nicely */
+}
 .reports-page .filter-buttons {
   flex: 1 1 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+.reports-page {
+  /* Date inputs and button grouped */
 }
 .reports-page .date-controls {
   flex: 1 1 auto;
@@ -4888,6 +4919,9 @@ body {
   gap: 8px;
   justify-content: flex-end;
   min-width: 260px;
+}
+.reports-page {
+  /* ✅ Mobile responsiveness */
 }
 @media (max-width: 768px) {
   .reports-page .controls {
@@ -4917,6 +4951,9 @@ body {
   margin: 0;
   font-weight: 600;
 }
+.reports-page {
+  /* Chart radio control group */
+}
 .reports-page .chart-controls {
   display: flex;
   align-items: center;
@@ -4926,6 +4963,9 @@ body {
 }
 .reports-page .chart-controls input[type=radio] {
   margin-right: 4px;
+}
+.reports-page {
+  /* ✅ On mobile */
 }
 @media (max-width: 768px) {
   .reports-page .overview-header {
@@ -4939,6 +4979,14 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .kpi-card .icon-box {
+    display: none;
+  }
+  .hideOnMobile {
+    display: none;
+  }
+}
 .admin-nav {
   background: var(--nav-bg);
 }

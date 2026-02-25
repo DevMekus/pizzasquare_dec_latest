@@ -16,7 +16,7 @@ $orderId = $_GET['search'] ?? null;
                     <span class="bounce-card">Track</span>
                     <span class="bounce-card">Your Order!</span>
                 </h1>
-                <p>We're tracking your delicious order right to your doorstep. Here’s a quick peek at what’s coming your way:</p>
+                <p>You can track your Order Status here. Find your Order ID from the confirmation mail you received.</p>
             </section>
 
             <form id="trackForm" class="track-form mt-5" data-aos="zoom-in">

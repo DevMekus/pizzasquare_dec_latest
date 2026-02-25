@@ -8,7 +8,7 @@ class PromotionsPage {
     }
         
     async initialize() {
-        Promotions.PROMOTIONS = await getItem('promotions');
+        Promotions.PROMOTIONS = await getItem('promotions');       
         Utility.runClassMethods(this, ["initialize"]);
     }
 

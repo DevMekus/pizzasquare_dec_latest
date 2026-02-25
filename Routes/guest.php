@@ -17,6 +17,7 @@ use App\Controllers\Geocode;
 use App\Controllers\PaymentController;
 use App\Controllers\PromotionsController;
 use App\Controllers\SalesAnalyticsController;
+use App\Controllers\ReverseGeocode;
 
 $user = new UserController();
 $category = new CategoryController();
@@ -35,6 +36,8 @@ $promotion = new PromotionsController();
 
 $salesAnalytics = new SalesAnalyticsController();
 
+$reverseGeocode = new ReverseGeocode();
+
 
 
 Router::group('v1', function () use (
@@ -52,7 +55,8 @@ Router::group('v1', function () use (
     $geolocation,
     $payment,
     $promotion,
-    $salesAnalytics
+    $salesAnalytics,
+    $reverseGeocode
 ) {
     #User Routes
     Router::add('POST', '/auth/login', [$user, 'login']); 
@@ -104,6 +108,7 @@ Router::group('v1', function () use (
 
     #Geocode Routes
     Router::add('POST', '/geocode', [$geolocation, 'reverseGeocode']); 
+    Router::add('POST', '/reverse-geocode', [$reverseGeocode, 'reverseGeocode']); 
     
     #Payment Routes
     Router::add('POST', '/payment/confirm', [$payment, 'confirmPayment']);

@@ -5,6 +5,7 @@ import Checkout from "../Classes/Checkout.js";
 import Category from "../Classes/Category.js";
 import { getItem } from "../Utils/CrudRequest.js";
 import AuthHelper from "./AuthPage.js";
+import Cart from "../Classes/Cart.js";
 
 
 class PosPage{
@@ -23,12 +24,18 @@ class PosPage{
     }
 
     renderCurrentTime() {
-    const clockEl = document.getElementById("clock");
-    if (!clockEl) return;
-    setInterval(() => {
-      const d = new Date();
-      clockEl.textContent = d.toLocaleString();
-    }, 1000);
+        const clockEl = document.getElementById("clock");
+        if (!clockEl) return;
+        setInterval(() => {
+        const d = new Date();
+        clockEl.textContent = d.toLocaleString();
+        }, 1000);
+    }
+
+    async setDeliveryData(){
+        await Cart.getAndSetDeliveryAreas();
+        Cart.renderManualLocation()
+        Cart.handleManualLocation()
     }
 
     loadPOSMenuCategories() {

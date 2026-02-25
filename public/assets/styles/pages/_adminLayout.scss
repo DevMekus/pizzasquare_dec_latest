@@ -294,5 +294,17 @@
       justify-content: center;
       width: 100%;
     }
+
+    
   }
 }
+
+  @media (max-width: 768px) {
+    .kpi-card .icon-box{
+      display: none;
+    }
+
+    .hideOnMobile {
+      display: none;
+    }
+  }

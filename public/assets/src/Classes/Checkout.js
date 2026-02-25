@@ -3,6 +3,7 @@ import Utility from "./Utility.js";
 import { HttpRequest } from "../Utils/httpRequest.js";
 import { CONFIG } from "../Utils/config.js";
 import Pagination from "./Pagination.js";
+import LocationService from "./LocationService.js";
 
 /**
  * Reusable functions for the checkouty and POS
@@ -88,6 +89,7 @@ export default class Checkout {
     Checkout.renderSummary();
     Checkout.clearCartItems();
   }
+
   static renderSummary() {
     const t = Checkout.calcTotals();
 
@@ -253,44 +255,44 @@ export default class Checkout {
   }
 
   static applyCoupon() {
-    document
-      .getElementById("applyCoupon")
-      .addEventListener("click", async () => {
-        const code = Cart.couponEl.value.trim().toUpperCase();
-        if (!code) return;
+    // document
+    //   .getElementById("applyCoupon")
+    //   .addEventListener("click", async () => {
+    //     const code = Cart.couponEl.value.trim().toUpperCase();
+    //     if (!code) return;
 
-        //fetch coupons
-        Utility.toast("Searching...");
-        Utility.alertLoader();    
-        const coupons = await Checkout.fetchCOUPONS();
-        Utility.clearAlertLoader();
+    //     //fetch coupons
+    //     Utility.toast("Searching...");
+    //     Utility.alertLoader();    
+    //     const coupons = await Checkout.fetchCOUPONS();
+    //     Utility.clearAlertLoader();
 
-        //Coupons not available
-        if (coupons.length === 0) {
-          Cart.discountRate = 0;
-          Utility.toast("Invalid coupon");
-          Checkout.renderCart();
-          return;
-        }
+    //     //Coupons not available
+    //     if (coupons.length === 0) {
+    //       Cart.discountRate = 0;
+    //       Utility.toast("Invalid coupon");
+    //       Checkout.renderCart();
+    //       return;
+    //     }
 
-        const couponExist = coupons.find((coupon) => coupon["coupon"] == code);
+    //     const couponExist = coupons.find((coupon) => coupon["coupon"].toUpperCase() == code);
 
-        //Coupon not found
-        if (!couponExist || couponExist.length === 0) {
-          Cart.discountRate = 0;
-          Utility.toast("Invalid coupon");
-          Checkout.renderCart();
-          return;
-        }
+    //     //Coupon not found
+    //     if (!couponExist || couponExist.length === 0) {
+    //       Cart.discountRate = 0;
+    //       Utility.toast("Invalid coupon");
+    //       Checkout.renderCart();
+    //       return;
+    //     }
 
-        Cart.discountRate = parseFloat(couponExist.discount);
+    //     Cart.discountRate = parseFloat(couponExist.discount);
 
-        Utility.toast(
-          `Coupon applied: ${Math.round(Cart.discountRate * 100)}% off`
-        );
-        //!TODO: Save to DB
-        Checkout.renderCart();
-      });
+    //     Utility.toast(
+    //       `Coupon applied: ${Math.round(Cart.discountRate * 100)}% off`
+    //     );
+    //     //!TODO: Save to DB
+    //     Checkout.renderCart();
+    //   });
   }
 
   static clearCartItems() {
@@ -324,13 +326,17 @@ export default class Checkout {
       locationArea: "",
     };
 
-    if (!customer.name || !customer.phone || customer.phone.length < 10) {
-      Utility.SweetAlertResponse({
-        success: false,
-        message: "Customer name and valid phone number are required",
-      });
-      proceed = false;
+    if (!Checkout.isPos){
+        if (!customer.name || !customer.phone || customer.phone.length < 10) {
+          Utility.SweetAlertResponse({
+            success: false,
+            message: "Customer name and valid phone number are required",
+          });
+          proceed = false;
+        }
     }
+
+    
 
     if (Checkout.isPos) {
       const cash = Utility.el("cashAmount")
@@ -365,7 +371,7 @@ export default class Checkout {
       customer_type: Checkout.isPos ? "walk_in" : "website",
       delivery_address: Cart.deliveryAddress ? Cart.deliveryAddress.value : null,
       city: Cart.deliveryArea ? Cart.deliveryArea : null,
-      delivery_type: !Checkout.isPos ? Cart.method : "pickup",
+      delivery_type:  Cart.method !== "" ? Cart.method : "pickup",
       customer_phone: Utility.el("phone")?.value  || null,
       order_note: instructions,
       userid: !Checkout.isPos ? Utility.el("userid")?.value  : null,
@@ -381,7 +387,7 @@ export default class Checkout {
         online: !Checkout.isPos ? parseFloat(Cart.GRANDTOTAL) - parseFloat(Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0) : 0,
         transfer: Utility.el("transferAmount") ? parseFloat(Utility.el("transferAmount").value || 0) : 0,
         delivery_fee:
-          Cart.method === "Delivery" ? Cart.DELIVERY_BASE : 0,
+          Cart.method === "Delivery" || Cart.method !== "" ? Cart.DELIVERY_BASE : 0,
           vat: t.tax,
           discount: t.discount,
       },
@@ -424,9 +430,7 @@ export default class Checkout {
     });
     if (paginatedData.length > Utility.PAGESIZE)
       Pagination.render(data.length, page, data, Checkout.CouponTable);
-  }
-
- 
+  } 
 
   static checkOrderingStatus(orderType) {
     const statusEl = Utility.el("orderingStatus");
@@ -487,7 +491,65 @@ export default class Checkout {
 
     // If all rules pass → Allow ordering
     return true;
-}
+  }
+
+  static  handleHomeDelivery(){
+    Cart.ORDERBTN.disabled = true;
+    Cart.method = "Delivery";
+    Cart.deliveryFields.style.display = "block";
+    Cart.pickupFields.style.display = "none";
+    Cart.deliveryFeedback.innerHTML = `${Utility.inlineLoader()}...Searching for your location. Please wait.`;
+  
+    Checkout.processDeliveryService();
+    
+  }
+
+  static async processDeliveryService(){  
+    
+    const locationData =  await LocationService.geolocationService()   
+    
+    if (!locationData || !locationData.success) {
+      Cart.deliveryFeedback.innerHTML = `<div class="p-2"><i class="fas fa-exclamation-triangle"></i> Unable to detect your location. <strong>Please select manually.</strong></div>`;
+      await Checkout.manualLocationService();
+      return;
+    }
+
+ 
+    Cart.deliveryFeedback.innerHTML = ''
+    Cart.deliveryFeedback.innerHTML = `<div class="p-2">🚚 Delivery to <strong>${locationData.data.display_name}</strong></div>`
+    Cart.deliveryAddress.value = locationData.data.display_name;
+
+    const deliveryFee = locationData.data.delivery_price;
+    Cart.deliveryArea = locationData.data.suburb;
+    Cart.DELIVERY_BASE = Number(deliveryFee);
+    
+    Checkout.renderCart();
+    Cart.ORDERBTN.disabled = false;
+
+  }
+
+  static async manualLocationService(){
+    
+    const selectDom = Utility.el("manual-delivery");
+    if (!selectDom) return;
+
+    await Cart.getAndSetDeliveryAreas();
+    LocationService.renderManualLocation(selectDom); 
+    LocationService.handleManualLocationChange()
+
+  }
+
+  static handlePickupDelivery(){
+    Cart.method = "Pickup";
+    Cart.deliveryFields.style.display = "none";
+    Cart.pickupFields.style.display = "block";
+    Cart.DELIVERY_BASE = 0;
+    Utility.el("address").value = "";
+    Checkout.renderCart();
+    Cart.ORDERBTN.disabled = false;
+
+    Cart.deliveryFeedback.innerHTML = '<div class="p-2">Visit our store to pickup your order. <i class="fas fa-arrow-down"></i></div>'
+  }
 
   
 

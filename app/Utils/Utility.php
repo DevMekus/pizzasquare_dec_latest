@@ -33,6 +33,7 @@ class Utility
     public static $ingredients = 'ingredients';
     public static $order_removed_ingredients = 'order_removed_ingredients';
     public static $promotions = 'promotions';
+    public static $geolocation = 'geolocation';
      
 
     public static function debugger()
@@ -274,7 +275,8 @@ class Utility
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return ($httpCode === 200) ? json_decode($response, true) : false;
+        return json_decode($response, true);
+        // return ($httpCode === 200) ? json_decode($response, true) : false;
     }
 
 

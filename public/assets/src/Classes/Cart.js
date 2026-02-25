@@ -235,126 +235,129 @@ new bootstrap.Modal(document.getElementById("successModal")).show();
     $("#displayDetails").modal("hide");
   }
 
-  static BUYNOW({
-    product_id,
-    title,
-    size,
-    size_id,
-    barbecueSauce = null,
-    price,
-    qty,
-    image,
-    toppings,
-    type = "regular",
-    removed_ingredients = [],
-  }){
-    //Send payment modal.
-    //packageOrder();
-    //submit oder after payment and show order summary.
-    Cart.placeOrder();
-    Cart.cart = []; // Clear existing cart
-  }
+  // static BUYNOW({
+  //   product_id,
+  //   title,
+  //   size,
+  //   size_id,
+  //   barbecueSauce = null,
+  //   price,
+  //   qty,
+  //   image,
+  //   toppings,
+  //   type = "regular",
+  //   removed_ingredients = [],
+  // }){
+  //   //Send payment modal.
+  //   //packageOrder();
+  //   //submit oder after payment and show order summary.
+  //   Cart.placeOrder();
+  //   Cart.cart = []; // Clear existing cart
+  // }
 
-  static async handleHomeDelivery() {
-    Cart.ORDERBTN.disabled = true;
-    Cart.method = "Delivery";
-    Cart.deliveryFields.style.display = "block";
-    Cart.pickupFields.style.display = "none";
+  // static async handleHomeDelivery() {
+  //   Cart.ORDERBTN.disabled = true;
+  //   Cart.method = "Delivery";
+  //   Cart.deliveryFields.style.display = "block";
+  //   Cart.pickupFields.style.display = "none";
 
-    Cart.deliveryFeedback.innerHTML = `Searching for your location...${Utility.inlineLoader()}`;
-    const locationObj = await Utility.detectLocation();
+  //   Cart.deliveryFeedback.innerHTML = `Searching for your location...${Utility.inlineLoader()}`;
+  //   const locationObj = await Utility.detectLocation();
 
-    if (!locationObj|| !locationObj.delivery_fee) {
-      await Cart.renderManualLocation();
-      Cart.handleManualLocation();
-      return;
-    }
+  //   if (!locationObj|| !locationObj.delivery_fee) {
+  //     await Cart.renderManualLocation();
+  //     Cart.handleManualLocation();
+  //     return;
+  //   }
     
-    const rawData = locationObj.raw;
-    const addresses = rawData["address"];
-    const currentLocation = addresses["amenity"];
+  //   const rawData = locationObj.raw;
+  //   const addresses = rawData["address"];
+  //   const currentLocation = addresses["amenity"];
 
-    //Location not found
-    if (!currentLocation || currentLocation == undefined) {
-      Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
-      await Cart.renderManualLocation();
-      setTimeout(() => {
-        Cart.handleManualLocation();
-      }, 2000);
-      return;
-    }
+  //   //Location not found
+  //   if (!currentLocation || currentLocation == undefined) {
+  //     Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
+  //     await Cart.renderManualLocation();
+  //     setTimeout(() => {
+  //       Cart.handleManualLocation();
+  //     }, 2000);
+  //     return;
+  //   }
 
-    const deliveryFee = locationObj.delivery_fee;
-    Cart.deliveryArea = addresses.suburb;
-    Cart.DELIVERY_BASE = Number(deliveryFee);
-    Cart.deliveryAddress.value = currentLocation;
+  //   const deliveryFee = locationObj.delivery_fee;
+  //   Cart.deliveryArea = addresses.suburb;
+  //   Cart.DELIVERY_BASE = Number(deliveryFee);
+  //   Cart.deliveryAddress.value = currentLocation;
 
-    Cart.deliveryFeedback.innerHTML = "";
-    Cart.deliveryFeedback.innerHTML = `<p>🚚 Delivery to "<strong>${currentLocation}</strong>" is <em>${Utility.fmtNGN(
-      deliveryFee
-    )}</em></p>`;
-    Checkout.renderCart();
-    Cart.ORDERBTN.disabled = false;
-  }
+  //   Cart.deliveryFeedback.innerHTML = "";
+  //   Cart.deliveryFeedback.innerHTML = `<p>🚚 Delivery to "<strong>${currentLocation}</strong>" is <em>${Utility.fmtNGN(
+  //     deliveryFee
+  //   )}</em></p>`;
+  //   Checkout.renderCart();
+  //   Cart.ORDERBTN.disabled = false;
+  // }
 
-  static async handleManualLocation() {
-    const locationSelect = Utility.el("manual-locations-select");
+  // static async handleManualLocation() {
+  //   const locationSelect = Utility.el("manual-locations-select");
 
-    function searchLocation(currentArea) {
-      const deliveryAreas = Cart.DELIVERY_AREAS;
+  //   function searchLocation(currentArea) {
+  //     const deliveryAreas = Cart.DELIVERY_AREAS;
 
-      const found = deliveryAreas.find(
-        (a) =>
-          currentArea &&
-          currentArea.toLowerCase().includes(a.city.toLowerCase())
-      );
+  //     const found = deliveryAreas.find(
+  //       (a) =>
+  //         currentArea &&
+  //         currentArea.toLowerCase().includes(a.city.toLowerCase())
+  //     );
 
-      if (found) {
-        Cart.deliveryFeedback.innerHTML = `<p>🚚 Delivery to <strong>${
-          found.city
-        }</strong>: <br/>${Utility.fmtNGN(found.delivery_price)}</p>`;
-        Cart.DELIVERY_BASE = Number(found.delivery_price);
-        Cart.deliveryArea = found.city;
-      } else {
-        Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
-        Cart.ORDERBTN.disabled = true;
-        return;
-      }
-      Cart.ORDERBTN.disabled = false;
-      Checkout.renderCart();
-    }
+  //     if (found) {
+  //       Cart.deliveryFeedback.innerHTML = `<p>🚚 Delivery to <strong>${
+  //         found.city
+  //       }</strong>: <br/>${Utility.fmtNGN(found.delivery_price)}</p>`;
+  //       Cart.DELIVERY_BASE = Number(found.delivery_price);
+  //       Cart.deliveryArea = found.city;
+  //     } else {
 
-    locationSelect.addEventListener("change", (e) => {
-      searchLocation(e.target.value);
-    });
+  //       if (!Cart.isPos){
+  //           Cart.deliveryFeedback.innerHTML = `<p>We could not detect your location. Select manually</p>`;
+  //       }    
+  //       Cart.ORDERBTN ? Cart.ORDERBTN.disabled = true : null;
+  //       return;
+  //     }
+  //     Cart.ORDERBTN ?Cart.ORDERBTN.disabled = false : null;
+  //     Checkout.renderCart();
+  //   }
 
-    searchLocation(locationSelect.value);
-  }
+  //   locationSelect.addEventListener("change", (e) => {
+  //     searchLocation(e.target.value);
+  //   });
 
-  static async renderManualLocation() {
-    const deliveryAreas = Cart.DELIVERY_AREAS;
+  //   searchLocation(locationSelect.value);
+  // }
 
-    const areas = deliveryAreas.map((p, idx) => {
-      const selected = p.idx === 0 ? "selected" : "";
-      return `<option value="${p.city}" ${selected} data-price="${p.delivery_price}">${p.city}</option>`;
-    });
+  // static async renderManualLocation() {
+  //   const deliveryAreas = Cart.DELIVERY_AREAS;
 
-    Utility.el("manual-delivery").innerHTML = `
-      <label class="form-label small">Select Delivery Area</label>
-      <select class="select-tags" id="manual-locations-select">
-        <option value="">-- Select Area --</option>     
-        ${areas}
-      </select>
-    `;
-  }
+  //   const areas = deliveryAreas.map((p, idx) => {
+  //     const selected = p.idx === 0 ? "selected" : "";
+  //     return `<option value="${p.city}" ${selected} data-price="${p.delivery_price}">${p.city}</option>`;
+  //   });
 
-  static handlePickupDelivery() {
-    Cart.method = "Pickup";
-    Cart.deliveryFields.style.display = "none";
-    Cart.pickupFields.style.display = "block";
-    Cart.DELIVERY_BASE = 0;
-    Utility.el("address").value = "";
-    Checkout.renderCart();
-    Cart.ORDERBTN.disabled = false;
-  }
+  //   Utility.el("manual-delivery").innerHTML = `
+  //     <label class="form-label small">Select Delivery Area</label>
+  //     <select class="select-tags" id="manual-locations-select">
+  //       <option value="">-- Select Area --</option>     
+  //       ${areas}
+  //     </select>
+  //   `;
+  // }
+
+  // static handlePickupDelivery() {
+  //   Cart.method = "Pickup";
+  //   Cart.deliveryFields.style.display = "none";
+  //   Cart.pickupFields.style.display = "block";
+  //   Cart.DELIVERY_BASE = 0;
+  //   Utility.el("address").value = "";
+  //   Checkout.renderCart();
+  //   Cart.ORDERBTN.disabled = false;
+  // }
 }

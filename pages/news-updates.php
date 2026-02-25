@@ -9,7 +9,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <div class="container dealsWrapper">
         <div class="deals-header" data-aos="fade-down">
             <h2>What's New? 🔥</h2>
-            <p>News, Deals, Promotions, Updates and more!</p>
+            <p>News, Gists, Updates and more!</p>
         </div>
 
         <div class="row" id="updateRow">

@@ -81,7 +81,7 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                 <div class="input-group mt-3">
                     <span class="input-group-text bg-white"><i class="bi bi-tags-fill"></i></span>
                     <input id="coupon" type="text" class="form-control" placeholder="Promo code (e.g. PIZZA10)" />
-                    <button id="applyCoupon" class="btn btn-outline-primary">Apply</button>
+                    <button id="applyCoupon" class="btn btn-primary">Apply</button>
                 </div>
              
             </section>
@@ -96,6 +96,14 @@ if($user['role']!=='cashier')header('location: ' . BASE_URL . 'auth/login?f-bk=U
                         <span class="input-group-text bg-white"><i class="fas fa-phone"></i></span>
                         <input id="phone" type="text" class="form-control" placeholder="Enter Customer Phone" required/>
                     </div>                   
+                    <div class="input-group">                       
+                       <div class="col-md-12" id="manual-delivery">                                 
+                        </div>
+                    </div>
+                    
+                    <div class="location-result mt-4">
+                        <div id="areaDeliveryFee" class="bg-light p-1"></div>
+                    </div>
                 </div>
             </section>
             <section class="pos-card mb-3 p-4" id="paymentSection" aria-label="paymentSection">

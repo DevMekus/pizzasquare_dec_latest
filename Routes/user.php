@@ -19,6 +19,8 @@ Router::group('/v1', function () use ($user, $order) {
     #Order Routes
     Router::add('POST', '/orders', [$order, 'createOrder']);
     Router::add('GET', '/orders', [$order, 'getOrders']);
+    Router::add('GET', '/orders/{id}', [$order, 'getOrder']);
+    Router::add('GET', '/orders/users/{user_id}', [$order, 'getOrdersByUser']);
     Router::add('PATCH', '/orders/{id}', [$order, 'updateOrderStatus']);
    
    

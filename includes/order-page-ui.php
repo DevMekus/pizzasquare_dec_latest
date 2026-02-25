@@ -4,7 +4,7 @@
                                 <i class="bi bi-cart-plus fs-2"></i>
                             </div>
                             <h2 id="newOrders" class="loading"></h2>
-                            <p>New Orders Today</p>
+                            <p><span class="hideOnMobile">New</span> Orders Today</p>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-default"><i class="bi bi-egg-fried fs-2"></i></div>

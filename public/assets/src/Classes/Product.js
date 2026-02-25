@@ -166,10 +166,29 @@ export default class Product {
         const cards = document.querySelectorAll(".menu-card");
         cards.forEach((card) => {
             card.addEventListener("click", (e) => {
+                if (card.dataset.productName.toLowerCase().includes("half & half")) {
+                    Product.halfAndHalfHandler();
+                    return;
+                }
                 const productId = card.dataset.product;
                 Product.singleProductModal(productId);
             });
         });
+    }
+
+    static async halfAndHalfHandler() {
+        //get all the pizza products
+        const getPizzas = await getItem("pizzas-with-sizes");
+       
+        console.log("Half & Half clicked. Available pizzas:", getPizzas);
+        const domBody = Utility.ModalBody;
+        const title = Utility.ModalTitle;
+        title.innerHTML = `${Utility.toTitleCase("Half & Half Combo")}`;
+        domBody.innerHTML = `
+        <p class="text-center muted">Select two different pizzas to create your custom half & half combo.</p>
+        `
+        $("#displayDetails").modal("show");
+
     }
 
     static MenuCard(product, index) {
@@ -177,7 +196,7 @@ export default class Product {
             <div class="col-6 col-md-3" data-aos="fade-up" 
                 data-aos-delay="${index * 50}">
                 <div class="menu-card bounce-card position-relative h-100" 
-                    data-product="${product.id}">
+                    data-product="${product.id}" data-product-name="${product.name}">
                     <span class="badge text-bg-success">
                     ${Utility.toTitleCase(product.category)}</span>
                     <div style="display:flex; justify-content:center; align-items:center;">
@@ -314,7 +333,7 @@ export default class Product {
         // Modal
         const domBody = Utility.ModalBody;
         const title = Utility.ModalTitle;
-        title.textContent = `${Utility.toTitleCase(product.name)}`;
+        title.innerHTML = `${Utility.toTitleCase(product.name)}`;
 
         domBody.innerHTML = `
             <div class="product-layout ${productIngredients.length <= 0 ? 'single-layout' : ''}">

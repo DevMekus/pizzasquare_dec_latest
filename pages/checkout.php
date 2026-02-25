@@ -54,11 +54,11 @@ require_once ROOT_PATH . '/includes/navbar.php';
                         </div>
                         <div class="row g-2 align-items-center">
                             <div class="col-md-6">
-                                <div class="input-group coupon-input">
+                                <!-- <div class="input-group coupon-input">
                                     <span class="input-group-text"><i class="bi bi-tag"></i></span>
                                     <input type="text" id="coupon" class="form-control" placeholder="Promo code (e.g. PIZZA10)">
                                     <button class="btn  btn-primary" id="applyCoupon">Apply</button>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-md-6 text-md-end small text-muted">
                                 Est. Preparation Time: <span id="eta">—</span>
