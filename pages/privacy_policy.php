@@ -5,12 +5,15 @@ require_once ROOT_PATH . '/includes/navbar.php';
 
 ?>
 
-<body class="theme-light" id="termsConditionsPage">
+<body class="theme-light" id="privacyPolicyPage">
     <div class="container">
         
 <!-- HERO -->
 <section class="privacy-hero d-flex align-items-center text-white">
   <div class="container text-center" data-aos="fade-up">
+      <div class="text-center mb-1">
+            <img src="<?= BASE_URL ?>/assets/images/icons/privacy-policy.png" alt="Pizza Square Logo"  style="width: 120px; height: auto;">
+      </div>
     <h1 class="fw-bold display-5">Privacy Policy</h1>
     <p class="lead mt-3">
       Your privacy matters to us. Here’s how we protect it.

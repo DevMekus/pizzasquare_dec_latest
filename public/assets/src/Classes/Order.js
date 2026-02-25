@@ -729,7 +729,7 @@ static renderAdminActions(order) {
 
                 <div class="step bounce-card" id="step1">
                     <div class="step-icon"><i class="fas fa-pizza-slice"></i></div>
-                    <p>Baking</p>
+                    <p>Preparing</p>
                 </div>
 
                 <div class="step bounce-card" id="step2">

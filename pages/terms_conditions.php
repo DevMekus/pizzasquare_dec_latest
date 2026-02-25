@@ -8,8 +8,11 @@ require_once ROOT_PATH . '/includes/navbar.php';
 <body class="theme-light" id="termsConditionsPage">
     <div class="container">
             <!-- HERO -->
-        <section class="terms-hero d-flex align-items-center text-white">
+      <section class="terms-hero d-flex align-items-center text-white">
         <div class="container text-center" data-aos="fade-up">
+          <div class="text-center mb-1">
+            <img src="<?= BASE_URL ?>/assets/images/icons/terms-and-conditions.png" alt="Pizza Square Logo"  style="width: 120px; height: auto;">
+          </div>
             <h1 class="fw-bold display-5">Terms & Conditions</h1>
             <p class="lead mt-3">
             Please read these terms carefully before using <?= BRAND_NAME; ?>.

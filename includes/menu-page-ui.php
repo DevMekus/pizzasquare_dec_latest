@@ -9,6 +9,11 @@
               <a href="<?= BASE_URL; ?>secure/admin/categories" class="btn btn-default btn-xs">Category Manager</a>
                <a href="<?= BASE_URL; ?>secure/admin/ingredients" class="btn btn-default btn-xs">Ingredients Manager</a>
           <?php endif ?>
+          <?php if($user['role']=='admin'): ?>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vatModal">
+                        UPDATE VAT: <span id="currentVat">...</span>%
+                    </button>
+            <?php endif; ?>
         </div>
     </div>
    
@@ -122,6 +127,28 @@
   </div>
 </div>
 
+     <div class="modal fade" id="vatModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">VAT Manager</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                     <form id="vatForm">
+                        <div class="modal-body">                    
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="vatInput" name="vat" placeholder="Enter VAT percentage" min="0" max="100" step="0.01" required />                             
+                                </div>
+                            <div class="formInfo"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
 

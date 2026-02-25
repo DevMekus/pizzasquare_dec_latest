@@ -33,45 +33,45 @@ class OverviewPage {
    
   }
 
-  async manageVatActions(){
-    //show current vat
-    try {
-      const response = await getItem("vat");     
-      if (response) {
-        const data = await response[0];
-        const vatWhole = data.vat * 100;
-        document.getElementById("currentVat").textContent = vatWhole;
-        document.getElementById("vatInput").value = vatWhole;
+  // async manageVatActions(){
+  //   //show current vat
+  //   try {
+  //     const response = await getItem("vat");     
+  //     if (response) {
+  //       const data = await response[0];
+  //       const vatWhole = data.vat * 100;
+  //       document.getElementById("currentVat").textContent = vatWhole;
+  //       document.getElementById("vatInput").value = vatWhole;
 
 
-         //update vat
-        document.getElementById("vatForm").addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const currentVatEl = document.getElementById("currentVat");
-          const vatInputEl = document.getElementById("vatInput");
-          $("#vatModal").modal("hide")
-          const patch = await patchItem(`admin/vat/${data.id}`, { vat: parseFloat(vatInputEl.value) }, "Update Vat to " + vatInputEl.value + "% ?");  
+  //        //update vat
+  //       document.getElementById("vatForm").addEventListener("submit", async (e) => {
+  //         e.preventDefault();
+  //         const currentVatEl = document.getElementById("currentVat");
+  //         const vatInputEl = document.getElementById("vatInput");
+  //         $("#vatModal").modal("hide")
+  //         const patch = await patchItem(`admin/vat/${data.id}`, { vat: parseFloat(vatInputEl.value) }, "Update Vat to " + vatInputEl.value + "% ?");  
           
-          if (patch){
-                Utility.toast("Order status updated successfully","success");
-                setTimeout(() => {
-                    Utility.reloadPage();
-                }, 1000);
+  //         if (patch){
+  //               Utility.toast("Order status updated successfully","success");
+  //               setTimeout(() => {
+  //                   Utility.reloadPage();
+  //               }, 1000);
                 
-            } else {
-                Utility.toast("Failed to update order status");
-            }
+  //           } else {
+  //               Utility.toast("Failed to update order status");
+  //           }
         
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching VAT:", error);
-    }
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching VAT:", error);
+  //   }
 
    
 
     
-  }
+  // }
 
   recentOrderFiler() {
     document.getElementById("orderFilter").addEventListener("change", (e) => {

@@ -4,18 +4,7 @@
                 <div class="welcome">Welcome back, <?= $user['fullname'] ?>!</div>
                 <div>Here's a quick overview of your shop today.  </div>              
             </div>
-            <div class="divider" data-aos="fade-down"></div>
-            <div class="shortcuts flex gap-2 align-center justify-end" data-aos="fade-down">
-                <button class="btn btn-secondary btn-sm" id="refreshOverview">
-                    Refresh Data
-                </button>
-                <?php if($user['role']=='admin'): ?>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#vatModal">
-                        UPDATE VAT: <span id="currentVat">...</span>%
-                    </button>
-                <?php endif; ?>
-            </div>
-            <div class="controls mt-3 mb-3" data-aos="fade-down">
+                 <div class="controls mt-3 mb-3" data-aos="fade-down">
                 <div class="search">
                     <input id="globalSearch" placeholder="Search recent orders..." />
                 </div>
@@ -133,7 +122,7 @@
           
         </div>
 
-        <div class="modal fade" id="vatModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="vatModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -154,7 +143,10 @@
                     </form>
                 </div>
             </div>
+        </div> -->
+              
         </div>
+           
 
         <?php require "footer.php" ?>
     </section>

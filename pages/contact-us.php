@@ -13,7 +13,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                We'd love to hear your questions, feedback, concerns and appraisals. Feel free to reach out to us:
             </p>
         </div>
-           <div class="row p-5">
+           <div class="row mt-4">
                 <!-- Form -->
                 <div class="contact-form col-sm-6 bg-light p-4" data-aos="fade-right">
                     <h4>Send Us A Message</h4>
@@ -50,7 +50,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     </div>
                     <div class="contact-icon-container"><div class="icon-wrap"><i class="fas fa-phone"></i></div><div><p><?= BRAND_PHONE ?></p></div></div>
                     <div class="contact-icon-container"><div class="icon-wrap"><i class="fas fa-map-marker-alt"></i></div><div><p><?= COMPANY_ADDRESS ?></p></div></div>
-                    <div class="contact-icon-container"><div class="icon-wrap"><i class="fas fa-clock"></i></div><div><p> Mon – Sat: 9:00 AM – 6:00 PM</p></div></div>
+                    <div class="contact-icon-container"><div class="icon-wrap"><i class="fas fa-clock"></i></div><div><p>
+                        Monday to Saturday: 10:00 AM - 10:00 PM (WAT)<br/>
+                        Sunday: 12:00 PM - 10:00 PM (WAT)</p></div></div>
                         <hr/>
                     <h4>Lets Be Social</h4>
                     <div class="right social-links contact-social-links">

@@ -630,6 +630,10 @@ body {
     .deals-header  h2{
       font-size: 1.5rem;
     }
+
+    .track-header h2{
+       font-size: 1.5rem;
+    }
   }
 
   .filter-buttons {
@@ -1249,6 +1253,8 @@ body {
     margin-bottom: 2rem;
   }
 
+   
+
   .contact-form input,
   .contact-form textarea {
     padding: 12px;
@@ -1311,6 +1317,23 @@ body {
     background-color: var(--primary);
     transform: translateY(-2px);
   }
+}
+ @media (max-width: 992px) {
+    .contact-form, .contact-info,.container {
+      width: 100%;
+      position: relative;     
+    }
+
+  .icon-wrap{
+    width: 0px;
+    height: 0px;
+    padding: 20px;
+  }
+
+  .icon-wrap .fas{
+    font-size: 14px;
+  }
+    
 }
 
 .since-badge {

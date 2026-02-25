@@ -81,7 +81,7 @@
                             </div>
                             <div class="col-sm-8">                                
                                 <div>
-                                    <div class="pizzasquare-table table-sm table-responsive" data-aos="fade-up">
+                                    <div class="pizzasquare-table" data-aos="fade-up">
                                         <div class="filter-bar d-flex mb-2 gap-3 w-100" data-aos="fade-right"> 
                                         <input type="text" id="search" placeholder="Search orders..." class="form-control" />
                                                 <select id="statusFilter" class="form-select">
@@ -97,7 +97,8 @@
                                                 </button>
                                             <?php endif; ?>
                                         </div>
-                                        <table id="ordersTable" class="table-sm">
+                                       <div class="table-sm table-responsive">
+                                         <table id="ordersTable" class="table-sm">
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
@@ -111,6 +112,7 @@
                                             </thead>
                                             <tbody class="loading"></tbody>
                                         </table>
+                                       </div>
                                     </div>
                                     <div id="pagination" class="p-4 pagination"></div>
                                     <div id="no-data"></div>

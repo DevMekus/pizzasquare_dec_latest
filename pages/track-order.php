@@ -11,12 +11,12 @@ $orderId = $_GET['search'] ?? null;
     <section class="tracking-page">
         <div class="tracking-section">
             <section class="track-header" data-aos="fade-down">
-                <h1>
-                    <span class="bounce-card">🍕</span>
+                <h2>
+                    <span class="bounce-card"> 🔎</span>
                     <span class="bounce-card">Track</span>
                     <span class="bounce-card">Your Order!</span>
-                </h1>
-                <p>You can track your Order Status here. Find your Order ID from the confirmation mail you received.</p>
+                </h2>
+                <p>We're tracking your order progress. Enter your order ID to get more information.</p>
             </section>
 
             <form id="trackForm" class="track-form mt-5" data-aos="zoom-in">
