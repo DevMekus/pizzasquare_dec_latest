@@ -27,7 +27,7 @@ $orderId = $_GET['search'] ?? null;
                     value="<?= isset($orderId) ? $orderId : ""; ?>"
                     placeholder="Enter your Order ID"
                     required />
-                <button type="submit">Track</button>
+                <button type="submit" id="trackBtn">Track</button>
             </form>
 
             <section id="order-details"></section>
