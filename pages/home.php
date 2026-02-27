@@ -43,6 +43,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 <div>
                     <section class="category-tabs w-100" id="categoryTabs"></section>
                 </div>
+                <div id="halfPizzaEl" class="row"></div>       
             </div>
 
             <section class="menu-grid row g-3 d-flex loading" id="menuGrid"></section>
@@ -58,6 +59,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
             </div>
             <div class="row">
                <div id="bestSellersGrid" class="loading row"></div>         
+               
             </div>
         </div>
     </section>

@@ -96,33 +96,33 @@ class AllRoutes {
   }
 
   checkNetworkConnection() {
-    if ("connection" in navigator) {
-      const connection = navigator.connection;
-      Utility.toast(
-        `Effective network type: ${connection.effectiveType}`,
-        "info"
-      );
-      Utility.toast(`Downlink speed:${connection.downlink} Mbps`, "info");
+    // if ("connection" in navigator) {
+    //   const connection = navigator.connection;
+    //   Utility.toast(
+    //     `Effective network type: ${connection.effectiveType}`,
+    //     "info"
+    //   );
+    //   Utility.toast(`Downlink speed:${connection.downlink} Mbps`, "info");
 
-      connection.addEventListener("change", () => {
-        if (
-          connection.effectiveType.includes("2g") ||
-          connection.downlink < 0.5
-        ) {
-          Utility.toast("⚠️ Your connection is very slow");
-        } else {
-          Utility.toast("✅ Network looks good");
-        }
-      });
-    }
+    //   connection.addEventListener("change", () => {
+    //     if (
+    //       connection.effectiveType.includes("2g") ||
+    //       connection.downlink < 0.5
+    //     ) {
+    //       Utility.toast("⚠️ Your connection is very slow");
+    //     } else {
+    //       Utility.toast("✅ Network looks good");
+    //     }
+    //   });
+    // }
 
-    window.addEventListener("online", () => {
-      Utility.toast("Network is back ✅");
-    });
+    // window.addEventListener("online", () => {
+    //   Utility.toast("Network is back ✅");
+    // });
 
-    window.addEventListener("offline", () => {
-      Utility.toast("No internet connection ❌");
-    });
+    // window.addEventListener("offline", () => {
+    //   Utility.toast("No internet connection ❌");
+    // });
   }
 
   KPIBounceCards() {

@@ -167,7 +167,7 @@ export default class Product {
         cards.forEach((card) => {
             card.addEventListener("click", (e) => {
                 if (card.dataset.productName.toLowerCase().includes("half & half")) {
-                    Product.halfAndHalfHandler();
+                    Product.halfAndHalfHandler();                   ;
                     return;
                 }
                 const productId = card.dataset.product;
@@ -176,20 +176,708 @@ export default class Product {
         });
     }
 
-    static async halfAndHalfHandler() {
-        //get all the pizza products
-        const getPizzas = await getItem("pizzas-with-sizes");
+    // static async halfAndHalfHandler() {
+    //     //get all the pizza products
+    //     const getPizza = await getItem("pizzas-with-sizes");
+    //     const PIZZAS = getPizza.filter(p => !p.name.toLowerCase().includes("half"));      
        
-        console.log("Half & Half clicked. Available pizzas:", getPizzas);
+       
+    //     const domBody = Utility.ModalBody;
+    //     const title = Utility.ModalTitle;
+    //     title.innerHTML = `${Utility.toTitleCase("Half & Half Combo")}`;
+    //     domBody.innerHTML = `
+    //     <section id="halfAndHalfIntro">
+    //         <div class="split-arena">
+    //             <!-- LEFT -->
+    //             <div class="half left">
+    //                 <div class="pizza-list" id="listLeft"></div>
+    //                 <div class="size-strip" id="sizesLeft"></div>
+    //                 <div class="size-strip" id="toppingsLeft"></div>
+    //                 <div class="size-strip" id="ingredientsLeft"></div>
+    //             </div>
+
+    //             <!-- DIVIDER -->
+    //             <div class="divider">
+    //                 <div class="div-line"></div>
+    //                 <div class="div-badge"><span>½ ½</span></div>
+    //                 <div class="div-line"></div>
+    //             </div>
+
+    //             <!-- RIGHT -->
+    //             <div class="half right">
+    //                 <div class="pizza-list" id="listRight"></div>
+    //                 <div class="size-strip" id="sizesRight"></div>
+    //                 <div class="size-strip" id="toppingsRight"></div>
+    //                 <div class="size-strip" id="ingredientsRight"></div>
+    //             </div>
+
+                
+    //         </div>
+
+    //         <!-- PREVIEW -->
+    //         <div class="preview-bar">
+    //             <div class="preview-pizza">
+    //                 <div class="ph ph-l" id="previewL"><div class="ph-empty">?</div></div>
+    //                 <div class="seam"></div>
+    //                 <div class="ph ph-r" id="previewR"><div class="ph-empty">?</div></div>
+    //             </div>
+    //             <div class="preview-text">
+    //                 <h4 id="previewName">Choose one pizza on each side</h4>
+    //                 <p  id="previewSub">Scroll each column &amp; tap to select</p>
+    //             </div>
+    //             <div class="preview-total">
+    //                 <div class="big"  id="previewPrice">—</div>
+    //                 <div class="note">Total</div>
+    //             </div>
+    //         </div>
+    //         <div class="modal-foot">
+    //             <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    //             <button class="btn-cart"   id="btnCart" disabled>🛒 Add to Cart</button>
+    //         </div>
+    //     </section> 
+        
+    //     `
+    //     $("#displayDetails").modal("show");        
+        
+
+    //     let sel = { 
+    //         left:null, 
+    //         right:null, 
+    //         leftSize:'m', 
+    //         rightSize:'m' 
+    //     };
+    //     let cart = [];
+
+    //     let totalPrice = 0;
+
+            
+    //     /* ── HELPERS ──────────────────────────────────────── */
+    //     const getSize = (pizza, code) => pizza.sizes.find(s => s.size_code === code) || pizza.sizes[0];
+    //     const fmt = n => parseFloat(n).toLocaleString('en-US', { minimumFractionDigits:0, maximumFractionDigits:0 });
+    //     /* ── RENDER LIST ──────────────────────────────────── */
+
+    //     function renderList(side) {
+    //         const el = document.getElementById(side==='left' ? 'listLeft' : 'listRight');
+            
+    //         el.innerHTML = PIZZAS.map(p => {
+               
+    //             const isSel  = sel[side] === p.id;
+    //             const size   = getSize(p, sel[side+'Size']);              
+
+    //             return `
+    //             <div class="pizza-row ${isSel ? 'selected' : ''}" 
+    //             data-product="${p.id}" data-size="${size.size_code}" data-side="${side}">
+    //                 <img class="row-img" src="${p.image}" alt="${p.name}"
+    //                     />
+    //                 <div class="row-grad"></div>
+    //                     <div class="row-info">
+    //                         <div class="row-name">${p.name}</div>
+    //                         <div class="row-desc">${p.description}</div>
+    //                         <div class="row-price">${fmt(size.price)}</div>
+    //                     </div>
+                    
+    //                 <div class="sel-badge">✓ Selected</div>
+    //             </div>`;
+    //         }).join('');
+    //     }
+
+    //     /* ── RENDER SIZES ─────────────────────────────────── */
+    //     function renderSizes(side) {
+    //         const el = document.getElementById(side==='left' ? 'sizesLeft' : 'sizesRight');
+    //         const cur = sel[side+'Size'];
+    //         el.innerHTML = PIZZAS[0].sizes.map(s => `
+    //         <div class="sz ${s.size_code===cur ? 'active' : ''}"
+    //             data-size="${s.size_code}"
+    //             data-side="${side}"
+    //             >
+    //         ${s.size_label}
+    //         </div>`).join('');
+    //     }
+
+    //      /* ── RENDER TOPPINGS ─────────────────────────────────── */
+    //     function renderToppings(side) {
+    //         const el = document.getElementById(side==='left' ? 'toppingsLeft' : 'toppingsRight');
+
+    //         el.innerHTML = '';
+    //          Product.EXTRAS.forEach(t => {
+    //             const btn = document.createElement('button');
+    //             btn.className = "tp topping-btn btn btn-sm m-1";
+    //             btn.dataset.price = t.extras_price;
+    //             btn.dataset.id = t.id;
+    //             btn.dataset.topping = t.id;
+    //             btn.dataset.side = side;
+    //             btn.textContent = `${t.extras} +${Utility.fmtNGN(t.extras_price)}`;
+
+    //             btn.addEventListener("click", () => {
+    //                 btn.classList.toggle("active");
+    //                 updateTotalPrice();
+    //             });
+                
+    //             el.appendChild(btn);
+    //         });
+
+    //     }
+
+
+
+
+    //      /* ── RENDER INGREDIENTS ─────────────────────────────────── */
+
+    //      async function renderIngredients(side, productId) {
+    //         const productIngredients = await getItem(`products/ingredients/${productId}`);
+
+    //         const el = document.getElementById(side==='left' ? 'ingredientsLeft' : 'ingredientsRight');
+    //         el.innerHTML = '';
+    //         if (productIngredients.length === 0) {
+    //             el.innerHTML = '<p class="muted small center-mobile">No ingredients assigned to this product.</p>';
+    //             return
+    //         }
+
+    //         el.innerHTML = productIngredients.map(ing => `
+    //             <div id="IngredientsOptions-${ing.id}" 
+    //             class="ing collection-pill active" 
+    //             data-ingredient="${ing.id}"
+    //             data-ingredient-name="${ing.ingredient_name}" 
+    //             data-side="${side}">
+    //             ${ing.ingredient_name}
+    //         </div>`).join('');
+
+    //         ingredientClickHandler(el)
+    //      }
+
+    //      function ingredientClickHandler(el) {
+    //         const IngredientsContainer = el;
+          
+
+    //        IngredientsContainer.querySelectorAll('.collection-pill').forEach(item => {
+    //             item.addEventListener('click', () => {
+    //                 item.classList.toggle('active');
+    //                 item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');
+    //                 updateTotalPrice();
+    //             });
+    //         });
+    //      }
+
+
+
+    //     /* ── RENDER PREVIEW ───────────────────────────────── */
+    //     function renderPreview() {
+    //         const lp = PIZZAS.find(p => p.id == sel.left);
+    //         const rp = PIZZAS.find(p => p.id == sel.right);
+
+    //         const pL = document.getElementById('previewL');
+    //         const pR = document.getElementById('previewR');             
+
+    //         pL.innerHTML = lp
+    //             ? `<img src="${lp.image}" alt="${lp.name}" onerror="this.style.display='none'"/>`
+    //             : `<div class="ph-empty">?</div>`;
+    //         pR.innerHTML = rp
+    //             ? `<img src="${rp.image}" alt="${rp.name}" onerror="this.style.display='none'"/>`
+    //             : `<div class="ph-empty">?</div>`;
+
+    //             if (lp && rp) {
+    //                 const lPrice = parseFloat(getSize(lp, sel.leftSize).price)  / 2;
+    //                 const rPrice = parseFloat(getSize(rp, sel.rightSize).price) / 2;
+    //                 const total  = lPrice + rPrice;
+    //                 const lLabel = getSize(lp, sel.leftSize).size_label;
+    //                 const rLabel = getSize(rp, sel.rightSize).size_label;
+    //                 document.getElementById('previewName').textContent  = `${lp.name}  ·  ${rp.name}`;
+    //                 document.getElementById('previewSub').textContent   = `${lLabel} left  ·  ${rLabel} right`;
+    //                 document.getElementById('previewPrice').textContent = fmt(total);
+    //                 document.getElementById('btnCart').disabled = false;
+    //             } else {
+    //                 document.getElementById('previewName').textContent  = lp ? `${lp.name}  ·  pick a right half` : 'Choose one pizza on each side';
+    //                 document.getElementById('previewSub').textContent   = 'Scroll each column & tap to select';
+    //                 document.getElementById('previewPrice').textContent = '—';
+    //                 document.getElementById('btnCart').disabled = true;
+    //             }
+    //     }
+
+    //     /* ── REFRESH ALL ──────────────────────────────────── */
+    //     function refresh() {
+    //         renderList('left');  renderList('right');
+    //         renderSizes('left'); renderSizes('right');
+    //         renderToppings('left'); renderToppings('right');
+    //         if(sel.left) renderIngredients('left', sel.left);
+    //         if(sel.right) renderIngredients('right', sel.right);
+           
+    //         renderPreview();
+    //     }
+
+
+
+    //     /* ── ACTIONS ──────────────────────────────────────── */   
+    //     function pickSize(side, code) { sel[side+'Size'] = code; refresh(); }
+
+    //     function bindPizzaClicks() {
+    //         document.getElementById('listLeft').addEventListener('click', e => {
+    //             const row = e.target.closest('.pizza-row');
+    //             if (!row) return;
+
+    //             const side = row.dataset.side;
+    //             const id = row.dataset.product;
+    //             sel[side] = id;
+    //             refresh();
+    //         });
+
+    //         document.getElementById('listRight').addEventListener('click', e => {
+    //             const row = e.target.closest('.pizza-row');
+    //             if (!row) return;
+
+    //             const side = row.dataset.side;
+    //             const id = row.dataset.product;
+    //             sel[side] = id;
+    //             refresh();
+    //         });
+    //     }
+
+    //     function bindSizeClicks() {
+    //         document.getElementById('sizesLeft').addEventListener('click', e => {
+    //             const sz = e.target.closest('.sz');
+    //             if (!sz) return;
+
+    //             const side = sz.dataset.side;
+    //             const code = sz.dataset.size;
+    //             pickSize(side, code);
+    //         });
+
+    //         document.getElementById('sizesRight').addEventListener('click', e => {
+    //             const sz = e.target.closest('.sz');
+    //             if (!sz) return;
+
+    //             const side = sz.dataset.side;
+    //             const code = sz.dataset.size;
+    //             pickSize(side, code);
+    //         });
+    //     }
+
+    //     function openModal() {
+    //         sel = { left:null, right:null, leftSize:'m', rightSize:'m' };
+    //         refresh(); 
+    //         document.body.style.overflow = 'hidden';
+            
+    //     } 
+
+    //     function updateTotalPrice() {
+    //         const lp = PIZZAS.find(p => p.id === sel.left);
+    //         const rp = PIZZAS.find(p => p.id === sel.right);
+    //         if (!lp || !rp) return;
+
+    //         const lPrice = parseFloat(getSize(lp, sel.leftSize).price)  / 2;
+    //         const rPrice = parseFloat(getSize(rp, sel.rightSize).price) / 2;
+    //         const toppings = document.querySelectorAll('.topping-btn.active');
+    //         const toppingsTotal = Array.from(toppings).reduce((sum, t) => sum + parseFloat(t.dataset.price || 0), 0);
+            
+    //         const total  = lPrice + rPrice + toppingsTotal;
+    //         totalPrice = total;
+            
+    //         document.getElementById('previewPrice').textContent = fmt(total);
+
+    //         return {
+    //             total,
+    //             lPrice,
+    //             rPrice,
+    //             toppingsTotal,
+    //             lp,
+    //             rp
+    //         }
+
+    //     }
+
+    //      function AddToCart() {
+    //         const addBtn = document.getElementById('btnCart');
+    //         addBtn.addEventListener('click', () => {             
+
+    //             const calculatedTotal = updateTotalPrice();
+                    
+    //                 Cart.addToCart({
+    //                     product_id: `${calculatedTotal.lp.id}-${calculatedTotal.rp.id}`,
+    //                     title: `${calculatedTotal.lp.name} / ${calculatedTotal.rp.name} Half & Half`,
+    //                     size: `${getSize(calculatedTotal.lp,sel.leftSize).size_label} / ${getSize(calculatedTotal.rp,sel.rightSize).size_label}`,
+    //                     price: calculatedTotal.total,
+    //                     qty: 1,
+    //                     image: calculatedTotal.lp.image, // you might want to create a custom image for half & half
+    //                     toppings: [],
+    //                     type: "half_half",
+    //                 });
+            
+    //             Utility.toast(`Added: ${calculatedTotal.lp.name} + ${calculatedTotal.rp.name} — ${fmt(calculatedTotal.total)}`);
+    //         });
+    //     }
+
+        
+    //     // function AddToCart() {
+    //     //     const addBtn = document.getElementById('btnCart');
+    //     //     addBtn.addEventListener('click', () => {
+    //     //         const lp = PIZZAS.find(p => p.id === sel.left);
+    //     //         const rp = PIZZAS.find(p => p.id === sel.right);
+    //     //             if (!lp || !rp) return;
+    //     //                 const total = parseFloat(getSize(lp,sel.leftSize).price)/2
+    //     //                     + parseFloat(getSize(rp,sel.rightSize).price)/2;
+
+    //     //                     const calculatedTotal = updateTotalPrice();
+                       
+    //     //                 Cart.addToCart({
+    //     //                     product_id: `${lp.id}-${rp.id}`,
+    //     //                     title: `${lp.name} / ${rp.name} Half & Half`,
+    //     //                     size: `${getSize(lp,sel.leftSize).size_label} / ${getSize(rp,sel.rightSize).size_label}`,
+    //     //                     price: totalPrice,
+    //     //                     qty: 1,
+    //     //                     image: lp.image, // you might want to create a custom image for half & half
+    //     //                     toppings: [],
+    //     //                     type: "half_half",
+    //     //                 });
+                
+    //     //         Utility.toast(`Added: ${lp.name} + ${rp.name} — ${fmt(total)}`);
+    //     //     });
+    //     // }
+
+    //     openModal()
+    //     bindPizzaClicks()
+    //     bindSizeClicks();
+    //     AddToCart();       
+
+
+    // }
+
+      static async halfAndHalfHandler() {
+        //get all the pizza products
+        const getPizza = await getItem("pizzas-with-sizes");
+        const PIZZAS = getPizza.filter(p => !p.name.toLowerCase().includes("half"));      
+       
+       
         const domBody = Utility.ModalBody;
         const title = Utility.ModalTitle;
         title.innerHTML = `${Utility.toTitleCase("Half & Half Combo")}`;
         domBody.innerHTML = `
-        <p class="text-center muted">Select two different pizzas to create your custom half & half combo.</p>
+        <section id="halfAndHalfIntro">
+            <div class="split-arena">
+                <!-- LEFT -->
+                <div class="half left">
+                    <div class="pizza-list" id="listLeft"></div>
+                    <div class="size-strip" id="sizesLeft"></div>
+                    <div class="size-strip" id="toppingsLeft"></div>
+                    <div class="size-strip" id="ingredientsLeft"></div>
+                </div>
+
+                <!-- DIVIDER -->
+                <div class="divider">
+                    <div class="div-line"></div>
+                        <div class="preview-pizza">
+                            <div class="ph ph-l" id="previewL"><div class="ph-empty">?</div></div>
+                            <div class="seam"></div>
+                            <div class="ph ph-r" id="previewR"><div class="ph-empty">?</div></div>
+                        </div>
+                    <div class="div-line"></div>
+                </div>
+
+                <!-- RIGHT -->
+                <div class="half right">
+                    <div class="pizza-list" id="listRight"></div>
+                    <div class="size-strip" id="sizesRight"></div>
+                    <div class="size-strip" id="toppingsRight"></div>
+                    <div class="size-strip" id="ingredientsRight"></div>
+                </div>
+
+                
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="preview-bar">
+             
+                <div class="preview-text">
+                    <h4 id="previewName">Choose one pizza on each side</h4>
+                    <p  id="previewSub">Scroll each column &amp; tap to select</p>
+                </div>
+                <div class="preview-total">
+                    <div class="big"  id="previewPrice">—</div>
+                    <div class="note">Total</div>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-cart"   id="btnCart" disabled>🛒 Add to Cart</button>
+            </div>
+        </section> 
+        
         `
-        $("#displayDetails").modal("show");
+        $("#displayDetails").modal("show");        
+        
+
+        let sel = { 
+            left:null, 
+            right:null, 
+            leftSize:'m', 
+            rightSize:'m' 
+        };
+        let cart = [];
+
+        let totalPrice = 0;
+
+            
+        /* ── HELPERS ──────────────────────────────────────── */
+        const getSize = (pizza, code) => pizza.sizes.find(s => s.size_code === code) || pizza.sizes[0];
+        const fmt = n => parseFloat(n).toLocaleString('en-US', { minimumFractionDigits:0, maximumFractionDigits:0 });
+        /* ── RENDER LIST ──────────────────────────────────── */
+
+        function renderList(side) {
+            const el = document.getElementById(side==='left' ? 'listLeft' : 'listRight');
+            
+            el.innerHTML = PIZZAS.map(p => {
+               
+                const isSel  = sel[side] === p.id;
+                const size   = getSize(p, sel[side+'Size']);              
+
+                return `
+                <div class="pizza-row ${isSel ? 'selected' : ''}" 
+                data-product="${p.id}" data-size="${size.size_code}" data-side="${side}">                  
+                    <div class="row-grad"></div>
+                        <div class="row-info">
+                            <div class="row-name">${p.name}</div>                          
+                            <div class="row-price">${fmt(size.price)}</div>
+                        </div>
+                    
+                    <div class="sel-badge">✓ Selected</div>
+                </div>`;
+            }).join('');
+        }
+
+        /* ── RENDER SIZES ─────────────────────────────────── */
+        function renderSizes(side) {
+            const el = document.getElementById(side==='left' ? 'sizesLeft' : 'sizesRight');
+            const cur = sel[side+'Size'];
+            el.innerHTML = PIZZAS[0].sizes.map(s => `
+            <div class="sz ${s.size_code===cur ? 'active' : ''}"
+                data-size="${s.size_code}"
+                data-side="${side}"
+                >
+            ${s.size_label}
+            </div>`).join('');
+        }
+
+         /* ── RENDER TOPPINGS ─────────────────────────────────── */
+        function renderToppings(side) {
+            const el = document.getElementById(side==='left' ? 'toppingsLeft' : 'toppingsRight');
+
+            el.innerHTML = '';
+             Product.EXTRAS.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = "tp topping-btn btn btn-sm m-1";
+                btn.dataset.price = t.extras_price;
+                btn.dataset.id = t.id;
+                btn.dataset.topping = t.id;
+                btn.dataset.side = side;
+                btn.textContent = `${t.extras} +${Utility.fmtNGN(t.extras_price)}`;
+
+                btn.addEventListener("click", () => {
+                    btn.classList.toggle("active");
+                    updateTotalPrice();
+                });
+                
+                el.appendChild(btn);
+            });
+
+        }
+
+
+
+
+         /* ── RENDER INGREDIENTS ─────────────────────────────────── */
+
+         async function renderIngredients(side, productId) {
+            const productIngredients = await getItem(`products/ingredients/${productId}`);
+
+            const el = document.getElementById(side==='left' ? 'ingredientsLeft' : 'ingredientsRight');
+            el.innerHTML = '';
+            if (productIngredients.length === 0) {
+                el.innerHTML = '<p class="muted small center-mobile">No ingredients assigned to this product.</p>';
+                return
+            }
+
+            el.innerHTML = productIngredients.map(ing => `
+                <div id="IngredientsOptions-${ing.id}" 
+                class="ing collection-pill active" 
+                data-ingredient="${ing.id}"
+                data-ingredient-name="${ing.ingredient_name}" 
+                data-side="${side}">
+                ${ing.ingredient_name}
+            </div>`).join('');
+
+            ingredientClickHandler(el)
+         }
+
+         function ingredientClickHandler(el) {
+            const IngredientsContainer = el;
+          
+
+           IngredientsContainer.querySelectorAll('.collection-pill').forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    item.classList.contains('active') ? item.classList.remove('deselected') : item.classList.add('deselected');
+                    updateTotalPrice();
+                });
+            });
+         }
+
+
+
+        /* ── RENDER PREVIEW ───────────────────────────────── */
+        function renderPreview() {
+            const lp = PIZZAS.find(p => p.id == sel.left);
+            const rp = PIZZAS.find(p => p.id == sel.right);
+
+            const pL = document.getElementById('previewL');
+            const pR = document.getElementById('previewR');             
+
+            pL.innerHTML = lp
+                ? `<img src="${lp.image}" alt="${lp.name}" onerror="this.style.display='none'"/>`
+                : `<div class="ph-empty">?</div>`;
+            pR.innerHTML = rp
+                ? `<img src="${rp.image}" alt="${rp.name}" onerror="this.style.display='none'"/>`
+                : `<div class="ph-empty">?</div>`;
+
+                if (lp && rp) {
+                    const lPrice = parseFloat(getSize(lp, sel.leftSize).price)  / 2;
+                    const rPrice = parseFloat(getSize(rp, sel.rightSize).price) / 2;
+                    const total  = lPrice + rPrice;
+                    const lLabel = getSize(lp, sel.leftSize).size_label;
+                    const rLabel = getSize(rp, sel.rightSize).size_label;
+                    document.getElementById('previewName').textContent  = `${lp.name}  ·  ${rp.name}`;
+                    document.getElementById('previewSub').textContent   = `${lLabel} left  ·  ${rLabel} right`;
+                    document.getElementById('previewPrice').textContent = fmt(total);
+                    document.getElementById('btnCart').disabled = false;
+                } else {
+                    document.getElementById('previewName').textContent  = lp ? `${lp.name}  ·  pick a right half` : 'Choose one pizza on each side';
+                    document.getElementById('previewSub').textContent   = 'Scroll each column & tap to select';
+                    document.getElementById('previewPrice').textContent = '—';
+                    document.getElementById('btnCart').disabled = true;
+                }
+        }
+
+        /* ── REFRESH ALL ──────────────────────────────────── */
+        function refresh() {
+            renderList('left');  renderList('right');
+            renderSizes('left'); renderSizes('right');
+            renderToppings('left'); renderToppings('right');
+            if(sel.left) renderIngredients('left', sel.left);
+            if(sel.right) renderIngredients('right', sel.right);
+           
+            renderPreview();
+        }
+
+
+
+        /* ── ACTIONS ──────────────────────────────────────── */   
+        function pickSize(side, code) { sel[side+'Size'] = code; refresh(); }
+
+        function bindPizzaClicks() {
+            document.getElementById('listLeft').addEventListener('click', e => {
+                const row = e.target.closest('.pizza-row');
+                if (!row) return;
+
+                const side = row.dataset.side;
+                const id = row.dataset.product;
+                sel[side] = id;
+                refresh();
+            });
+
+            document.getElementById('listRight').addEventListener('click', e => {
+                const row = e.target.closest('.pizza-row');
+                if (!row) return;
+
+                const side = row.dataset.side;
+                const id = row.dataset.product;
+                sel[side] = id;
+                refresh();
+            });
+        }
+
+        function bindSizeClicks() {
+            document.getElementById('sizesLeft').addEventListener('click', e => {
+                const sz = e.target.closest('.sz');
+                if (!sz) return;
+
+                const side = sz.dataset.side;
+                const code = sz.dataset.size;
+                pickSize(side, code);
+            });
+
+            document.getElementById('sizesRight').addEventListener('click', e => {
+                const sz = e.target.closest('.sz');
+                if (!sz) return;
+
+                const side = sz.dataset.side;
+                const code = sz.dataset.size;
+                pickSize(side, code);
+            });
+        }
+
+        function openModal() {
+            sel = { left:null, right:null, leftSize:'m', rightSize:'m' };
+            refresh(); 
+            document.body.style.overflow = 'hidden';
+            
+        } 
+
+        function updateTotalPrice() {
+            const lp = PIZZAS.find(p => p.id === sel.left);
+            const rp = PIZZAS.find(p => p.id === sel.right);
+            if (!lp || !rp) return;
+
+            const lPrice = parseFloat(getSize(lp, sel.leftSize).price)  / 2;
+            const rPrice = parseFloat(getSize(rp, sel.rightSize).price) / 2;
+            const toppings = document.querySelectorAll('.topping-btn.active');
+            const toppingsTotal = Array.from(toppings).reduce((sum, t) => sum + parseFloat(t.dataset.price || 0), 0);
+            
+            const total  = lPrice + rPrice + toppingsTotal;
+            totalPrice = total;
+            
+            document.getElementById('previewPrice').textContent = fmt(total);
+
+            return {
+                total,
+                lPrice,
+                rPrice,
+                toppingsTotal,
+                lp,
+                rp
+            }
+
+        }
+
+         function AddToCart() {
+            const addBtn = document.getElementById('btnCart');
+            addBtn.addEventListener('click', () => {             
+
+                const calculatedTotal = updateTotalPrice();
+                    
+                    Cart.addToCart({
+                        product_id: `${calculatedTotal.lp.id}-${calculatedTotal.rp.id}`,
+                        title: `${calculatedTotal.lp.name} / ${calculatedTotal.rp.name} Half & Half`,
+                        size: `${getSize(calculatedTotal.lp,sel.leftSize).size_label} / ${getSize(calculatedTotal.rp,sel.rightSize).size_label}`,
+                        price: calculatedTotal.total,
+                        qty: 1,
+                        image: calculatedTotal.lp.image, // you might want to create a custom image for half & half
+                        toppings: [],
+                        type: "half_half",
+                    });
+            
+                Utility.toast(`Added: ${calculatedTotal.lp.name} + ${calculatedTotal.rp.name} — ${fmt(calculatedTotal.total)}`);
+            });
+        }
+
+        
+       
+
+        openModal()
+        bindPizzaClicks()
+        bindSizeClicks();
+        AddToCart();       
+
 
     }
+
+ 
 
     static MenuCard(product, index) {
         return `

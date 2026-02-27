@@ -125,7 +125,7 @@ class UserService{
                 'userid' => $user['userid'],
                 'email' => $user['email_address'],
                 'role' => $user['role_id'],
-                'exp' => time() + 3600 //7200 seconds = 2 hours
+                'exp' => time() + 3600 + (12 * 60 * 60) //-> 12 hours //7200 seconds = 2 hours
             ]);
 
             $sessions_tbl = Utility::$sessions_tbl;

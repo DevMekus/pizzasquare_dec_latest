@@ -48,7 +48,7 @@ if ($pagePath) {
 
         case 'home':
             $metaTitle = 'Welcome to ' . BRAND_NAME;
-            $metaDescription = 'Order your favorite pizzas at PizzaSquare. Delicious, fresh, and delivered hot!';
+            $metaDescription = 'We bring the timeless charm of Italian pizza and craftsmanship to Nigeria, while staying true to the classic recipe, style, standards, and taste.';
             $metaKeywords = 'pizza, order pizza, delivery, PizzaSquare';
             break;
 
