@@ -13,6 +13,7 @@
                     <li><a href="<?= BASE_URL ?>about-us">About us</a></li>
                      <li><a href="<?= BASE_URL ?>privacy_policy">Privacy Policy</a></li>
                     <li><a href="<?= BASE_URL ?>terms_conditions">Terms & Conditions</a></li>
+                    <li><a href="<?= BASE_URL ?>account_delete">Account Delete</a></li>
                    
                    
                 </ul>

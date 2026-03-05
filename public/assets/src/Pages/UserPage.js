@@ -1,6 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import User from "../Classes/User.js";
 import { deleteItem, getItem, postItem } from "../Utils/CrudRequest.js";
+import { destroyCurrentSession } from "../Classes/Session.js";
 
 class UserPage {
     constructor() {
@@ -59,6 +60,35 @@ class UserPage {
                 }
             
             }
+
+            if (e.target && e.target.matches && e.target.matches("#deleteAccountForm")) {
+                e.preventDefault();
+                const passwordInput = Utility.el('confirmPassword');
+                
+                if (!passwordInput.value.trim()) {
+                    Utility.toast("Please enter your password to confirm.", "error");
+                    return;
+                }
+                const userid = Utility.userid;
+                const formD = {
+                    password: passwordInput.value,
+                    userid
+                }
+               
+                const send = await postItem(`users/delete/${userid}`, formD, "Delete user account?");
+                if (send){
+                    Utility.el('deleteAccountFormWrapper').innerHTML = `
+                    <div class="alert alert-success">
+                    Your account has been successfully deleted. We're sorry to see you go. If you have any feedback or concerns, please contact our support team.</div>`;
+            
+                    setTimeout(async()=>{
+                        await destroyCurrentSession();
+                    }, 4000)
+
+                } else {
+                    Utility.toast("Failed to delete user account", "error");
+                }
+            }
         });
 
         //--Delete user
@@ -113,6 +143,22 @@ class UserPage {
         if (!domEl) return;
         User.ACTIVITIES = await getItem("admin/log");
         User.renderActivityLog(User.ACTIVITIES);
+    }
+
+    accountDeleteProcess(){
+        const confirmCheckBox = Utility.el('confirmDeleteCheckbox')
+        const submitButton = Utility.el('deleteAccountButton')
+        const passwordInput = Utility.el('confirmPassword')
+
+        confirmCheckBox.addEventListener('change', () => {
+           verify()
+        });
+
+        passwordInput.addEventListener('input',verify)
+
+        function verify(){
+            submitButton.disabled = !confirmCheckBox.checked || passwordInput.value.trim() === "";
+        }
     }
 
 

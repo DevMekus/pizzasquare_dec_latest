@@ -73,7 +73,14 @@ class PromotionsService
             }
 
             //use the title to form the code by stripping of space and making small letters
-            $code = strtolower(str_replace(' ', '_', $data['title']));
+            // $code = strtolower(str_replace(' ', '_', $data['title']));
+            $code = Utility::generate_uniqueId();
+
+            //handle the active day by converting the comma separated string to an array and then to a json string
+            // if (isset($data['active_day'])) {
+            //     $active_days = explode(',', $data['active_day']);
+            //     $data['active_day'] = json_encode($active_days);
+            // }
 
         try {
             $promotion = [                

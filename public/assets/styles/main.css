@@ -2238,6 +2238,269 @@ table .avatar {
 }
 
 /* ── HALF & HALF PIZZA ──────────────────────────────── */
+#halfAndHalfContainer {
+  background: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px; /* critical */
+  width: 700px;
+  margin: 10px auto;
+  padding: 20px;
+}
+#halfAndHalfContainer .split-arena {
+  display: grid;
+  grid-template-columns: 1fr 52px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+#halfAndHalfContainer .pizza-list {
+  flex: 1;
+  min-height: 0;
+  max-height: 150px;
+  overflow-y: auto;
+}
+#halfAndHalfContainer {
+  /* ── DIVIDER ──────────────────────────────────── */
+}
+#halfAndHalfContainer .divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+#halfAndHalfContainer .div-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, transparent 0%, rgba(232, 160, 32, 0.45) 25%, var(--primary-600) 50%, rgba(232, 160, 32, 0.45) 75%, transparent 100%);
+}
+#halfAndHalfContainer .div-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 6px 0;
+  box-shadow: 0 0 18px rgba(232, 160, 32, 0.25);
+}
+#halfAndHalfContainer .div-badge span {
+  font-size: 0.72rem;
+  color: var(--primary-600);
+  letter-spacing: 0.04em;
+}
+#halfAndHalfContainer {
+  /* ── PREVIEW BAR ──────────────────────────────── */
+}
+#halfAndHalfContainer .preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.85rem 1.4rem;
+  background: var(--neutral-100);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+#halfAndHalfContainer #halfAndHalfGeneral {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.4rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid var(--primary-600);
+}
+#halfAndHalfContainer {
+  /* split circle preview */
+}
+#halfAndHalfContainer .preview-pizza {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid rgba(232, 52, 32, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+}
+#halfAndHalfContainer .ph {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+#halfAndHalfContainer .ph img {
+  width: 200%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+#halfAndHalfContainer .ph.ph-l img {
+  -o-object-position: right center;
+     object-position: right center;
+}
+#halfAndHalfContainer .ph.ph-r img {
+  margin-left: -100%;
+  -o-object-position: left center;
+     object-position: left center;
+}
+#halfAndHalfContainer .ph .ph-empty {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 26, 18, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--muted);
+}
+#halfAndHalfContainer .seam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  background: var(--bg);
+  transform: translateX(-50%);
+  z-index: 5;
+}
+#halfAndHalfContainer .versus {
+  font-size: 0.8rem;
+  color: var(--primary-600);
+  margin: 0 6px;
+}
+#halfAndHalfContainer .preview-text {
+  flex: 1;
+  min-width: 0;
+}
+#halfAndHalfContainer .preview-text h4, #halfAndHalfContainer .previewName {
+  font-size: 1rem;
+  letter-spacing: 0.07em;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#halfAndHalfContainer .preview-text p {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+#halfAndHalfContainer .preview-total {
+  text-align: right;
+  flex-shrink: 0;
+}
+#halfAndHalfContainer .preview-total .big {
+  font-size: 1.8rem;
+  color: var(--amber-lt);
+  line-height: 1;
+}
+#halfAndHalfContainer .preview-total .note {
+  font-size: 0.63rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+#halfAndHalfContainer {
+  /* ── MODAL FOOT ───────────────────────────────── */
+}
+#halfAndHalfContainer .modal-foot {
+  padding: 0.85rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+#halfAndHalfContainer .btn-cancel {
+  background: var(--neutral-100);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#halfAndHalfContainer .btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cream);
+}
+#halfAndHalfContainer .btn-cart {
+  background: linear-gradient(135deg, var(--primary-600) 0%, #9c1f0c 100%);
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.8rem;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(200, 51, 26, 0.35);
+  transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.03em;
+}
+#halfAndHalfContainer .btn-cart:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: scale(1.03);
+}
+#halfAndHalfContainer .btn-cart:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+#halfAndHalfContainer {
+  /* ── SIZE STRIP ───────────────────────────────── */
+}
+#halfAndHalfContainer .size-strip {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg);
+  flex-shrink: 0;
+  justify-content: center;
+}
+#halfAndHalfContainer .half.right .size-strip {
+  justify-content: flex-end;
+}
+#halfAndHalfContainer .sz {
+  flex: 1;
+  max-width: 64px;
+  text-align: center;
+  padding: 0.3rem 0.2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+#halfAndHalfContainer .sz.active {
+  background: var(--primary-600);
+  color: var(--bg);
+  border-color: var(--primary-600);
+}
+#halfAndHalfContainer .sz:not(.active):hover {
+  border-color: rgba(232, 160, 32, 0.5);
+  color: var(--amber-lt);
+}
+#halfAndHalfContainer .size-strip .tp {
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
 #halfAndHalfIntro {
   background: var(--bg);
   height: 100%;

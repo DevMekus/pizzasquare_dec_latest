@@ -168,14 +168,46 @@ class UserController{
        }
     }
 
-     public function deleteProfile($id)
+    public function deleteProfile($id)
     {
         try {
             $id = RequestValidator::parseId($id);
             $user = UserService::fetchUserById($id);
+            
             if (empty($user)) {
                 Response::error(404, "User not found");
                 return;
+            }
+
+            if (UserService::deleteUserAccount($id,  $user[0]))
+                Response::success([], "profile deleted");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'AccountController::deleteProfile', [], $e);
+            Response::error(500, "Error deleting users profile");
+        }
+    }
+
+    public function deleteUserProfile($id)
+    {
+        try {
+            $data = RequestValidator::validate([
+                'password' => 'required|min:3',
+                'userid' => 'required|min:3',
+            ]);
+            
+            $id = RequestValidator::parseId($id);
+            $user = UserService::fetchUserById($id);
+           
+            
+            if (empty($user)) {
+                Response::error(404, "User not found");
+                return;
+            }
+
+            $password = $data['password'];
+
+            if (empty($user) || !password_verify($password, $user[0]['user_password'])) {
+                Response::error(401, "Invalid Authorization");
             }
 
             if (UserService::deleteUserAccount($id,  $user[0]))

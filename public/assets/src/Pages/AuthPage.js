@@ -392,13 +392,23 @@ class AuthPage {
         Utility.toast("Registration Successful", "success");
         dom.innerHTML = `<span class="bold color-success">Registration Successful. Login to continue</span>`;
       }
-       if (urlParam === "checkout"){
+      if (urlParam === "checkout"){
         sessionStorage.setItem(
             'intended_url',
             `${CONFIG.BASE_URL}/checkout`
         );
         Utility.toast("Login to continue", "success");
         dom.innerHTML = `<span class="bold color-red">Please Login and continue with Checkout</span>`;
+      }
+
+      if (urlParam === "delete-account"){
+        sessionStorage.setItem(
+            'intended_url',
+            `${CONFIG.BASE_URL}/account_delete`
+        );
+        Utility.toast("Login to continue", "success");
+        Utility.el("loginTitle").textContent = "Sign in and Delete Account";
+        dom.innerHTML = `<span class="bold color-red">Please login and Confirm Account Deletion.</span>`;
       }
         
     } catch (error) {

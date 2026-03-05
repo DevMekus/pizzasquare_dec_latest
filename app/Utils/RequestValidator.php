@@ -51,12 +51,23 @@ class RequestValidator
         return $data;
     }
 
+    // public static function sanitize(array $data): array
+    // {
+    //     $clean = [];
+    //     foreach ($data as $key => $value) {
+    //         $clean[$key] = is_string($value)
+    //             ? htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8')
+    //             : $value;
+    //     }
+    //     return $clean;
+    // }
+
     public static function sanitize(array $data): array
     {
         $clean = [];
         foreach ($data as $key => $value) {
             $clean[$key] = is_string($value)
-                ? htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8')
+                ? trim($value)
                 : $value;
         }
         return $clean;

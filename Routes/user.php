@@ -14,6 +14,7 @@ Router::group('/v1', function () use ($user, $order) {
     
     Router::add('GET', '/users/{id}', [$user, 'getProfile']); 
     Router::add('POST', '/users/{id}', [$user, 'updateProfile']);
+    Router::add('POST', '/users/delete/{id}', [$user, 'deleteUserProfile']);
 
 
     #Order Routes
