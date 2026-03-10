@@ -2,6 +2,7 @@
 import Utility from "../Classes/Utility.js";
 import XtraThursdayPromo from "../Classes/XtraThursdayPromo.js";
 import { getItem } from "../Utils/CrudRequest.js";
+import Cart from "../Classes/Cart.js";
 
 class PromoDayPage{
 
@@ -87,22 +88,24 @@ class PromoDayPage{
             <div class="split-arena">
                 <!-- LEFT -->
                 <div class="half left">
+                    <label class="form-label flex flex-start text-end">Select First Half</label>
                     <select class="pizza-list" id="listLeft"></select>   
-                    <h4 id="previewNameLeft" class="previewName">First Half</h4>            
+                    <p id="previewNameLeft" class="previewName mt-1">First Half</p>            
                 </div>
 
                 <!-- DIVIDER -->
                 <div class="divider">
                     <div class="div-line"></div>
-                    <div class="div-badge"><span>½ ½</span></div>
+                    <div class="div-badge"><span>VS</span></div>
                     <div class="div-line"></div>
                 </div>
 
                 <!-- RIGHT -->
                 <div class="half right">
+                    <label class="form-label flex flex-end text-end">Select Second Half</label>
                     <select class="pizza-list" id="listRight">
                     </select> 
-                    <h4 id="previewNameRight" class="previewName flex flex-end text-end">Second Half</h4>                      
+                    <p id="previewNameRight" class="mt-1">Second Half</p>                      
                 </div>
             </div>
             <section id="halfAndHalfGeneral">
@@ -111,9 +114,18 @@ class PromoDayPage{
                     <div class="seam"></div>
                     <div class="ph ph-r" id="previewR"><div class="ph-empty">?</div></div>
                 </div>
+                <label class="section-title">Select Size</label>
                 <div class="size-strips toggle-group slide-in" id="sizes"></div>
-                <div class="size-strip" id="toppings"></div>
-                <div class="size-strip" id="ingredients"></div>
+                <div class="toppings-section">
+                    <h6 class="muted center-mobile">Toppings</h6>
+                    <div id="toppings" class="toppings-toggle center-mobile"></div>
+                </div>
+                <div>
+                    <p class="muted small">
+                        <i class="fa fa-info-circle hideOnMobile"></i> Click to remove unwanted ingredients
+                    </p>
+                    <div id="IngredientsOptions"></div>
+                </div>
             </section>
 
             <!-- PREVIEW -->
@@ -128,7 +140,7 @@ class PromoDayPage{
                 </div>
             </div>
             <div class="modal-foot">
-                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-cancel">Cancel</button>
                 <button class="btn-cart"   id="btnCart" disabled>🛒 Add to Cart</button>
             </div>
         </section> 
@@ -141,7 +153,7 @@ class PromoDayPage{
             size:'m',           
         }; 
 
-        let totalPrice = 0;
+      
         
         let ingredients = {
                 left: [],
@@ -149,6 +161,7 @@ class PromoDayPage{
         }
 
         let toppings = [];
+        let totalPrice = 0;
 
         /* ── HELPERS ──────────────────────────────────────── */
         const getSize = (pizza, code) => pizza.sizes.find(s => s.size_code === code) || pizza.sizes[0];
@@ -156,30 +169,88 @@ class PromoDayPage{
 
        
 
+       
+        
         function renderList(side) {
-            const el = document.getElementById(side =='left' ? 'listLeft' : 'listRight');
-            
-            const options = PIZZAS.map(p => {               
-                const isSel  = sel[side] === p.id;
-                const size   = getSize(p, sel.size); 
+
+            const el = document.getElementById(side === 'left' ? 'listLeft' : 'listRight');
+
+            const selected = sel[side];
+
+            const options = PIZZAS.map(p => {
+
+                const size = getSize(p, sel.size)
 
                 return `
-                <option value="${p.id}" ${isSel ? 'selected' : ''} data-product="${p.id}" data-size="${size?.size_code}" data-side="${side}">${p.name} - ${Utility.fmtNGN(size?.price || 0)} </option>`;
+                <option value="${p.id}" ${selected == p.id ? "selected" : ""}>
+                    ${p.name} - ${Utility.fmtNGN(size?.price || 0)}
+                </option>
+                `
             }).join('');
 
-            el.innerHTML = ``;
             el.innerHTML = `
-            <option value="" disabled ${!sel[side] ? 'selected' : ''}>Select a pizza</option>
-            ${options}
+                <option value="" disabled ${!selected ? "selected" : ""}>-- Select a pizza --</option>
+                ${options}
             `;
+        }
 
-            document.addEventListener('change', e => {
-                if (e.target.classList.contains('pizza-list')) {                              
-                    sel[side] = Number(e.target.value);
-                    refresh();
-                }
-            });
-                     
+        function bindPizzaSelects() {
+            const previewNameRight = document.getElementById("previewNameRight");
+            const previewNameLeft = document.getElementById("previewNameLeft");
+
+            document.getElementById("listLeft")
+            .addEventListener("change", e => {
+                sel.left = Number(e.target.value)
+                e.target.value = sel.left  
+                const selectedOption = writeProductInfo('left', sel.left);
+                previewNameRight.textContent = selectedOption ? "Pick a right half" : "Second Half";
+                previewNameLeft.textContent = selectedOption ? selectedOption : "First Half";              
+
+                refresh()
+                updateTotalPrice()
+            })
+
+            document.getElementById("listRight")
+            .addEventListener("change", e => {
+                sel.right = Number(e.target.value)
+                e.target.value = sel.right
+                const selectedOption = writeProductInfo('right', sel.right);
+                previewNameRight.textContent = selectedOption ? selectedOption : "Second Half";
+                previewNameLeft.textContent = selectedOption ? "Pick a left half" : "First Half";
+                refresh()
+                updateTotalPrice()
+            })
+        }
+
+        function updatePreviewNames() {
+
+            const previewNameLeft = document.getElementById("previewNameLeft");
+            const previewNameRight = document.getElementById("previewNameRight");
+
+            if (sel.left) {
+                previewNameLeft.textContent = writeProductInfo('left', sel.left);
+            } else {
+                previewNameLeft.textContent = "First Half";
+            }
+
+            if (sel.right) {
+                previewNameRight.textContent = writeProductInfo('right', sel.right);
+            } else {
+                previewNameRight.textContent = "Second Half";
+            }
+
+            if (sel.left && !sel.right) {
+                previewNameRight.textContent = "Pick a right half";
+            }
+
+            if (sel.right && !sel.left) {
+                previewNameLeft.textContent = "Pick a left half";
+            }
+        }
+
+        function writeProductInfo(side, productId) {
+            const pizza = PIZZAS.find(p => p.id == productId);           
+            return `${pizza.description}`;
         }
 
               /* ── RENDER SIZES ─────────────────────────────────── */
@@ -189,7 +260,7 @@ class PromoDayPage{
             el.innerHTML = PIZZAS[0].sizes.map((s, i) => {           
 
                 return `
-                <label class="toggle-item mb-3 ${!s.size_code == cur ? "disabled" : ""}">
+                <label class="toggle-item mb-3" ${s.size_code !== cur ? "disabled" : ""}>
                     <input type="radio" 
                         name="size" 
                         value="${i}"
@@ -206,15 +277,40 @@ class PromoDayPage{
         function bindSizeClicks() {
             document.getElementById('sizes').addEventListener('click', e => {
                 const sz = e.target.closest('.size-radio');
-                if (!sz) return; 
-                
+                if (!sz) return;                 
                 sel.size = sz.dataset.size; 
                 refresh();
+                updateTotalPrice();
                
             });
 
            
         }
+
+         /* ── TOPPINGS ──────────────────────────────────── */
+            async function renderToppings() {
+                const el = Utility.el('toppings');
+                const toppings = await getItem("extras");
+
+                toppings.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = "tp topping-btn btn btn-sm m-1";
+                btn.dataset.price = t.extras_price;
+                btn.dataset.id = t.id;
+                btn.dataset.topping = t.id;
+                // btn.dataset.side = side;
+                btn.textContent = `${t.extras} +${Utility.fmtNGN(t.extras_price)}`;
+
+                btn.addEventListener("click", () => {
+                    btn.classList.toggle("active");
+                      updateTotalPrice();
+                });
+                
+                el.appendChild(btn);
+            });
+
+                
+            }
 
        
 
@@ -230,48 +326,42 @@ class PromoDayPage{
             }
          }
 
-        async function renderIngredients() {          
+        async function renderIngredients() {
 
-            const el = Utility.el('ingredients');
+            const el = Utility.el('IngredientsOptions');
 
-            //combine left and right ingredients into one array with a side property
-            const productIngredients = [...ingredients.left.map(i => ({...i, side:'left'})), ...ingredients.right.map(i => ({...i, side:'right'}))];
+            const combined = [
+                ...(ingredients.left || []),
+                ...(ingredients.right || [])
+            ];
 
-            let uniqueIngr = [];
+            const map = new Map();
 
-            ingredients.left.forEach(ing => {
-                if (!uniqueIngr.some(i => i.id === ing.id)) {
-                    uniqueIngr.push({...ing});
-                }
-
-            });
-
-            ingredients.right.forEach(ing => {
-                if (!uniqueIngr.some(i => i.id === ing.id)) {
-                    uniqueIngr.push({...ing});
+            combined.forEach(ing => {
+                const key = ing.ingredient_name.toLowerCase().trim();
+                if (!map.has(key)) {
+                    map.set(key, ing);
                 }
             });
 
-       
-
-            el.innerHTML = '';
+            const uniqueIngr = [...map.values()];
 
             if (uniqueIngr.length === 0) {
                 el.innerHTML = '<p class="muted small center-mobile">No ingredients assigned to this product.</p>';
-                return
+                return;
             }
 
             el.innerHTML = uniqueIngr.map(ing => `
-                <div id="IngredientsOptions-${ing.id}" 
-                class="ing collection-pill active" 
-                data-ingredient="${ing.id}"
-                data-ingredient-name="${ing.ingredient_name}" 
-                data-side="${ing.side}">
-                ${ing.ingredient_name}
-            </div>`).join('');
+                <span id="IngredientsOptions-${ing.id}" 
+                    class="ing collection-pill active"
+                    data-ingredient="${ing.id}"
+                    data-ingredient-name="${ing.ingredient_name}">
+                    ${ing.ingredient_name}
+                </span>
+            `).join('');
 
-            ingredientClickHandler(el)
-         }
+            ingredientClickHandler(el);
+        }
 
         function ingredientClickHandler(el) {
             const IngredientsContainer = el;
@@ -287,9 +377,10 @@ class PromoDayPage{
         }
         /* ── REFRESH ALL ──────────────────────────────────── */
         function refresh() {
-            renderList('left');  
-            renderList('right'); 
+            renderList('left')
+            renderList('right')
             renderSizes()
+            updatePreviewNames();
 
             if(sel.left) fetchIngredients('left', sel.left);  
             if(sel.right)fetchIngredients('right', sel.right);
@@ -316,13 +407,13 @@ class PromoDayPage{
                 : `<div class="ph-empty">?</div>`;
 
                 if (lp && rp) {
-                    const lPrice = parseFloat(getSize(lp, sel.leftSize).price)  / 2;
-                    const rPrice = parseFloat(getSize(rp, sel.rightSize).price) / 2;
+                    const lPrice = parseFloat(getSize(lp, sel.size).price)  / 2;
+                    const rPrice = parseFloat(getSize(rp, sel.size).price) / 2;
                     const total  = lPrice + rPrice;
-                    const lLabel = getSize(lp, sel.leftSize).size_label;
-                    const rLabel = getSize(rp, sel.rightSize).size_label;
+                    const lLabel = getSize(lp, sel.size).size_label;
+                    const rLabel = getSize(rp, sel.size).size_label;
                     document.getElementById('previewName').innerHTML  = `${lp.name}  <span class="versus">VS</span>  ${rp.name}`;
-                    document.getElementById('previewSub').textContent   = `${lLabel} left  ·  ${rLabel} right`;
+                    document.getElementById('previewSub').textContent   = `${lLabel} Selected`;
                     document.getElementById('previewPrice').textContent = fmt(total);
                     document.getElementById('btnCart').disabled = false;
                 } else {
@@ -333,11 +424,102 @@ class PromoDayPage{
                 }
         }
 
+        
+        
+        function updateTotalPrice() {
+         
+            const lp = PIZZAS.find(p => p.id == sel.left);
+            const rp = PIZZAS.find(p => p.id == sel.right);
+            
+            if (!lp || !rp) return;
+           
+
+            let total = 0;
+
+            const lPrice = parseFloat(getSize(lp, sel.size).price)  / 2;
+            const rPrice = parseFloat(getSize(rp, sel.size).price) / 2;
+            
+            total  = lPrice + rPrice;
+
+            const lLabel = getSize(lp, sel.size).size_label;
+            const rLabel = getSize(rp, sel.size).size_label;
+            const toppings = document.querySelectorAll('.topping-btn.active');
+            
+            const toppingsTotal = Array.from(toppings).reduce((sum, t) => sum + parseFloat(t.dataset.price || 0), 0);
+            
+            total  = lPrice + rPrice + toppingsTotal;
+            totalPrice = total;
+            
+            document.getElementById('previewPrice').textContent = fmt(total);
+
+            
+            return {
+                total,
+                lPrice,
+                rPrice,
+                toppingsTotal,
+                lp,
+                rp,
+                lLabel,
+                rLabel
+
+            }
+
+        }
+
+        function AddToCart() {
+            const addBtn = document.getElementById('btnCart');
+
+            addBtn.addEventListener('click', () => {             
+
+                const calculatedTotal = updateTotalPrice();
+                const selectedToppings = [
+                ...document.querySelectorAll(".topping-btn.active"),
+                ].map((t) => ({
+                    id: t.dataset.id,
+                    extras: t.textContent.split(" +₦")[0],
+                    price: Number(t.dataset.price),
+                }));
+
+                const deselectedIngredients = 
+                [
+                    ...document.querySelectorAll(".collection-pill:not(.active)"),
+                ].map(t => {
+                    return {
+                        ingredient_name: t.dataset.ingredientName,                   
+                    };                  
+                    
+                })
+
+                const productId = [calculatedTotal.lp.id, calculatedTotal.rp.id]               
+                    
+                    Cart.addToCart({
+                        product_id: `${productId}`,
+                        title: `${calculatedTotal.lp.name} . ${calculatedTotal.rp.name}`,
+                        size: `${sel.size}`,
+                        size_id: `${getSize(calculatedTotal.lp,sel.size).size_id}`,
+                        barbecueSauce: "beneath",
+                        price: calculatedTotal.total,
+                        qty: 1,
+                        image: calculatedTotal.lp.image, // you might want to create a custom image for half & half
+                        toppings: selectedToppings,
+                        type: "half_half",
+                        removed_ingredients: deselectedIngredients,
+                    });
+            
+                Utility.toast(`Added: ${calculatedTotal.lp.name} + ${calculatedTotal.rp.name} — ${fmt(calculatedTotal.total)}`);
+            });
+        }
 
         function runProgram() {      
             refresh(); 
-            bindSizeClicks()           
-            
+            bindSizeClicks()  
+            bindPizzaSelects()         
+            renderList('left');  
+            renderList('right'); 
+            renderToppings()
+            updateTotalPrice()
+            AddToCart()
         } 
 
 

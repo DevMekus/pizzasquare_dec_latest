@@ -223,6 +223,12 @@ static renderSummary(order) {
                 <strong>Delivery Fee:</strong> <span>${Utility.fmtNGN(order.delivery_fee)}</span>
             </li>
             <li class="d-flex justify-content-between border-bottom py-1">
+                <strong>Discount:</strong> <span>${Utility.fmtNGN(order.discount)}</span>
+            </li>
+            <li class="d-flex justify-content-between border-bottom py-1">
+                <strong>VAT:</strong> <span>${Utility.fmtNGN(order.vat)}</span>
+            </li>
+            <li class="d-flex justify-content-between border-bottom py-1">
                 <strong>Payment Type:</strong> <span>${Utility.toTitleCase(order.payment_type)}</span>
             </li>
             <li class="d-flex justify-content-between border-bottom py-1">

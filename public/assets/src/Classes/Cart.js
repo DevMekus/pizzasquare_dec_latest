@@ -208,7 +208,8 @@ new bootstrap.Modal(document.getElementById("successModal")).show();
 
     if (existingIndex !== -1) {
       Cart.cart[existingIndex].qty += qty;
-      Utility.toast(`${title} qty updated.`);
+      Cart.cartToast(`${title} qty updated.`);
+      // Utility.toast(`${title} qty updated.`);
     } else {
       const newItem = {
         id: product_id,
@@ -226,7 +227,8 @@ new bootstrap.Modal(document.getElementById("successModal")).show();
         promo_product,
       };
       Cart.cart.push(newItem);
-      Utility.toast(`${title} added to your cart.`);
+      Cart.cartToast(`${title} added to your cart.`);
+      // Utility.toast(`${title} added to your cart.`);
      
     }
 
@@ -236,6 +238,18 @@ new bootstrap.Modal(document.getElementById("successModal")).show();
     Checkout.updateCart();
     Checkout.countCartItem();
     $("#displayDetails").modal("hide");
+  }
+
+  static cartToast(message) {
+    const cartToast = document.getElementById('cartToast')
+    const toastMessage = document.getElementById('cartToastMsg')
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(cartToast)
+
+    console.log(toastMessage);
+    console.log(message);
+
+    toastMessage.innerHTML = `<span>${message}</span>`;
+    toastBootstrap.show()
   }
 
  

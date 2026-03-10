@@ -40,6 +40,11 @@ switch ($input['action']) {
         }
 
         break;
+    case 'set-p':
+        $_SESSION['user_profile'] = $input['user'];
+        $_SESSION['profile_cached_at'] = time();
+        break;
+        
     case 'config':
         header('Content-Type: application/json');
         echo json_encode([

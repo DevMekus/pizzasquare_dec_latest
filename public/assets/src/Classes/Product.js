@@ -152,8 +152,9 @@ export default class Product {
         
         const paginatedData = filtered.slice(start, end);
         
-        paginatedData.forEach((o, idx) => {
-            menuGrid.insertAdjacentHTML("beforeend", Product.MenuCard(o, idx));
+        paginatedData.forEach((o, idx) => {           
+            if (o.is_active == "1")
+                menuGrid.insertAdjacentHTML("beforeend", Product.MenuCard(o, idx));
         });
 
         Product.menuCardEvents();

@@ -51,11 +51,10 @@ $userid = $_SESSION['userid'] ?? null;
 
                 <!-- Cart Icon only once -->
                 <li class="nav-item">
-                    <a class="nav-link p-0 d-inline-block position-relative" href="<?= BASE_URL ?>checkout">
-
+                   <a class="nav-link p-0 d-inline-block position-relative" href="<?= BASE_URL ?>checkout">
                         <i class="bi bi-cart"></i>
                         <span id="cartCount"
-                            class="position-absolute top-0 start-100 translate-middle  rounded-pill bg-success">
+                            class="position-absolute top-0 start-100 translate-middle rounded-pill bg-success px-2 py-1">
                         </span>
                     </a>
                 </li>

@@ -10,6 +10,23 @@
       </div>
   </div>
 
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="cartToast"  class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">     
+      <strong class="me-auto"><?= BRAND_NAME ?></strong>
+      <small>Just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        <div id="cartToastMsg"></div>
+        <div class="mt-2 pt-2 border-top">
+        <a href="<?= BASE_URL; ?>checkout" class="btn btn-primary btn-sm">Checkout</a>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+        </div>
+    </div>
+    </div>
+</div>
+
 
   <div class="modal fade" id="displayDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">

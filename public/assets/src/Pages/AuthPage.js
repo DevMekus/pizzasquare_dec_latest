@@ -1,7 +1,7 @@
 import { CONFIG } from "../Utils/config.js";
 import Utility from "../Classes/Utility.js";
 import { HttpRequest } from "../Utils/httpRequest.js";
-import { destroyCurrentSession, startNewSession } from "../Classes/Session.js";
+import { destroyCurrentSession, startNewSession, setNewProfile } from "../Classes/Session.js";
 
 /**
  * @class AuthHelper
@@ -49,27 +49,37 @@ export default class AuthHelper {
     }
   }
 
-  static redirect(token) {
+  static async redirect(token) {
     const decryptToken = jwt_decode(token);
     const { userid, email, role } = decryptToken;
     let url = null;
 
   
     const intended_url = sessionStorage.getItem('intended_url');
+
     if (intended_url && role == "1") {
         sessionStorage.removeItem('intended_url');
         window.location.href = intended_url;
         return;
     }
 
+
     if (role == "1") url = ``;
     if (role == "2") url = `secure/management/overview`;
     if (role == "3") url = `secure/pos/overview`;    
     if (role == "4") url = `secure/admin/overview`;
 
+    const user = await AuthHelper.fetchUserData(userid);
+    await setNewProfile(user);
+
     setTimeout(() => {
       window.location.href = `${CONFIG.BASE_URL}/${url}`;
     }, CONFIG.TIMEOUT);
+  }
+
+  static async fetchUserData(userid) {
+    const response = await HttpRequest(`${CONFIG.API}/users/${userid}`);
+    return response.success ? response.data[0] : null;
   }
 
   static logout() {

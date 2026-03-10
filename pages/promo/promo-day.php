@@ -9,7 +9,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
 <body class="theme-light" id="dealsPage">
     <div class="container dealsWrapper">
         <div class="deals-header" data-aos="fade-down">
-            <h2><span id="promo-title"></span> 🔥</h2>
+            <h2><span id="promo-title"></span></h2>
             <p id="promo-description"></p>
         </div>
 

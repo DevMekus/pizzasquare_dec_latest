@@ -86,8 +86,8 @@ export default class Promotions {
                                 <small id="charCount">0 / 100</small>
                             </div>
                             <div class="form-group">
-                                <label for="title">Active Day</label>
-                                <input type="text" id="title" name="active_day" placeholder="eg: Monday, Tuesday...">
+                                <label for="title">Active Day(s) </label>
+                                <input type="text" id="title" name="active_day" placeholder="eg: Monday or Monday, Tuesday, ...">
                             </div>
                         </div>
                         <div class="col-sm-6">

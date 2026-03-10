@@ -4,7 +4,7 @@ use App\Utils\Utility;
 use App\Utils\Response;
 use configs\Database;
 use App\Services\ActivityService;
-use App\Utils\MailClient;
+use App\Services\ProductService;
 
 class OrderService{
 
@@ -475,22 +475,44 @@ class OrderService{
         }
     }
 
-
-
-
     public static function createNewOrder($orderData){
-        $order = Utility::$orders;
-        $order_items = Utility::$order_items;
-        $payments = Utility::$payments;
-        $order_toppings = Utility::$order_toppings;
+        try {
+            Database::beginTransaction();
+                $newOrderId = self::saveOrderInformation($orderData);
+                self::processCartItem($orderData, $newOrderId);
+                self::processOrderPayment($orderData, $newOrderId);
+                self::orderNotifications($orderData);
+            Database::commit();
+            return $newOrderId;
+        } catch (\Throwable $th) {            
+            Database::rollBack();
+            Utility::log($th->getMessage(), 'error', 'OrderService::createNewOrder', ['Order' => json_encode($orderData)], $th);
+            Response::error(500, "An error occurred while creating a new order");
+        }
+    }
 
+    private static function processCartItem($orderData,$newOrderId){
+        foreach($orderData['cart'] as $item){
+
+            if ($item['type'] === 'half_half'){
+                self::processHalfHalfItem($item, $newOrderId);
+            } else {
+                self::processNormalOrder($item, $newOrderId);
+            }
+            self::processToppingsInfo($newOrderId);
+            self::processRemovedIngredients($item, $newOrderId);
+           
+        }
+    }
+
+    private static function saveOrderInformation($orderData){
+        try {
+        $order = Utility::$orders;
         $status = '';
+
         isset($orderData['customer_type']) && $orderData['customer_type'] === 'walk_in' ? $status = 'delivered' : $status = 'pending';
 
-        try {
-           Database::beginTransaction();
-            
-           $orderUpload = [
+            $orderUpload = [
                 'order_id' => $orderData['order_id'],
                 'userid' => $orderData['userid'] ?? null,
                 'customer_name' => $orderData['customer_name'] ?? null,
@@ -505,122 +527,176 @@ class OrderService{
                 'attendant' => $orderData['attendant'] ?? null,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
+            return $newOrderId = Database::insert($order, $orderUpload);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 
-            $newOrderId = Database::insert($order, $orderUpload);
+    private static function processNormalOrder($item, $newOrderId){
+        $order_items = Utility::$order_items;
+            $itemData = [
+                'order_id' => intval($newOrderId),
+                'product_id' => intval($item['id']),
+                'barbecue_sauce' => $item['barbecueSauce'] ?? null,
+                'size_id' => intval($item['size_id']),
+                'unit_price' => floatval($item['price']),
+                'qty' => intval($item['qty']),
+                'subtotal' => floatval($item['price']) * intval($item['qty']),
+            ];
+            Database::insert($order_items, $itemData);
 
-            //process cart here
-            foreach($orderData['cart'] as $item){
-                
-                $itemData = [
+            self::handleStockUpdates($item, $newOrderId);
+    }
+
+    private static function processHalfHalfItem($item, $newOrderId){
+        
+        $order_items = Utility::$order_items;
+
+        $productIds = self::splitProductIds($item);
+
+        for ($i = 0; $i <= 2; $i++) {
+            $halfPrice = self::processhalfPrice($productIds[$i], $item['size_id']);
+            $qty = floatval($item['qty']) / 2; //divide qty by 2 for half pizza
+
+            $halfItem = [
+                'order_id' => intval($newOrderId),
+                'product_id' => intval(trim($productIds[$i])),
+                'barbecue_sauce' => $item['barbecueSauce'] ?? null,
+                'size_id' => intval($item['size_id']),
+                'unit_price' => floatval($halfPrice),
+                'qty' => $qty ?? 0.5,
+                'subtotal' => floatval($halfPrice),
+            ];
+
+            Database::insert($order_items, $halfItem);       
+
+            //handle stock update
+            self::handleStockUpdates([
+                'id' => intval(trim($productIds[$i])),
+                'size_id' => intval($item['size_id']),
+                'qty' => $qty,
+            ], $newOrderId);
+           
+        }
+    }
+
+    public static function splitProductIds($item){
+        //size is "6,4" and needs to be split into two ids
+        return   explode(',', $item['id']);
+       
+    }
+
+    private static function processhalfPrice($productId, $size){
+        //get the actuall product price and divide by 2 for half pizza. This is to ensure that the price is correct even if the frontend sends the full price for both halves
+        $productInfo = ProductService::fetchFullProduct($productId);
+        $sizes = $productInfo['sizes'];
+
+        foreach ($sizes as $s) {
+            if ($s['size_id'] == $size) {
+                return floatval($s['price']) / 2; //divide by 2 for half pizza
+            }
+        }
+
+
+    }
+
+    private static function processToppingsInfo($newOrderId){
+        $order_toppings = Utility::$order_toppings;
+
+        if(isset($item['toppings']) && is_array($item['toppings'])){
+            foreach($item['toppings'] as $topping){
+                $toppingData = [
+                    'order_id' => $newOrderId,
+                    'product_id' => $item['id'],
+                    'topping' => $topping['extras'],
+                    'size_id' => $item['size_id'],
+                    'unit_price' => intval($topping['price']),
+                    'qty' => $item['qty'],
+                    'subtotal' => intval($topping['price']) * intval($item['qty']),
+                ];
+                Database::insert($order_toppings, $toppingData);
+            }
+        }
+    }
+
+    private static function processRemovedIngredients($item, $newOrderId){
+         if (isset($item['removed_ingredients']) && is_array($item['removed_ingredients'])){
+            foreach ($item['removed_ingredients'] as $ingredient){
+                Database::insert(Utility::$order_removed_ingredients, [
                     'order_id' => intval($newOrderId),
                     'product_id' => intval($item['id']),
-                    'barbecue_sauce' => $item['barbecueSauce'] ?? null,
+                    'ingredient_name' => $ingredient['ingredient_name'],
                     'size_id' => intval($item['size_id']),
-                    'unit_price' => floatval($item['price']),
-                    'qty' => intval($item['qty']),
-                    'subtotal' => floatval($item['price']) * intval($item['qty']),
-                ];
-                Database::insert($order_items, $itemData);
+                ]);
+            }
+        }
+    }
 
-                if(isset($item['toppings']) && is_array($item['toppings'])){
-                    foreach($item['toppings'] as $topping){
-                        $toppingData = [
-                            'order_id' => $newOrderId,
-                            'product_id' => $item['id'],
-                            'topping' => $topping['extras'],
-                            'size_id' => $item['size_id'],
-                            'unit_price' => intval($topping['price']),
-                            'qty' => $item['qty'],
-                            'subtotal' => intval($topping['price']) * intval($item['qty']),
-                        ];
-                        Database::insert($order_toppings, $toppingData);
-                    }
-                }
-
-                //Removes ingredients from product
-                if (isset($item['removed_ingredients']) && is_array($item['removed_ingredients'])){
-                    foreach ($item['removed_ingredients'] as $ingredient){
-                        Database::insert(Utility::$order_removed_ingredients, [
-                            'order_id' => intval($newOrderId),
-                            'product_id' => intval($item['id']),
-                            'ingredient_name' => $ingredient['ingredient_name'],
-                            'size_id' => intval($item['size_id']),
-                        ]);
-                    }
-                }
-
-                //check if its a product_stock or category_size_stock and reduce stock accordingly
-               $status = ProductStockService::reduceAuto(
+    private static function handleStockUpdates($item, $newOrderId){
+         $status = ProductStockService::reduceAuto(
                     $item['id'],
                     $item['size_id'],
                     $item['qty']
                 );
 
-                if ($status === "insufficient_stock") {                   
-                    Utility::log("Insufficient stock for product {$item['id']}", 'error', 'OrderService::createNewOrder', ['OrderID' => $newOrderId, 'ProductID' => $item['id']]);
-                  
-                }               
-            }
-            
-           $payment = $orderData['payment'];        
-            //save payment info
-            $paymentData = [
-                'order_id' => $newOrderId,
-                'total_paid' => floatval($payment['total_paid'] ?? 0),
-                'payment_type' => $payment['payment_type'] ?? 'single',
-                'cash' => floatval($payment['cash'] ?? 0),
-                'card' => floatval($payment['card'] ?? 0),
-                'transfer' => floatval($payment['transfer'] ?? 0),
-                'online' => floatval($payment['online'] ?? 0),
-                'item_amount' => floatval($payment['item_amount'] ?? 0),
-                'delivery_fee' => floatval($payment['delivery_fee'] ?? 0),
-                'vat' => floatval($payment['vat'] ?? 0),
-                'discount' => floatval($payment['discount'] ?? 0),
-                'payment_date' => date('Y-m-d H:i:s'),
-            ];
-            
-            Database::insert($payments, $paymentData);
-          
-            if ($orderData['customer_type'] !== 'walk_in'){
-               
-                EmailServices::sendOrderConfirmationEmail([
-                    'order_id' => $orderData['order_id'],
-                    'customer_email' => $orderData['email_address'] ?? null,
-                    'customer_name' => $orderData['customer_name'] ?? null,
-                ]);
+        if ($status === "insufficient_stock") {
+            Utility::log("Insufficient stock for product {$item['id']}", 'error', 'OrderService::handleStockUpdates', ['OrderID' => $newOrderId, 'ProductID' => $item['id']]);
+        }               
+    }
 
-                EmailServices::sendOrderNotificationToAdmin([
-                    'order_id' => $orderData['order_id'],
-                    'customer_email' => $orderData['email_address'] ?? null,
-                    'customer_name' => $orderData['customer_name'] ?? null,
-                    'customer_phone' => $orderData['customer_phone'] ?? null,
-                    'delivery_type' => $orderData['delivery_type'] ?? null,
-                    'delivery_address' => isset($orderData['delivery_address']) ? $orderData['delivery_address'].", ".$orderData['city'] : null,
-                    'delivery_instructions' => $orderData['order_note'] ?? null,
-                    'total_amount' => $orderData['total_amount'] ?? 0,
-                    'order_details' => json_encode($orderData['cart']),
-                ]);
-                
-            }
+    private static function processOrderPayment($orderData, $newOrderId){
+        $payment = $orderData['payment'];  
+        $payments = Utility::$payments;      
+            //save payment info
+        $paymentData = [
+            'order_id' => $newOrderId,
+            'total_paid' => floatval($payment['total_paid'] ?? 0),
+            'payment_type' => $payment['payment_type'] ?? 'single',
+            'cash' => floatval($payment['cash'] ?? 0),
+            'card' => floatval($payment['card'] ?? 0),
+            'transfer' => floatval($payment['transfer'] ?? 0),
+            'online' => floatval($payment['online'] ?? 0),
+            'item_amount' => floatval($payment['item_amount'] ?? 0),
+            'delivery_fee' => floatval($payment['delivery_fee'] ?? 0),
+            'vat' => floatval($payment['vat'] ?? 0),
+            'discount' => floatval($payment['discount'] ?? 0),
+            'payment_date' => date('Y-m-d H:i:s'),
+        ];
             
-            ActivityService::saveActivity([
-                'userid' => $orderData['userid'] ?? $_SESSION['userid'] ?? null,
-                'type' => 'order',
-                'title' => 'Order created successfully',
+        Database::insert($payments, $paymentData);
+    }
+
+    private static function orderNotifications($orderData){
+        if ($orderData['customer_type'] !== 'walk_in'){
+            
+            EmailServices::sendOrderConfirmationEmail([
+                'order_id' => $orderData['order_id'],
+                'customer_email' => $orderData['email_address'] ?? null,
+                'customer_name' => $orderData['customer_name'] ?? null,
+            ]);
+
+            EmailServices::sendOrderNotificationToAdmin([
+                'order_id' => $orderData['order_id'],
+                'customer_email' => $orderData['email_address'] ?? null,
+                'customer_name' => $orderData['customer_name'] ?? null,
+                'customer_phone' => $orderData['customer_phone'] ?? null,
+                'delivery_type' => $orderData['delivery_type'] ?? null,
+                'delivery_address' => isset($orderData['delivery_address']) ? $orderData['delivery_address'].", ".$orderData['city'] : null,
+                'delivery_instructions' => $orderData['order_note'] ?? null,
+                'total_amount' => $orderData['total_amount'] ?? 0,
+                'order_details' => json_encode($orderData['cart']),
             ]);
             
-            Database::commit();
-
-
-            return $newOrderId;
-
-          
-        } catch (\Throwable $th) {
-            Database::rollBack();
-            Utility::log($th->getMessage(), 'error', 'OrderService::createNewOrder', ['Order' => json_encode($orderData)], $th);
-            Response::error(500, "An error occurred while creating a new order");
         }
+            
+        ActivityService::saveActivity([
+            'userid' => $orderData['userid'] ?? $_SESSION['userid'] ?? null,
+            'type' => 'order',
+            'title' => 'Order created successfully',
+        ]);
     }
+
 
     public static function updateOrderStatus($id, $data, $prev){
         try {

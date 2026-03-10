@@ -29,9 +29,11 @@ require_once ROOT_PATH . '/includes/navbar.php';
             </p>  
           <div class="bg-light p-4 rounded" id="deleteAccountFormWrapper">
            
-           <form id="deleteAccountForm" class="d-flex gap-2 align-center">
-                <input type="password" id="confirmPassword" placeholder="Enter your password to confirm" class="p-3 w-50" required>
-              <div>
+           <form id="deleteAccountForm" class="row g-3">
+              <div class="col-sm-6">
+                  <input type="password" id="confirmPassword" placeholder="Enter your password to confirm" class="p-3" required>
+              </div>
+              <div class="col-sm-6">
                 <input type="checkbox" id="confirmDeleteCheckbox">
                 <label for="confirmDeleteCheckbox">I understand that this action cannot be undone.</label><br>
                 <button type="submit" id="deleteAccountButton" class="btn btn-primary" disabled>Delete Account</button>

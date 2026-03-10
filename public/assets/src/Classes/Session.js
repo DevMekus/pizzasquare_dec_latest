@@ -194,3 +194,22 @@ export async function clearAppData() {
     console.warn("⚠️ Failed to clear app data:", error);
   }
 }
+
+export async function setNewProfile(user) {
+  try {
+    // Store PHP session
+    const response = await fetch(`${CONFIG.BASE_URL}/public/set-session.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({ action: "set-p", user }),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.warn("⚠️ Failed to start user session:", error);
+    return null;
+  }
+}

@@ -18,7 +18,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 </div>
                 <div class="hero_text">
                     <p id="hero-text">
-                        <span>𝗪𝗲 𝗼𝗳𝗳𝗲𝗿 𝗮 𝘄𝗶𝗱𝗲 𝗿𝗮𝗻𝗴𝗲 𝗼𝗳</span> <span>𝙋𝙞𝙯𝙯𝙖🍕</span> <span>𝙎𝙝𝙖𝙬𝙖𝙧𝙢𝙖🌯</span> <span>𝙄𝙘𝙚 𝙘𝙧𝙚𝙖𝙢🍦</span>
+                        <span>𝗪𝗲 𝗼𝗳𝗳𝗲𝗿 𝗮 𝘄𝗶𝗱𝗲 𝗿𝗮𝗻𝗴𝗲 𝗼𝗳</span> <span>𝙋𝙞𝙯𝙯𝙖🍕</span> <span>𝙎𝙝𝙖𝙬𝙖𝙧𝙢𝙖🌯</span> 
+                        <span> Burgers 🍔</span> <span>Desserts🍦</span>
+                        <span> Lounges 🥂</span>
                     </p>
                 </div>
                 <a href="#menuGrid" id="hero-btn" class="btn btn-primary hero-btn mt-3">Order Now</a>
@@ -34,9 +36,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between align-items-end mb-3">
                 <div class="w-100">
-                <?php 
-                    require ROOT_PATH . '/includes/xtra-thursdayAlert.php';
-                 ?>
+                
                     <h2 class="section-title" data-aos="fade-right">Our Menu</h2>
                     <p class="section-sub" data-aos="fade-right" data-aos-delay="100">Select your Favourite Items.</p>
                 </div>
@@ -326,9 +326,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <img class="header-image" src="<?php echo BASE_URL; ?>assets/images/handcrop.jpg"
                 alt="Pizza App Icon" />
             <p class="heading">Introducing <span>Pizza Square Mobile App!</span></p>
-            <p>Enjoy Smoother and Faster Orders!. Our mobile app is coming soon to Google Play and iOS App Stores!</p>
+            <p>Enjoy smoother and faster Orders, history and more exclusive offers & discounts only on the app.</p>
             <div class="store-buttons">
-                <a href="#" class="store-btn google">
+                <a href="https://play.google.com/store/apps/details?id=com.pizzasquare" class="store-btn google">
                     <img src="<?php echo BASE_URL; ?>assets/images/google-play-and-apple-app-store-logos-22.png" alt="Google Play">
                 </a>
 
