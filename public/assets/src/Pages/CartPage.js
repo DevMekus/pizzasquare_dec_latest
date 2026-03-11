@@ -50,8 +50,8 @@ class CartPage {
     // LocationService.fetchLocations();
 
     function updateOrderButton() {
-        const status = Checkout.checkOrderingStatus(radioDelivery.checked ? "delivery" : "pickup");
-        orderBtn.style.display = status ? "block" : "none";
+        // const status = Checkout.checkOrderingStatus(radioDelivery.checked ? "delivery" : "pickup");
+        // orderBtn.style.display = status ? "block" : "none";
     }
 
   

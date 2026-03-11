@@ -310,7 +310,7 @@ class ProductStockService
                 return "insufficient_stock";
             }
 
-            $newQty = $row["qty"] - $qty;
+            $newQty = floatval($row["qty"]) - floatval($qty);
 
             return Database::update(self::$category_stock_table, ["qty" => $newQty], ["id" => $row["id"]]);
         } catch (\Throwable $th) {

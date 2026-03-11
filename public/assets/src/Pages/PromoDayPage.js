@@ -88,7 +88,7 @@ class PromoDayPage{
             <div class="split-arena">
                 <!-- LEFT -->
                 <div class="half left">
-                    <label class="form-label flex flex-start text-end">Select First Half</label>
+                    <label class="form-label flex flex-start text-end">Select 1st Half</label>
                     <select class="pizza-list" id="listLeft"></select>   
                     <p id="previewNameLeft" class="previewName mt-1">First Half</p>            
                 </div>
@@ -102,7 +102,7 @@ class PromoDayPage{
 
                 <!-- RIGHT -->
                 <div class="half right">
-                    <label class="form-label flex flex-end text-end">Select Second Half</label>
+                    <label class="form-label flex flex-end text-end">Select 2nd Half</label>
                     <select class="pizza-list" id="listRight">
                     </select> 
                     <p id="previewNameRight" class="mt-1">Second Half</p>                      
@@ -496,7 +496,7 @@ class PromoDayPage{
                     Cart.addToCart({
                         product_id: `${productId}`,
                         title: `${calculatedTotal.lp.name} . ${calculatedTotal.rp.name}`,
-                        size: `${sel.size}`,
+                        size: `${sel.size.toUpperCase()}`,
                         size_id: `${getSize(calculatedTotal.lp,sel.size).size_id}`,
                         barbecueSauce: "beneath",
                         price: calculatedTotal.total,

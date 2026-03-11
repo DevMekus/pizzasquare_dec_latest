@@ -494,12 +494,13 @@ class OrderService{
     private static function processCartItem($orderData,$newOrderId){
         foreach($orderData['cart'] as $item){
 
-            if ($item['type'] === 'half_half'){
+            if ($item['type'] == 'half_half'){
                 self::processHalfHalfItem($item, $newOrderId);
             } else {
                 self::processNormalOrder($item, $newOrderId);
             }
-            self::processToppingsInfo($newOrderId);
+
+            self::processToppingsInfo($item, $newOrderId, $item['type'] == 'half_half' ? true : false);
             self::processRemovedIngredients($item, $newOrderId);
            
         }
@@ -535,6 +536,7 @@ class OrderService{
 
     private static function processNormalOrder($item, $newOrderId){
         $order_items = Utility::$order_items;
+           
             $itemData = [
                 'order_id' => intval($newOrderId),
                 'product_id' => intval($item['id']),
@@ -544,8 +546,8 @@ class OrderService{
                 'qty' => intval($item['qty']),
                 'subtotal' => floatval($item['price']) * intval($item['qty']),
             ];
+           
             Database::insert($order_items, $itemData);
-
             self::handleStockUpdates($item, $newOrderId);
     }
 
@@ -555,13 +557,13 @@ class OrderService{
 
         $productIds = self::splitProductIds($item);
 
-        for ($i = 0; $i <= 2; $i++) {
-            $halfPrice = self::processhalfPrice($productIds[$i], $item['size_id']);
+        foreach ($productIds as $pid) {
+            $halfPrice = self::processhalfPrice(intval($pid), $item['size_id']);           
             $qty = floatval($item['qty']) / 2; //divide qty by 2 for half pizza
 
             $halfItem = [
                 'order_id' => intval($newOrderId),
-                'product_id' => intval(trim($productIds[$i])),
+                'product_id' => intval($pid),
                 'barbecue_sauce' => $item['barbecueSauce'] ?? null,
                 'size_id' => intval($item['size_id']),
                 'unit_price' => floatval($halfPrice),
@@ -573,22 +575,29 @@ class OrderService{
 
             //handle stock update
             self::handleStockUpdates([
-                'id' => intval(trim($productIds[$i])),
+                'id' => intval($pid),
                 'size_id' => intval($item['size_id']),
                 'qty' => $qty,
             ], $newOrderId);
-           
         }
+
+       
     }
 
-    public static function splitProductIds($item){
-        //size is "6,4" and needs to be split into two ids
-        return   explode(',', $item['id']);
-       
+    public static function splitProductIds($item)
+    {
+        $ids = explode(',', $item['id']);
+
+        if (count($ids) !== 2) {
+            throw new \Exception("Invalid half pizza configuration");
+        }
+
+        return array_map('intval', $ids);
     }
 
     private static function processhalfPrice($productId, $size){
         //get the actuall product price and divide by 2 for half pizza. This is to ensure that the price is correct even if the frontend sends the full price for both halves
+        
         $productInfo = ProductService::fetchFullProduct($productId);
         $sizes = $productInfo['sizes'];
 
@@ -601,14 +610,23 @@ class OrderService{
 
     }
 
-    private static function processToppingsInfo($newOrderId){
+    private static function processToppingsInfo($item, $newOrderId, $halfPizza = false){
+        
         $order_toppings = Utility::$order_toppings;
+
+        $halfPizzaId = null;
+
+        if ($halfPizza) {
+           $productIds = self::splitProductIds($item);
+           $halfPizzaId = $productIds[0]; //take the first product id as the reference for toppings
+
+        } 
 
         if(isset($item['toppings']) && is_array($item['toppings'])){
             foreach($item['toppings'] as $topping){
                 $toppingData = [
                     'order_id' => $newOrderId,
-                    'product_id' => $item['id'],
+                    'product_id' => $halfPizza ? $halfPizzaId : $item['id'],
                     'topping' => $topping['extras'],
                     'size_id' => $item['size_id'],
                     'unit_price' => intval($topping['price']),

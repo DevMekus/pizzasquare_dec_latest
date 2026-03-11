@@ -2323,7 +2323,6 @@ table .avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border: 2px solid rgba(232, 52, 32, 0.3);
   overflow: hidden;
   display: flex;
   flex-shrink: 0;
