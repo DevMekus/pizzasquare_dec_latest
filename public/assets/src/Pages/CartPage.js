@@ -47,11 +47,10 @@ class CartPage {
     const radioPickup = document.getElementById("methodPickup");
     const orderBtn = Utility.el("placeOrder");
 
-    // LocationService.fetchLocations();
-
+  
     function updateOrderButton() {
-        // const status = Checkout.checkOrderingStatus(radioDelivery.checked ? "delivery" : "pickup");
-        // orderBtn.style.display = status ? "block" : "none";
+        const status = Checkout.checkOrderingStatus(radioDelivery.checked ? "delivery" : "pickup");
+        orderBtn.style.display = status ? "block" : "none";
     }
 
   

@@ -9,7 +9,7 @@ $userid = $_SESSION['userid'];
 $user = null;
 
 // Refresh user profile if not cached or expired
-$cacheDuration = 3600;
+$cacheDuration = 86400;
 $shouldRefresh = !isset($_SESSION['user_profile'])
     || !isset($_SESSION['profile_cached_at'])
     || (time() - $_SESSION['profile_cached_at']) > $cacheDuration;

@@ -54,6 +54,9 @@ export default class AuthHelper {
     const { userid, email, role } = decryptToken;
     let url = null;
 
+    const user = await AuthHelper.fetchUserData(userid);
+    await setNewProfile(user);
+
   
     const intended_url = sessionStorage.getItem('intended_url');
 
@@ -69,8 +72,7 @@ export default class AuthHelper {
     if (role == "3") url = `secure/pos/overview`;    
     if (role == "4") url = `secure/admin/overview`;
 
-    const user = await AuthHelper.fetchUserData(userid);
-    await setNewProfile(user);
+  
 
     setTimeout(() => {
       window.location.href = `${CONFIG.BASE_URL}/${url}`;

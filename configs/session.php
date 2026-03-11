@@ -43,6 +43,7 @@ switch ($input['action']) {
     case 'set-p':
         $_SESSION['user_profile'] = $input['user'];
         $_SESSION['profile_cached_at'] = time();
+        $_SESSION['userid'] = $input['user']['userid'];
         break;
         
     case 'config':

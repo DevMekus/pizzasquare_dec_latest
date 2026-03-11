@@ -22,26 +22,26 @@
         <div class="kpi-card bounce-card">
             <div class="icon-box bg-default"><i class="bi bi-egg-fried fs-2"></i></div>
             <p>Total Items</p>
-            <h2 id="totalItems">0</h2>
+            <h2 id="totalItems" class="loading">-</h2>
         </div>
         <div class="kpi-card bounce-card">
             <div class="icon-box bg-success"><i class="bi bi-check-lg fs-2"></i></div>
             <p>Available</p>
-            <h2 id="availableItems">0</h2>
+            <h2 id="availableItems" class="loading">-</h2>
         </div>
         <div class="kpi-card bounce-card">
             <div class="icon-box bg-primary">
                 <i class="bi bi-x-lg fs-2"></i>
             </div>
             <p>Low Stock</p>
-            <h2 id="outOfStock">0</h2>
+            <h2 id="outOfStock" class="loading">-</h2>
         </div>
         <div class="kpi-card bounce-card">
             <div class="icon-box bg-default">
                 <i class="bi bi-trophy fs-2"></i>
             </div>
             <p>Most Popular</p>
-            <h2 id="popularDish">-</h2>
+            <h2 id="popularDish" class="loading">-</h2>
         </div>
     </section>
 
@@ -62,7 +62,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="loading">
                 <!-- Products will render here -->
             </tbody>
             </table>

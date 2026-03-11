@@ -165,7 +165,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
       <div class="metrics" id="orderOverviewMetrics"></div>
       <table id="orderOverviewTable">
         <thead><tr><th>Metric</th><th class="mini">Value</th></tr></thead>
-        <tbody></tbody>
+        <tbody class="loading"></tbody>
       </table>
     </div>
 
@@ -179,7 +179,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
         <div style="width:240px">
           <table id="paymentsTable">
             <thead><tr><th>Method</th><th class="mini">Amount</th></tr></thead>
-            <tbody></tbody>
+            <tbody class="loading"></tbody>
           </table>
           <div class="mini muted">Delivery fees counted in Orders only.</div>
         </div>
@@ -192,7 +192,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
       <canvas id="productsBar" height="140"></canvas>
       <table id="topProductsTable">
         <thead><tr><th>Product</th><th class="mini">Qty</th><th class="mini">Amount</th></tr></thead>
-        <tbody></tbody>
+        <tbody class="loading"></tbody>
       </table>
     </div>
 
@@ -207,7 +207,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
       <h3>Platform Overview</h3>
       <table id="platformTable">
         <thead><tr><th>Platform</th><th>Count</th><th>Amount</th></tr></thead>
-        <tbody></tbody>
+        <tbody class="loading"></tbody>
       </table>
     </div>
 
@@ -216,7 +216,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
       <h3>Customer Insights</h3>
       <table id="customerTable">
         <thead><tr><th>Metric</th><th>Value</th></tr></thead>
-        <tbody></tbody>
+        <tbody class="loading"></tbody>
       </table>
     </div>
 

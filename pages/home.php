@@ -329,7 +329,11 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <p>Enjoy smoother and faster Orders, history and more exclusive offers & discounts only on the app.</p>
             <div class="store-buttons">
                 <a href="https://play.google.com/store/apps/details?id=com.pizzasquare" class="store-btn google">
-                    <img src="<?php echo BASE_URL; ?>assets/images/google-play-and-apple-app-store-logos-22.png" alt="Google Play">
+                    <img src="<?php echo BASE_URL; ?>assets/images/google_play.png" alt="Google Play">
+                </a>
+                
+                <a href=" https://apps.apple.com/ng/app/pizza-square-nigeria/id6759790397" class="store-btn google">
+                    <img src="<?php echo BASE_URL; ?>assets/images/ios_store.png" alt="IOS Store">
                 </a>
 
             </div>

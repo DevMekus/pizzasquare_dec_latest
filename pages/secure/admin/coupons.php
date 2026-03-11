@@ -36,7 +36,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody class="loading"></tbody>
                             </table>
 
                         </section>

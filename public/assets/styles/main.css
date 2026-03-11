@@ -2596,31 +2596,22 @@ table .avatar {
 .promo-modal p {
   color: #555;
   font-size: 1rem;
-  margin-bottom: 25px;
 }
 
 /* === Buttons / Store Links === */
 .store-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.store-btn {
-  display: flex;
   align-items: center;
-  text-decoration: none;
-  border-radius: 10px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  gap: 5px;
+  width: 100%;
+  position: relative;
+  flex-wrap: wrap;
+  padding: 0px;
 }
 
 .store-btn img {
-  width: 90%;
-  margin: auto;
+  width: 170px;
 }
 
 .store-btn:hover {

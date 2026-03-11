@@ -70,9 +70,6 @@
   transition: 0.3s;
 }
 
-.promo-modal .close-btn:hover {
-  // background: var(--primary);
-}
 
 /* === Content === */
 .promo-modal img {
@@ -99,43 +96,29 @@
 .promo-modal p {
   color: #555;
   font-size: 1rem;
-  margin-bottom: 25px;
+  // margin-bottom: 25px;
 }
 
 /* === Buttons / Store Links === */
 .store-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  position: relative;
+  flex-wrap: wrap;  
+  padding: 0px;
 }
 
-.store-btn {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  border-radius: 10px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
+
 
 .store-btn img {
-  width: 90%;
-  margin: auto;
-  // margin-right: 8px;
+    width: 170px;  
+   
 }
 
-// .store-btn.google {
-//   background: var(--primary);
-//   color: var(--text-white);
-// }
 
-// .store-btn.apple {
-//   background: #000;
-//   color: var(--text-white);
-// }
 
 .store-btn:hover {
   opacity: 0.85;

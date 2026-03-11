@@ -23,26 +23,26 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-default"><i class="bi bi-people fs-2"></i></div>
                             <p>Total users</p>
-                            <h2 id="totalUsers"></h2>
+                            <h2 id="totalUsers" class="loading">-</h2>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-success"><i class="bi bi-person fs-2"></i></div>
                             <p>Customers</p>
-                            <h2 id="customers"></h2>
+                            <h2 id="customers" class="loading">-</h2>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-primary">
                                 <i class="bi bi-cash fs-2"></i>
                             </div>
                             <p>Cashiers</p>
-                            <h2 id="cashier"></h2>
+                            <h2 id="cashier" class="loading">-</h2>
                         </div>
                         <div class="kpi-card bounce-card">
                             <div class="icon-box bg-default">
                                 <i class="bi bi-shield-lock fs-2"></i>
                             </div>
                             <p>Admins</p>
-                            <h2 id="admin">-</h2>
+                            <h2 id="admin" class="loading">-</h2>
                         </div>
                     </section>
                     <div class="filter-bar d-flex gap-3 p-2 w-100" data-aos="fade-right">
@@ -63,7 +63,7 @@ if($user['role']!=='admin')header('location: ' . BASE_URL . 'auth/login?f-bk=UNA
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="userTableBody"></tbody>
+                                <tbody id="userTableBody" class="loading"></tbody>
                             </table>
                         </div>
                         <div id="pagination" class="p-4 pagination"></div>
