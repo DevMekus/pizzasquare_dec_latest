@@ -10,11 +10,14 @@ class CategoryService
 {
     private static $table = 'categories';
 
-    // Fetch all categories
+   
+
     public static function fetchAll()
     {
         try {
-            return Database::all(self::$table, [], ['order' => 'id ASC']);
+            return Database::all(self::$table, [], [
+                'order' => "FIELD(slug, 'pizza', 'shawarma', 'bugger', 'drinks', 'desserts')"
+            ]);
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'CategoryService::fetchAll', [], $th);
             return false;

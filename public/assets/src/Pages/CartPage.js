@@ -84,6 +84,8 @@ class CartPage {
     serviceCheck()
 }
 
+  
+
 
   submitYourOrder() {
     document

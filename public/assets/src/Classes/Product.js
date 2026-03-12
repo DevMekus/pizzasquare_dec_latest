@@ -146,7 +146,13 @@ export default class Product {
           );
 
         if (filtered.length === 0) {
-            Utility.renderEmptyState(Utility.NODATA)
+            // Utility.renderEmptyState(Utility.NODATA)
+             Utility.NODATA.innerHTML = `
+             <div class="text-center bg-light p-4">
+                <h4>Coming Soon</h4>
+                <p>This product is not yet available on the menu.</p>
+             </div>
+             `
             return;
         }
         

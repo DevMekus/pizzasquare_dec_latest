@@ -20,7 +20,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <p id="hero-text">
                         <span>𝗪𝗲 𝗼𝗳𝗳𝗲𝗿 𝗮 𝘄𝗶𝗱𝗲 𝗿𝗮𝗻𝗴𝗲 𝗼𝗳</span> <span>𝙋𝙞𝙯𝙯𝙖🍕</span> <span>𝙎𝙝𝙖𝙬𝙖𝙧𝙢𝙖🌯</span> 
                         <span> Burgers 🍔</span> <span>Desserts🍦</span>
-                        <span> Lounges 🥂</span>
+                      
                     </p>
                 </div>
                 <a href="#menuGrid" id="hero-btn" class="btn btn-primary hero-btn mt-3">Order Now</a>
@@ -323,9 +323,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <div class="modal-overlay" id="promoModal">
         <div class="promo-modal">
             <button class="close-btn" id="closePromo">&times;</button>
-            <img class="header-image" src="<?php echo BASE_URL; ?>assets/images/handcrop.jpg"
+            <img class="header-image" src="<?php echo BASE_URL; ?>assets/images/handcrop.png"
                 alt="Pizza App Icon" />
-            <p class="heading">Introducing <span>Pizza Square Mobile App!</span></p>
+            <p class="heading">Download <strong><span>Pizza Square Nigeria</span></strong> Mobile App!</p>
             <p>Enjoy smoother and faster Orders, history and more exclusive offers & discounts only on the app.</p>
             <div class="store-buttons">
                 <a href="https://play.google.com/store/apps/details?id=com.pizzasquare" class="store-btn google">

@@ -1,6 +1,7 @@
 import Order from "../Classes/Order.js";
 import Utility from "../Classes/Utility.js";
 import AuthHelper from "./AuthPage.js";
+import Cart from "../Classes/Cart.js";
 
 class AllRoutes {
   constructor() {
@@ -11,6 +12,7 @@ class AllRoutes {
     document.querySelectorAll(".loading").forEach((el) => {   
         el.innerHTML = Utility.inlineLoader();
     }); 
+    Cart.toggleCartBadge()
     Utility.runClassMethods(this, ["initialize"]);
   }
 
